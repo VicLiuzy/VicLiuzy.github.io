@@ -1,39 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>What happened</title>
   
-  
+  <subtitle>hello world</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-11-01T15:38:22.809Z</updated>
+  <updated>2017-11-03T13:33:55.821Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Vic Liu</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://yoursite.com/2017/11/01/hello-world/"/>
-    <id>http://yoursite.com/2017/11/01/hello-world/</id>
-    <published>2017-11-01T15:38:22.809Z</published>
-    <updated>2017-11-01T15:38:22.809Z</updated>
+    <title>seafile部署记录</title>
+    <link href="http://yoursite.com/2017/11/04/2017-11-03-seafile/"/>
+    <id>http://yoursite.com/2017/11/04/2017-11-03-seafile/</id>
+    <published>2017-11-03T17:23:35.000Z</published>
+    <updated>2017-11-03T13:33:55.821Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用<a href="&quot;https://www.xiaoz.me/archives/8480&quot;">xiaoz</a>的一键搭建脚本。  </p><h3 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h3><ul><li>CenOS 7 64位  </li><li>Python &gt;= 2.7</li><li>SqLite 3  </li></ul><hr><h3 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h3><p>输入以下命令以进行安装<br><figure class="highlight plain"><figcaption><span>-y install wget  </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$wget https://raw.githubusercontent.com/helloxz/seafile/$master/install_seafile.sh  </div><div class="line">$chmod +x install_seafile.sh &amp;&amp; ./install_seafile.sh</div></pre></td></tr></table></figure></p><blockquote><p>其中最后一条命令可以用于卸载。</p></blockquote><p>安装过程跟着脚本走就可以，注意填写<em>server’s ip or domain</em>时不要瞎填，填自己vps的公网ip即可。<br>安装完成后使用<code>http://公网ip:8000</code>进行访问。</p><h2 id=""><a href="#" class="headerlink" title=""></a><img src="./pics/snap.png" alt="preview"></h2><h3 id="维护相关"><a href="#维护相关" class="headerlink" title="维护相关"></a>维护相关</h3><p>官方帮助文档：<a href="https://manual-cn.seafile.com/" target="_blank" rel="external">https://manual-cn.seafile.com/</a><br>客户端下载：<a href="https://www.seafile.com/download/" target="_blank" rel="external">https://www.seafile.com/download/</a>  </p><p>使用以下命令维护：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/home/MyCloud  </div><div class="line">#启动服务  </div><div class="line">/home/MyCloud/seafile-server/seafile.sh start  </div><div class="line">/home/MyCloud/seafile-server/seahub.sh start  </div><div class="line">#停止服务  </div><div class="line">/home/MyCloud/seafile-server/seafile.sh stop  </div><div class="line">/home/MyCloud/seafile-server/seahub.sh stop  </div><div class="line">#重置管理员账号   </div><div class="line">/home/MyCloud/seafile-server/reset-admin.sh</div></pre></td></tr></table></figure></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;p&gt;近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用&lt;a href=&quot;&amp;quot;https://www.xiaoz.me/archives/8480&amp;quot;&quot;&gt;xiaoz&lt;/a&gt;的一键搭建脚本。
       
     
     </summary>
     
+      <category term="VPS" scheme="http://yoursite.com/categories/VPS/"/>
+    
+    
+      <category term="toy" scheme="http://yoursite.com/tags/toy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://yoursite.com/2017/11/03/hello-world/"/>
+    <id>http://yoursite.com/2017/11/03/hello-world/</id>
+    <published>2017-11-03T12:00:00.000Z</published>
+    <updated>2017-11-03T13:27:25.340Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="开坑感言"><a href="#开坑感言" class="headerlink" title="开坑感言"></a>开坑感言</h3><p>终于在拖延了这么久之后，用了两个晚上和一个下午把这个博客搭建起来。  </p><p>其实之前并没有写博客的习惯，但经常有一些事情，还是希望记录下来。有时有些想法转瞬即逝，但却没有及时抓住，过几日就忘得差不多了；有些脚本、代码或者方法，不记录下来，等再次遇到又要求助于百度，实在是麻烦；一本书看毕，无论是小说还是技术书籍，总有些收获，也能写上一两篇文章。  </p><p>本博客托管于github，其实基本不会有什么人来访问（<em>因为我github就没怎么用过</em>），主要就是记录给自己看，相当于一个云笔记了。<a href="https://hexo.io/zh-cn/" target="_blank" rel="external">hexo</a>的主题还是很给力的，非常美观，自定义程度高，多少也能接触一些前端技术。正文使用<a href="http://wowubuntu.com/markdown/" target="_blank" rel="external">markdown</a>编写，省力又有趣，何乐而不为。</p><p>总之，第一篇博客测试的成分居多，就这样吧。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;开坑感言&quot;&gt;&lt;a href=&quot;#开坑感言&quot; class=&quot;headerlink&quot; title=&quot;开坑感言&quot;&gt;&lt;/a&gt;开坑感言&lt;/h3&gt;&lt;p&gt;终于在拖延了这么久之后，用了两个晚上和一个下午把这个博客搭建起来。  &lt;/p&gt;
+&lt;p&gt;其实之前并没有写博客的习惯，但经常有一
+      
+    
+    </summary>
+    
+      <category term="闲聊" scheme="http://yoursite.com/categories/%E9%97%B2%E8%81%8A/"/>
+    
+    
+      <category term="想法" scheme="http://yoursite.com/tags/%E6%83%B3%E6%B3%95/"/>
     
   </entry>
   

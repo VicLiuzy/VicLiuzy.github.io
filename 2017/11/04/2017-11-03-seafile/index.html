@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        L的小本子
+        seafile部署记录 · L的小本子
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,11 +60,22 @@
     
 </head>
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >L的小本子</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">seafile部署记录</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>L的小本子</a>
 </header>
@@ -72,21 +83,43 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            seafile部署记录
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = toy>toy</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/11/03</span>
+            </div>
         
     </div>
 </div>
@@ -154,74 +187,47 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用<a href="&quot;https://www.xiaoz.me/archives/8480&quot;">xiaoz</a>的一键搭建脚本。  </p>
+<h3 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h3><ul>
+<li>CenOS 7 64位  </li>
+<li>Python &gt;= 2.7</li>
+<li>SqLite 3  </li>
+</ul>
+<hr>
+<h3 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h3><p>输入以下命令以进行安装<br><figure class="highlight plain"><figcaption><span>-y install wget  </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$wget https://raw.githubusercontent.com/helloxz/seafile/$master/install_seafile.sh  </div><div class="line">$chmod +x install_seafile.sh &amp;&amp; ./install_seafile.sh</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>其中最后一条命令可以用于卸载。</p>
+</blockquote>
+<p>安装过程跟着脚本走就可以，注意填写<em>server’s ip or domain</em>时不要瞎填，填自己vps的公网ip即可。<br>安装完成后使用<code>http://公网ip:8000</code>进行访问。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="./pics/snap.png" alt="preview"></h2><h3 id="维护相关"><a href="#维护相关" class="headerlink" title="维护相关"></a>维护相关</h3><p>官方帮助文档：<a href="https://manual-cn.seafile.com/" target="_blank" rel="external">https://manual-cn.seafile.com/</a><br>客户端下载：<a href="https://www.seafile.com/download/" target="_blank" rel="external">https://www.seafile.com/download/</a>  </p>
+<p>使用以下命令维护：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/home/MyCloud  </div><div class="line">#启动服务  </div><div class="line">/home/MyCloud/seafile-server/seafile.sh start  </div><div class="line">/home/MyCloud/seafile-server/seahub.sh start  </div><div class="line">#停止服务  </div><div class="line">/home/MyCloud/seafile-server/seafile.sh stop  </div><div class="line">/home/MyCloud/seafile-server/seahub.sh stop  </div><div class="line">#重置管理员账号   </div><div class="line">/home/MyCloud/seafile-server/reset-admin.sh</div></pre></td></tr></table></figure></p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2017/11/03/hello-world/" title= Hello World >
+                    <span>Previous Post</span>
+                    <span>Hello World</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/04/2017-11-03-seafile/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>seafile部署记录</span>
-                    </h2>
-                <div class="abstract-content">
-                    近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用xiaoz的一键搭建脚本。  
-环境要求
-CenOS 7 64位  
-Python &gt;= 2.7
-SqLite 3  
+    <!--PC版-->
+
+    <!--PC版-->
 
 
-开始安装输入以下命令以进行安装-y install wget  12$wget https://raw.githubusercontent.com/helloxz/seafile/$master/install_seafile.sh  $chmod +x install_seafile.sh &amp;&amp; ./install_s...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = toy>toy</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/03</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/03/hello-world/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Hello World</span>
-                    </h2>
-                <div class="abstract-content">
-                    开坑感言终于在拖延了这么久之后，用了两个晚上和一个下午把这个博客搭建起来。  
-其实之前并没有写博客的习惯，但经常有一些事情，还是希望记录下来。有时有些想法转瞬即逝，但却没有及时抓住，过几日就忘得差不多了；有些脚本、代码或者方法，不记录下来，等再次遇到又要求助于百度，实在是麻烦；一本书看毕，无论是小说还是技术书籍，总有些收获，也能写上一两篇文章。  
-本博客托管于github，其实基本不会有什么人来访问（因为我github就没怎么用过），主要就是记录给自己看，相当于一个云笔记了。hexo的主题还是很给力的，非常美观，自定义程度高，多少也能接触一些前端技术。正文使用markdown编写，省...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 想法>想法</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/03</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
     
 </main>
             <!-- profile -->
@@ -269,6 +275,13 @@ SqLite 3
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境要求"><span class="toc-number">1.</span> <span class="toc-text">环境要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始安装"><span class="toc-number">2.</span> <span class="toc-text">开始安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number"></span> <span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#维护相关"><span class="toc-number">1.</span> <span class="toc-text">维护相关</span></a></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
