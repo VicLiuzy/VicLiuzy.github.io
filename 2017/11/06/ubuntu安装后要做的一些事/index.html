@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        Ubuntu安装后要做的一些事 · L的小本子
+        
+    </title>
+    <link rel="icon" href= /assests/favicon.ico>
+    <!-- TODO: 在font-face加载完毕后改变字体  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+    <!-- 提前加载place holder  -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+    </style>
+    <style type="text/css">
+        .site-intro-placeholder {
+            position: absolute;
+            z-index: -2;
+            top: 0;
+            left: 0px;
+            width: calc(100% + 300px);
+            height: 100%;
+            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+            background-position: center center;
+            transform: translate3d(-226px, 0, 0);
+            animation: gradient-move 2.5s ease-out 0s 1;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+    <link rel="stylesheet" href = /css/style.css?v=20171020 />
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "7c848dd260175b67ee7a402af3c08312";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >L的小本子</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Ubuntu安装后要做的一些事</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>L的小本子</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/death-note-l4.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Ubuntu安装后要做的一些事
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/11/05</span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <script>
+            var browser = {
+                    versions: function () {
+                        var u = window.navigator.userAgent;
+                        return {
+                            userAgent: u,
+                            trident: u.indexOf('Trident') > -1, //IE内核
+                            presto: u.indexOf('Presto') > -1, //opera内核
+                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+                            iPad: u.indexOf('iPad') > -1, //是否为iPad
+                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+                        };
+                    }()
+                }
+
+            function fontLoaded(){
+                console.log('font loaded');
+                if (document.getElementsByClassName('site-intro-meta')) {
+                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+                        if (postIntroTags) {
+                            postIntroTags.classList.add('post-fade-in');
+                        }
+                        if (postIntroMeat) {
+                            postIntroMeat.classList.add('post-fade-in');
+                        }
+                    }
+                }
+                
+            console.log("userAgent:" + browser.versions.userAgent);
+            // UC不支持跨域，所以直接显示
+            if (browser.versions.uc) {
+                console.log("UCBrowser");
+                fontLoaded();
+            } else {
+                WebFont.load({
+                    custom: {
+                        families: ['Oswald-Regular']
+                    },
+                    loading: function () {  //所有字体开始加载
+                        // console.log('loading');
+                    },
+                    active: function () {  //所有字体已渲染
+                        fontLoaded();
+                    },
+                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+                        console.log('inactive: timeout');
+                        fontLoaded();
+                    },
+                    timeout: 7000 // Set the timeout to two seconds
+                });
+            }
+        </script>
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>ubuntu我重装了不知道有多少遍，每次重装时都要重复进行一些操作，这次干脆将这些常用操作记录下来，以便下次重装时查询。</p>
+<h2 id="更换软件源"><a href="#更换软件源" class="headerlink" title="更换软件源"></a>更换软件源</h2><blockquote>
+<p>本条在八个月之后就会无效，也算是毕业的一点遗憾。</p>
+</blockquote>
+<ul>
+<li><p>编辑源：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo gedit /etc/apt/sources.list</div></pre></td></tr></table></figure>
+<p>  将原内容更换为：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ xenial-security main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-updates main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-proposed main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-backports main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-security main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-updates main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-proposed main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-backports main restricted universe multiverse</div></pre></td></tr></table></figure>
+<p>  这里要感谢<a href="https://linux.xidian.edu.cn/" target="_blank" rel="external">西电开源社区</a>的无私奉献，让我们在校内能够享受速度快且免流的软件源。</p>
+</li>
+<li><p>更新源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt update</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="翻墙"><a href="#翻墙" class="headerlink" title="翻墙"></a>翻墙</h2><blockquote>
+<p>不翻墙，毋宁死。</p>
+</blockquote>
+<ul>
+<li><p>安装miredo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt install miredo</div></pre></td></tr></table></figure>
+</li>
+<li><p>测试是否有ipv6连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ping6 ipv6.baidu.com</div></pre></td></tr></table></figure>
+<p>  不知道什么原因，每次开机都需要重新启动miredo，非常麻烦，<strong>本条待编辑</strong>。</p>
+</li>
+<li><p>安装ss</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install shadowsocks-qt5</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置chrome<br>在ss配置完毕后，以代理模式打开chrome：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ google-chrome --proxy-server=socks5://127.0.0.1:1080</div></pre></td></tr></table></figure>
+<p>  登录google帐号，同步插件与书签，并导入proxy配置。</p>
+</li>
+</ul>
+<h2 id="安装rEFInd"><a href="#安装rEFInd" class="headerlink" title="安装rEFInd"></a>安装rEFInd</h2><p>双系统用grub引导可以说是非常丑，紫不拉叽的背景，无法更改的界面。于是选择<a href="http://www.rodsbooks.com/refind/installing.html" target="_blank" rel="external">rEFInd</a>作为双系统的引导。  </p>
+<ul>
+<li><p>安装:<br>执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./refind-install</div></pre></td></tr></table></figure>
+<p>  或者使用apt安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-add-repository ppa:rodsmith/refind</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install refind</div></pre></td></tr></table></figure>
+<p>  安装后路径为：<code>/boot/efi/EFI/refind</code></p>
+</li>
+<li><p>安装主题：<br><code>/boot/efi/EFI/refind</code>目录下新建themes文件夹，并将rEFInd-minimal文件夹复制进去。<br>将代码<code>include themes/rEFInd-minimal/theme.conf</code>添加到<code>refind.conf</code>文件末尾。<br>更改下面几个选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">timeout 2             <span class="comment">#超时</span></div><div class="line">resolution 1920 1080  <span class="comment">#分辨率</span></div><div class="line">max_tags 3            <span class="comment">#最大图标个数</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>跳过grub引导<br>将文件<code>/etc/default/grub</code>中的<code>#GRUB_HIDDEN_TIMEOUT=0</code>注释去掉，就会跳过grub引导，直接进入系统。</p>
+</li>
+</ul>
+<h2 id="解决ubuntu-windows时间不一致的问题"><a href="#解决ubuntu-windows时间不一致的问题" class="headerlink" title="解决ubuntu/windows时间不一致的问题"></a>解决ubuntu/windows时间不一致的问题</h2><ul>
+<li>一行指令搞定：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ timedatectl <span class="built_in">set</span>-local-rtc 1 --adjust-system-clock</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="安装unity主题"><a href="#安装unity主题" class="headerlink" title="安装unity主题"></a>安装unity主题</h2><p>unity有许多类mac主题与扁平化图标，这里选择Flatabulous主题与ultra-flat图标。</p>
+<ul>
+<li><p>unity-tweak-tool<br>首先安装unity-tweak-tool，管理主题与图标，并进行一些unity的设置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt install unity-tweak-tool</div></pre></td></tr></table></figure>
+</li>
+<li><p>Flatabulous主题:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:noobslab/themes</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install flatabulous-theme</div></pre></td></tr></table></figure>
+</li>
+<li><p>ultra-flat图标</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:noobslab/icons</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install ultra-flat-icons</div></pre></td></tr></table></figure>
+<p>  效果如下：<br><img src="/img/xiaoguo.png" alt="">  </p>
+<h2 id="常用软件安装"><a href="#常用软件安装" class="headerlink" title="常用软件安装"></a>常用软件安装</h2><blockquote>
+<p>linux下自然是用来学习与写代码的，下面这几个常用软件也是必装的。</p>
+</blockquote>
+</li>
+<li><p>sublime text</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#安装GPG key</span></div><div class="line">$ wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -</div><div class="line"><span class="comment">#确保apt工作在https源的模式</span></div><div class="line">$ sudo apt-get install apt-transport-https</div><div class="line"><span class="comment">#使用stable方式安装</span></div><div class="line">$ <span class="built_in">echo</span> <span class="string">"deb https://download.sublimetext.com/ apt/stable/"</span> | sudo tee</div><div class="line">$ /etc/apt/sources.list.d/sublime-text.list</div><div class="line"><span class="comment">#更新源并安装</span></div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install sublime-text</div></pre></td></tr></table></figure>
+</li>
+<li><p>spyder</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ apt install spyder</div></pre></td></tr></table></figure>
+</li>
+<li><p>mysql</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#第一条指令安装过程中需要设定root密码</span></div><div class="line">$ sudo apt install mysql-server</div><div class="line">$ sudo apt install mysql-client</div><div class="line">$ sudo apt install libmysqlclient-dev</div><div class="line"><span class="comment">#可视化工具</span></div><div class="line">$ sudo apt install mysql-workbench</div></pre></td></tr></table></figure>
+</li>
+<li><p>wps<br>unbuntu自带的libre与MS office之间有许多兼容性问题，所以卸载libre，安装wps<br>卸载libre：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get remove libreoffice-common</div></pre></td></tr></table></figure>
+<p>  安装完wps后会有字体缺失问题，下载<a href="https://pan.baidu.com/s/1eS6xIzo" target="_blank" rel="external">字体文件</a>，将目录中所有文件复制到<code>/usr/share/fonts</code>下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo cp mtextra.ttf  symbol.ttf  WEBDINGS.TTF  wingding.ttf  WINGDNG2.ttf  WINGDNG3.ttf  /usr/share/fonts</div></pre></td></tr></table></figure></li>
+</ul>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2017/11/04/2017-11-03-seafile/" title= seafile部署记录 >
+                    <span>Previous Post</span>
+                    <span>seafile部署记录</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:liuzongyanvic@foxmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+            
+                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
+            
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#更换软件源"><span class="toc-number">1.</span> <span class="toc-text">更换软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#翻墙"><span class="toc-number">2.</span> <span class="toc-text">翻墙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装rEFInd"><span class="toc-number">3.</span> <span class="toc-text">安装rEFInd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决ubuntu-windows时间不一致的问题"><span class="toc-number">4.</span> <span class="toc-text">解决ubuntu/windows时间不一致的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装unity主题"><span class="toc-number">5.</span> <span class="toc-text">安装unity主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用软件安装"><span class="toc-number">6.</span> <span class="toc-text">常用软件安装</span></a></li></ol>
+    </div>
+    
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header sidebar-header-show-archive">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 3 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span><a class="archive-post-title" href= "/2017/11/06/ubuntu安装后要做的一些事/" >Ubuntu安装后要做的一些事</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/04/2017-11-03-seafile/" >seafile部署记录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">toy</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">想法</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Linux</a></span>
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    </body>
+</html>
+
+
