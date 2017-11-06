@@ -190,30 +190,29 @@
             <main class="main post-page">
     <article class="article-entry">
         <p>ubuntu我重装了不知道有多少遍，每次重装时都要重复进行一些操作，这次干脆将这些常用操作记录下来，以便下次重装时查询。</p>
-<h2 id="更换软件源"><a href="#更换软件源" class="headerlink" title="更换软件源"></a>更换软件源</h2><blockquote>
-<p>本条在八个月之后就会无效，也算是毕业的一点遗憾。</p>
-</blockquote>
-<ul>
-<li><p>编辑源：  </p>
+<hr>
+<h2 id="更换软件源"><a href="#更换软件源" class="headerlink" title="更换软件源"></a>更换软件源</h2><ul>
+<li><p>编辑源  </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo gedit /etc/apt/sources.list</div></pre></td></tr></table></figure>
 <p>  将原内容更换为：  </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ xenial-security main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-updates main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-proposed main restricted universe multiverse</div><div class="line">deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-backports main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-security main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-updates main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-proposed main restricted universe multiverse</div><div class="line">deb-src https://linux.xidian.edu.cn/mirrors/ xenial-backports main restricted universe multiverse</div></pre></td></tr></table></figure>
 <p>  这里要感谢<a href="https://linux.xidian.edu.cn/" target="_blank" rel="external">西电开源社区</a>的无私奉献，让我们在校内能够享受速度快且免流的软件源。</p>
 </li>
-<li><p>更新源：</p>
+<li><p>更新源</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt update</div></pre></td></tr></table></figure>
 </li>
 </ul>
+<hr>
 <h2 id="翻墙"><a href="#翻墙" class="headerlink" title="翻墙"></a>翻墙</h2><blockquote>
 <p>不翻墙，毋宁死。</p>
 </blockquote>
 <ul>
-<li><p>安装miredo：</p>
+<li><p>安装miredo</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt install miredo</div></pre></td></tr></table></figure>
 </li>
-<li><p>测试是否有ipv6连接：</p>
+<li><p>测试是否有ipv6连接</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ping6 ipv6.baidu.com</div></pre></td></tr></table></figure>
-<p>  不知道什么原因，每次开机都需要重新启动miredo，非常麻烦，<strong>本条待编辑</strong>。</p>
+<p>  但每次开机都需要重新启动miredo，非常麻烦，所以在<code>/etc/local.rc</code>文件中添加<code>/etc/init.d/miredo start</code>使miredo开机自启，注意要添加在<code>exit 0</code>之前。</p>
 </li>
 <li><p>安装ss</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install shadowsocks-qt5</div></pre></td></tr></table></figure>
@@ -223,6 +222,7 @@
 <p>  登录google帐号，同步插件与书签，并导入proxy配置。</p>
 </li>
 </ul>
+<hr>
 <h2 id="安装rEFInd"><a href="#安装rEFInd" class="headerlink" title="安装rEFInd"></a>安装rEFInd</h2><p>双系统用grub引导可以说是非常丑，紫不拉叽的背景，无法更改的界面。于是选择<a href="http://www.rodsbooks.com/refind/installing.html" target="_blank" rel="external">rEFInd</a>作为双系统的引导。  </p>
 <ul>
 <li><p>安装:<br>执行脚本：</p>
@@ -231,31 +231,36 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-add-repository ppa:rodsmith/refind</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install refind</div></pre></td></tr></table></figure>
 <p>  安装后路径为：<code>/boot/efi/EFI/refind</code></p>
 </li>
-<li><p>安装主题：<br><code>/boot/efi/EFI/refind</code>目录下新建themes文件夹，并将rEFInd-minimal文件夹复制进去。<br>将代码<code>include themes/rEFInd-minimal/theme.conf</code>添加到<code>refind.conf</code>文件末尾。<br>更改下面几个选项：</p>
+<li><p>安装主题<br><code>/boot/efi/EFI/refind</code>目录下新建themes文件夹，并将rEFInd-minimal文件夹复制进去。<br>将代码<code>include themes/rEFInd-minimal/theme.conf</code>添加到<code>refind.conf</code>文件末尾。<br>更改下面几个选项：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">timeout 2             <span class="comment">#超时</span></div><div class="line">resolution 1920 1080  <span class="comment">#分辨率</span></div><div class="line">max_tags 3            <span class="comment">#最大图标个数</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>跳过grub引导<br>将文件<code>/etc/default/grub</code>中的<code>#GRUB_HIDDEN_TIMEOUT=0</code>注释去掉，就会跳过grub引导，直接进入系统。</p>
 </li>
 </ul>
+<hr>
 <h2 id="解决ubuntu-windows时间不一致的问题"><a href="#解决ubuntu-windows时间不一致的问题" class="headerlink" title="解决ubuntu/windows时间不一致的问题"></a>解决ubuntu/windows时间不一致的问题</h2><ul>
-<li>一行指令搞定：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ timedatectl <span class="built_in">set</span>-local-rtc 1 --adjust-system-clock</div></pre></td></tr></table></figure>
+<li>一行指令搞定<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ timedatectl <span class="built_in">set</span>-local-rtc 1 --adjust-system-clock</div></pre></td></tr></table></figure>
 </li>
 </ul>
+<hr>
 <h2 id="安装unity主题"><a href="#安装unity主题" class="headerlink" title="安装unity主题"></a>安装unity主题</h2><p>unity有许多类mac主题与扁平化图标，这里选择Flatabulous主题与ultra-flat图标。</p>
 <ul>
 <li><p>unity-tweak-tool<br>首先安装unity-tweak-tool，管理主题与图标，并进行一些unity的设置。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt install unity-tweak-tool</div></pre></td></tr></table></figure>
 </li>
-<li><p>Flatabulous主题:</p>
+<li><p>Flatabulous主题</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:noobslab/themes</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install flatabulous-theme</div></pre></td></tr></table></figure>
 </li>
 <li><p>ultra-flat图标</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:noobslab/icons</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install ultra-flat-icons</div></pre></td></tr></table></figure>
 <p>  效果如下：<br><img src="/img/xiaoguo.png" alt="">  </p>
+</li>
+</ul>
+<hr>
 <h2 id="常用软件安装"><a href="#常用软件安装" class="headerlink" title="常用软件安装"></a>常用软件安装</h2><blockquote>
 <p>linux下自然是用来学习与写代码的，下面这几个常用软件也是必装的。</p>
 </blockquote>
-</li>
+<ul>
 <li><p>sublime text</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#安装GPG key</span></div><div class="line">$ wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -</div><div class="line"><span class="comment">#确保apt工作在https源的模式</span></div><div class="line">$ sudo apt-get install apt-transport-https</div><div class="line"><span class="comment">#使用stable方式安装</span></div><div class="line">$ <span class="built_in">echo</span> <span class="string">"deb https://download.sublimetext.com/ apt/stable/"</span> | sudo tee</div><div class="line">$ /etc/apt/sources.list.d/sublime-text.list</div><div class="line"><span class="comment">#更新源并安装</span></div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install sublime-text</div></pre></td></tr></table></figure>
 </li>
@@ -265,7 +270,7 @@
 <li><p>mysql</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#第一条指令安装过程中需要设定root密码</span></div><div class="line">$ sudo apt install mysql-server</div><div class="line">$ sudo apt install mysql-client</div><div class="line">$ sudo apt install libmysqlclient-dev</div><div class="line"><span class="comment">#可视化工具</span></div><div class="line">$ sudo apt install mysql-workbench</div></pre></td></tr></table></figure>
 </li>
-<li><p>wps<br>unbuntu自带的libre与MS office之间有许多兼容性问题，所以卸载libre，安装wps<br>卸载libre：</p>
+<li><p>wps<br>unbuntu自带的libre与MS office之间有许多兼容性问题，所以卸载libre，安装wps。<br>卸载libre：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get remove libreoffice-common</div></pre></td></tr></table></figure>
 <p>  安装完wps后会有字体缺失问题，下载<a href="https://pan.baidu.com/s/1eS6xIzo" target="_blank" rel="external">字体文件</a>，将目录中所有文件复制到<code>/usr/share/fonts</code>下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo cp mtextra.ttf  symbol.ttf  WEBDINGS.TTF  wingding.ttf  WINGDNG2.ttf  WINGDNG3.ttf  /usr/share/fonts</div></pre></td></tr></table></figure></li>
@@ -417,6 +422,8 @@
   </div>
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">VPS</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">toy</a></span>
     
