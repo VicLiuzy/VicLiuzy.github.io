@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        C++类零碎 · L的小本子
+        C++类零碎 · ZyLiu&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -70,14 +70,14 @@
     
     <div class="banner">
             <div class="blog-title">
-                <a href="/" >L的小本子</a>
+                <a href="/" >ZyLiu&#39;s Blog</a>
             </div>
             <div class="post-title">
                 <a href="#" class="post-name">C++类零碎</a>
             </div>
     </div>
     
-    <a class="home-link" href=/>L的小本子</a>
+    <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
     <div class="wrapper">
         <div class="site-intro">
@@ -216,11 +216,18 @@
 <li>子类和父类的同名<code>static</code>成员或方法，调用哪一个看作用域。</li>
 </ul>
 <h2 id="虚函数调用"><a href="#虚函数调用" class="headerlink" title="虚函数调用"></a>虚函数调用</h2><p>今天对虚函数的调用有疑问，主要疑问为：类方法对虚函数的调用到底调用的是哪个。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">go_out</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"out A"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span><span class="keyword">public</span> A&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</div><div class="line">		go_out();</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">go_out</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"out B"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span><span class="keyword">public</span> B&#123;</div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">go_out</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"out C"</span> &lt;&lt;<span class="built_in">endl</span>;</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span>&#123;</div><div class="line">	C *cc = <span class="keyword">new</span> C();</div><div class="line">	cc-&gt;test();</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>实验发现，输出结果为<code>out C</code>。<br>其实这符合虚函数的调用原理，毕竟test是通过指向C类型的指针调用的，改为<code>B *cc = new C();</code>输出结果也一样。</p>
+<p>实验发现，输出结果为<code>out C</code>。<br>其实这符合虚函数的调用原理，毕竟test是通过指向C类型的指针调用的。<br>改为<code>B *cc = new C();</code>输出结果也一样。</p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
+        
+            <li class="next">
+                <a href= "/2018/08/17/makefile(1)/" title= Makefile学习（一） >
+                    <span>Next Post</span>
+                    <span>Makefile学习（一）</span>
+                </a>
+            </li>
         
         
             <li class="previous">
@@ -355,7 +362,96 @@
     
     
     
-    <div class="total-archive"> Total : 5 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 10 </div>
     
     <div class="post-archive">
     
@@ -364,6 +460,31 @@
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2018/08/31/头文件包含以及库文件包含/" >头文件包含以及库文件包含</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >从VS转移到VScode（由未找到预定义引出的问题）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2018/08/19/makefile(3)/" >Makefile学习（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2018/08/18/makefile(2)/" >Makefile学习（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2018/08/17/makefile(1)/" >Makefile学习（一）</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -413,6 +534,12 @@
         <span class="sidebar-tag-name"><a href= "#">想法</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

@@ -60,10 +60,8 @@
     
 </head>
     
-        <body class="home-body">
     
-    
-<header class="header index-header">
+<header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
@@ -74,29 +72,18 @@
         <div class="site-intro">
     
     <!-- 主页  -->
-    
-    
-    <!-- 文章页  -->
             
-    <div class="site-intro-img" style="background-image: url(/intro/Keep_Exploring_hd.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            ZyLiu's Blog
-            <!-- 文章页  -->
-            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
-            
-            
-                一点零碎
-            
-            <!-- 文章页  -->
             
         </p>
         <!-- 文章页meta -->
@@ -168,71 +155,6 @@
         </script>
         <div class="container container-unloaded">
             <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/31/头文件包含以及库文件包含/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>头文件包含以及库文件包含</span>
-                    </h2>
-                <div class="abstract-content">
-                    防止重复包含头文件在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用#pragma once的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。以某个头文件&quot;header.h&quot;为例：123456789# ifndef __HEADER_H__#define __HEADER_H__/* *header.h  body * */#endif
-如果该头文件已被包含，那么头文件中的定义不会被重复定义。
-库文件的包含在Windows中...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/31</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>从VS转移到VScode（由未找到预定义引出的问题）</span>
-                    </h2>
-                <div class="abstract-content">
-                    作为代码编辑器的VScode预定义今天看到代码中有一处：12345#if defined FF_LOG_ZZSR#include "../VACommon/log/sr_log.h"#elif defined FF_LOG_ZZHX#include "../VACommon/log/HX_log.h"#endif
-搜索编整个工程却没有找到FF_LOG_ZZHX，然而其下方的#include的代码却生效了，因此感到很疑惑。
-实际上是在属性 - 配置属性 - C/C++ - 预处理器定义中进行了预处理定义，这样在所有代码中都有了FF_LOG_ZZHX的预定义。
-当使用VSCode打开源文件时...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 编辑器>编辑器</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/23</span>
-                </div>
-            </div>
-        </article>
     
     
     
@@ -334,220 +256,10 @@
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/29/C++类零碎/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>C++类零碎</span>
-                    </h2>
-                <div class="abstract-content">
-                    私有构造函数首先，private成员与方法只能被类内部的方法访问，而protected成员与方法只能被类内部或派生类内部的方法访问。而构造函数一定是在外部被访问，所以含有private或protected构造函数的类不能声明对象。我觉得这种类常用于抽象类，即含有纯虚函数的类，这种类用于实现多态，只能从其子类声明对象，为了防止用抽象类声明对象，将其构造函数设为私有。
-
-派生类的构造函数调用
-既然抽象类不能声明对象，那么其构造函数还有什么意义呢？回忆起子类声明的过程，构造函数是一层层向上调用的，所以最终会调用抽象基类的构造函数，用来初始化抽象基类的成员。
-
-单例模式
-private构造函数还...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 多态>多态</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/28</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/26/typedef函数指针/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>typedef与函数指针</span>
-                    </h2>
-                <div class="abstract-content">
-                    typedef基本今日在代码中看到：
-123456typedef void (ISSCALLBACK *Proc_MVWOnMsgProc)(    const void*         pUsrArg,     /* [In] User defined parameter */    unsigned int        uMsg,        /* [In] The message identifier */    unsigned int        wParam,      /* [In] Message additional information */    cons...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/25</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/06/ubuntu安装后要做的一些事/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Ubuntu安装后要做的一些事</span>
-                    </h2>
-                <div class="abstract-content">
-                    ubuntu我重装了不知道有多少遍，每次重装时都要重复进行一些操作，这次干脆将这些常用操作记录下来，以便下次重装时查询。
-
-更换软件源
-编辑源  
-1$ sudo gedit /etc/apt/sources.list
-  将原内容更换为：  
-12345678910deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiversedeb https://linux.xidian.edu.cn/mirrors/ xenial-security main restricted ...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/05</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/04/2017-11-03-seafile/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>seafile部署记录</span>
-                    </h2>
-                <div class="abstract-content">
-                    近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用xiaoz的一键搭建脚本。  
-环境要求
-CenOS 7 64位  
-Python &gt;= 2.7
-SqLite 3  
-
-
-开始安装输入以下命令以进行安装  
-$ yum -y install wget  
-$ wget https://raw.githubusercontent.com/helloxz/seafile/$master/install_seafile.sh  
-$ chmod +x install_seafile.sh &amp;&amp; ...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = toy>toy</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/03</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/03/hello-world/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Hello World</span>
-                    </h2>
-                <div class="abstract-content">
-                    开坑感言终于在拖延了这么久之后，用了两个晚上和一个下午把这个博客搭建起来。  
-其实之前并没有写博客的习惯，但经常有一些事情，还是希望记录下来。有时有些想法转瞬即逝，但却没有及时抓住，过几日就忘得差不多了；有些脚本、代码或者方法，不记录下来，等再次遇到又要求助于百度，实在是麻烦；一本书看毕，无论是小说还是技术书籍，总有些收获，也能写上一两篇文章。  
-本博客托管于github，其实基本不会有什么人来访问（因为我github就没怎么用过），主要就是记录给自己看，相当于一个云笔记了。hexo的主题还是很给力的，非常美观，自定义程度高，多少也能接触一些前端技术。正文使用markdown编写，省...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 想法>想法</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/03</span>
-                </div>
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
 </main>
             <!-- profile -->
-            
-            <div class="profile">
-    <img class="profile-avatar" src= /avatar/L.jpg >
-    <div class="profile-name">Vic Liu</div>
-    
-    <div class="profile-signature">
-        Keep Calm and Carry On
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
-            
-                <a href="mailto:liuzongyanvic@foxmail.com" class="iconfont-archer email" title=email ></a>
-            
-        
-    
-        
-            
-                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title="github"></a>
-            
-        
-    
-        
-            
-                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
-            
-        
-    
-        
-            
-                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
-            
-        
-    
-
-    </div>
-    
-    
-    
-</div>
             
         </div>
         <footer class="footer footer-unloaded">

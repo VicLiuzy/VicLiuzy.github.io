@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        Makefile学习（三） · ZyLiu&#39;s Blog
+        
+    </title>
+    <link rel="icon" href= /favicon.ico>
+    <!-- TODO: 在font-face加载完毕后改变字体  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+    <!-- 提前加载place holder  -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+    </style>
+    <style type="text/css">
+        .site-intro-placeholder {
+            position: absolute;
+            z-index: -2;
+            top: 0;
+            left: 0px;
+            width: calc(100% + 300px);
+            height: 100%;
+            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+            background-position: center center;
+            transform: translate3d(-226px, 0, 0);
+            animation: gradient-move 2.5s ease-out 0s 1;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+    <link rel="stylesheet" href = /css/style.css?v=20171020 />
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "7c848dd260175b67ee7a402af3c08312";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >ZyLiu&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Makefile学习（三）</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>ZyLiu's Blog</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/death-note-l4.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Makefile学习（三）
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Makefile>Makefile</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/08/19</span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <script>
+            var browser = {
+                    versions: function () {
+                        var u = window.navigator.userAgent;
+                        return {
+                            userAgent: u,
+                            trident: u.indexOf('Trident') > -1, //IE内核
+                            presto: u.indexOf('Presto') > -1, //opera内核
+                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+                            iPad: u.indexOf('iPad') > -1, //是否为iPad
+                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+                        };
+                    }()
+                }
+
+            function fontLoaded(){
+                console.log('font loaded');
+                if (document.getElementsByClassName('site-intro-meta')) {
+                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+                        if (postIntroTags) {
+                            postIntroTags.classList.add('post-fade-in');
+                        }
+                        if (postIntroMeat) {
+                            postIntroMeat.classList.add('post-fade-in');
+                        }
+                    }
+                }
+                
+            console.log("userAgent:" + browser.versions.userAgent);
+            // UC不支持跨域，所以直接显示
+            if (browser.versions.uc) {
+                console.log("UCBrowser");
+                fontLoaded();
+            } else {
+                WebFont.load({
+                    custom: {
+                        families: ['Oswald-Regular']
+                    },
+                    loading: function () {  //所有字体开始加载
+                        // console.log('loading');
+                    },
+                    active: function () {  //所有字体已渲染
+                        fontLoaded();
+                    },
+                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+                        console.log('inactive: timeout');
+                        fontLoaded();
+                    },
+                    timeout: 7000 // Set the timeout to two seconds
+                });
+            }
+        </script>
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="8-make的运行"><a href="#8-make的运行" class="headerlink" title="8 make的运行"></a>8 make的运行</h2><p>一般来说，最简单的就是直接在命令行下输入make命令，make命令会找当前目录的makefile来执行，一切都是自动的。但也有时你也许只想让make重编译某些文件，而不是整个工程，而又有的时候你有几套编译规则，你想在不同的时候使用不同的编译规则，等等。本章节就是讲述如何使用make命令的。</p>
+<h3 id="8-1-make的退出码"><a href="#8-1-make的退出码" class="headerlink" title="8.1 make的退出码"></a>8.1 make的退出码</h3><p>make命令执行后有三个退出码：</p>
+<ul>
+<li>0 —— 表示成功执行。</li>
+<li>1 —— 如果make运行时出现任何错误，其返回1。</li>
+<li>2 —— 如果你使用了make的“-q”选项，并且make使得一些目标不需要更新，那么返回2。</li>
+</ul>
+<h3 id="8-2-指定Makefile"><a href="#8-2-指定Makefile" class="headerlink" title="8.2 指定Makefile"></a>8.2 指定Makefile</h3><p>GNU make找寻默认的Makefile的规则是在当前目录下依次找三个文件——“GNUmakefile”、“makefile”和“Makefile”。其按顺序找这三个文件，一旦找到，就开始读取这个文件并执行。</p>
+<p>我们也可以给make命令指定一个特殊名字的Makefile。要达到这个功能，我们要使用make的<code>-f</code>或是<code>--file</code>参数（<code>--makefile</code>参数也行）。例如，我们有个makefile的名字是<code>hchen.mk</code>，那么，我们可以这样来让make来执行这个文件：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make –f hchen.mk</div></pre></td></tr></table></figure></p>
+<p>如果在make的命令行，不只一次地使用了“-f”参数，那么，所有指定的makefile将会被连在一起传递给make执行。</p>
+<h3 id="8-3-指定目标"><a href="#8-3-指定目标" class="headerlink" title="8.3 指定目标"></a>8.3 指定目标</h3><p>只需增加目标名字即可将这个目标指定为终极目标。什么也不加的话make会将第一个目标作为终极目标。</p>
+<p>任何在makefile中的目标都可以被指定成终极目标，但是除了以“-”打头，或是包含了“=”的目标，因为有这些字符的目标，会被解析成命令行参数或是变量。甚至没有被我们明确写出来的目标也可以成为make的终极目标，也就是说，只要make可以找到其隐含规则推导规则，那么这个隐含目标同样可以被指定成终极目标。</p>
+<p>有一个make的环境变量叫<code>MAKECMDGOALS</code>，这个变量中会存放你所指定的终极目标的列表，如果在命令行上，你没有指定目标，那么，这个变量是空值。这个变量可以让你使用在一些比较特殊的情形下。比如下面的例子：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sources = foo.c bar.c</div><div class="line"><span class="keyword">ifneq</span> ( <span class="variable">$(MAKECMDGOALS)</span>,clean)</div><div class="line"><span class="keyword">include</span> $(sources:.c=.d)</div><div class="line"><span class="keyword">endif</span></div></pre></td></tr></table></figure></p>
+<p>基于上面的这个例子，只要我们输入的命令不是<code>make clean</code>，那么makefile会自动包含<code>foo.d</code>和<code>bar.d</code>这两个makefile。</p>
+<p>即然make可以指定所有makefile中的目标，那么也包括“伪目标”，于是我们可以根据这种性质来让我们的makefile根据指定的不同的目标来完成不同的事。在Unix世界中，软件发布时，特别是GNU这种开源软件的发布时，其makefile都包含了编译、安装、打包等功能。我们可以参照这种规则来书写我们的makefile中的目标。</p>
+<ul>
+<li><p><code>all</code><br>这个伪目标是所有目标的目标，其功能一般是编译所有的目标。</p>
+</li>
+<li><p><code>clean</code><br>这个伪目标功能是删除所有被make创建的文件。</p>
+</li>
+<li><p><code>install</code><br>这个伪目标功能是安装已编译好的程序，其实就是把目标执行文件拷贝到指定的目标中去。</p>
+</li>
+<li><p><code>print</code><br>这个伪目标的功能是例出改变过的源文件。</p>
+</li>
+<li><p><code>tar</code><br>这个伪目标功能是把源程序打包备份。也就是一个tar文件。</p>
+</li>
+<li><p><code>dist</code><br>这个伪目标功能是创建一个压缩文件，一般是把tar文件压成Z文件。或是gz文件。</p>
+</li>
+<li><p><code>TAGS</code><br>这个伪目标功能是更新所有的目标，以备完整地重编译使用。</p>
+</li>
+<li><p><code>check</code>和<code>test</code><br>这两个伪目标一般用来测试makefile的流程。</p>
+</li>
+</ul>
+<h3 id="8-4-make的参数"><a href="#8-4-make的参数" class="headerlink" title="8.4 make的参数"></a>8.4 make的参数</h3><p>下面列举了所有GNU make 3.80版的参数定义。其它版本和产商的make大同小异，不过其它产商的make的具体参数还是请参考各自的产品文档。</p>
+<ul>
+<li><p><code>-b</code>/<code>-m</code><br>这两个参数的作用是忽略和其它版本make的兼容性。</p>
+</li>
+<li><p><code>-B</code>/<code>--always-make</code><br>认为所有的目标都需要更新（重编译）。</p>
+</li>
+<li><p><code>-C &lt;dir&gt;</code>/<code>--directory=&lt;dir&gt;</code><br>指定读取makefile的目录。如果有多个<code>-C</code>参数，make的解释是后面的路径以前面的作为相对路径，并以最后的目录作为被指定目录。如：<code>make –C ~hchen/test –C prog</code>等价于<code>make –C ~hchen/test/prog</code>。</p>
+</li>
+</ul>
+<p><code>—debug[=&lt;options&gt;]</code><br>输出make的调试信息。它有几种不同的级别可供选择，如果没有参数，那就是输出最简单的调试信息。下面是<code>&lt;options&gt;</code>的取值：<br>    a —— 也就是all，输出所有的调试信息。（会非常的多）<br>    b —— 也就是basic，只输出简单的调试信息。即输出不需要重编译的目标。<br>    v —— 也就是verbose，在b选项的级别之上。输出的信息包括哪个makefile被解析，不需要被重编译的依赖文件（或是依赖目标）等。<br>    i —— 也就是implicit，输出所以的隐含规则。<br>    j —— 也就是jobs，输出执行规则中命令的详细信息，如命令的PID、返回码等。<br>    m —— 也就是makefile，输出make读取makefile，更新makefile，执行makefile的信息。</p>
+<ul>
+<li><p><code>-d</code><br>相当于<code>--debug=a</code>。</p>
+</li>
+<li><p><code>-e</code>/<code>--environment-overrides</code><br>指明环境变量的值覆盖makefile中定义的变量的值。</p>
+</li>
+<li><p><code>-f &lt;file&gt;</code>/<code>--file &lt;file&gt;</code>/<code>--makefile &lt;file&gt;</code><br>指定需要执行的makefile。</p>
+</li>
+<li><p><code>-h</code>/<code>--help</code><br>显示帮助信息。</p>
+</li>
+<li><p><code>-i</code>/<code>--ignore-errors</code><br>在执行时忽略所有的错误。</p>
+</li>
+<li><p><code>-I &lt;dir&gt;</code>/<code>--include-dir &lt;dir&gt;</code><br>指定一个被包含makefile的搜索目标。可以使用多个<code>-I</code>参数来指定多个目录。</p>
+</li>
+<li><p><code>-j [&lt;jobsnum&gt;]</code>/<code>--jobs[=&lt;jobsnum&gt;]</code><br>指同时运行命令的个数。如果没有这个参数，make运行命令时能运行多少就运行多少。如果有一个以上的<code>-j</code>参数，那么仅最后一个<code>-j</code>才是有效的。（注意这个参数在MS-DOS中是无用的）</p>
+</li>
+<li><p><code>-k</code>/<code>--keep-going</code><br>出错也不停止运行。如果生成一个目标失败了，那么依赖于其上的目标就不会被执行了。</p>
+</li>
+<li><p><code>-l &lt;load&gt;</code>/<code>--load-average[=&lt;load]</code>/<code>—max-load[=&lt;load&gt;]</code><br>指定make运行命令的负载。</p>
+</li>
+<li><p><code>-n</code>/<code>--just-print</code>/<code>--dry-run</code>/<code>--recon</code><br>仅输出执行过程中的命令序列，但并不执行。</p>
+</li>
+<li><p><code>-o &lt;file&gt;</code>/<code>--old-file &lt;file&gt;</code>/<code>--assume-old &lt;file&gt;</code><br>不重新生成的指定的<code>&lt;file&gt;</code>，即使这个目标的依赖文件新于它。</p>
+</li>
+<li><p><code>-p</code>/<code>--print-data-base</code><br>输出makefile中的所有数据，包括所有的规则和变量。这个参数会让一个简单的makefile都会输出一堆信息。如果你只是想输出信息而不想执行makefile，你可以使用<code>make -qp</code>命令。如果你想查看执行makefile前的预设变量和规则，你可以使用<code>make –p –f /dev/null</code>。这个参数输出的信息会包含着你的makefile文件的文件名和行号，所以，用这个参数来调试你的makefile会是很有用的，特别是当你的环境变量很复杂的时候。</p>
+</li>
+<li><p><code>-q</code>/<code>--question</code><br>不运行命令，也不输出。仅仅是检查所指定的目标是否需要更新。如果是0则说明要更新，如果是2则说明有错误发生。</p>
+</li>
+<li><p><code>-r</code>/<code>--no-builtin-rules</code><br>禁止make使用任何隐含规则。</p>
+</li>
+<li><p><code>-R</code>/<code>--no-builtin-variabes</code><br>禁止make使用任何作用于变量上的隐含规则。</p>
+</li>
+<li><p><code>-s</code>/<code>--silent</code>/<code>--quiet</code><br>在命令运行时不输出命令的输出。</p>
+</li>
+<li><p><code>-S</code>/<code>--no-keep-going</code>/<code>--stop</code><br>取消<code>-k</code>选项的作用。因为有些时候，make的选项是从环境变量<code>MAKEFLAGS</code>中继承下来的。所以你可以在命令行中使用这个参数来让环境变量中的<code>-k</code>选项失效。</p>
+</li>
+<li><p><code>-t</code>/<code>--touch</code><br>相当于UNIX的touch命令，只是把目标的修改日期变成最新的，也就是阻止生成目标的命令运行。</p>
+</li>
+<li><p><code>-v</code>/<code>--version</code><br>输出make程序的版本、版权等关于make的信息。</p>
+</li>
+<li><p><code>-w</code>/<code>--print-directory</code><br>输出运行makefile之前和之后的信息。这个参数对于跟踪嵌套式调用make时很有用。</p>
+</li>
+<li><p><code>--no-print-directory</code><br>禁止<code>-w</code>选项。</p>
+</li>
+<li><p><code>-W &lt;file&gt;</code>/<code>--what-if=&lt;file&gt;</code>/<code>--new-file=&lt;file&gt;</code>/<code>--assume-file=&lt;file&gt;</code><br>假定目标<code>&lt;file&gt;</code>需要更新，如果和<code>-n</code>选项使用，那么这个参数会输出该目标更新时的运行动作。如果没有<code>-n</code>那么就像运行UNIX的<code>touch</code>命令一样，使得<code>&lt;file&gt;</code>的修改时间为当前时间。</p>
+</li>
+<li><p><code>--warn-undefined-variables</code><br>只要make发现有未定义的变量，那么就输出警告信息。</p>
+</li>
+</ul>
+<hr>
+<h2 id="9-隐含规则"><a href="#9-隐含规则" class="headerlink" title="9 隐含规则"></a>9 隐含规则</h2><p>在我们使用Makefile时，有一些我们会经常使用，而且使用频率非常高的东西，比如，我们编译C/C++的源程序为中间目标文件（Unix下是[.o]文件，Windows下是[.obj]文件）。本章讲述的就是一些在Makefile中的“隐含的”，早先约定了的，不需要我们再写出来的规则。</p>
+<p>“隐含规则”也就是一种惯例，make会按照这种“惯例”心照不喧地来运行，那怕我们的Makefile中没有书写这样的规则。例如，把[.c]文件编译成[.o]文件这一规则，你根本就不用写出来，make会自动推导出这种规则，并生成我们需要的[.o]文件。</p>
+<p>“隐含规则”会使用一些我们系统变量，我们可以改变这些系统变量的值来定制隐含规则的运行时的参数。如系统变量“CFLAGS”可以控制编译时的编译器参数。</p>
+<p>我们还可以通过“模式规则”的方式写下自己的隐含规则。用“后缀规则”来定义隐含规则会有许多的限制。使用“模式规则”会更回得智能和清楚，但“后缀规则”可以用来保证我们Makefile的兼容性。<br>我们了解了“隐含规则”，可以让其为我们更好的服务，也会让我们知道一些“约定俗成”了的东西，而不至于使得我们在运行Makefile时出现一些我们觉得莫名其妙的东西。当然，任何事物都是矛盾的，水能载舟，亦可覆舟，所以，有时候“隐含规则”也会给我们造成不小的麻烦。只有了解了它，我们才能更好地使用它。</p>
+<h3 id="9-1-使用隐含规则"><a href="#9-1-使用隐含规则" class="headerlink" title="9.1 使用隐含规则"></a>9.1 使用隐含规则</h3><p>如果要使用隐含规则生成你需要的目标，你所需要做的就是不要写出这个目标的规则，而是让make自动推到生成这个目标的规则。<br>如果make可以自动推导生成这个目标的规则和命令，那么这个行为就是隐含规则的自动推导。</p>
+<p>例如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">foo : foo.o bar.o</div><div class="line">    cc –o foo foo.o bar.o <span class="variable">$(CFLAGS)</span> <span class="variable">$(LDFLAGS)</span></div></pre></td></tr></table></figure></p>
+<p>一个makefile中只包含以上内容，并没有指出<code>foo.o</code>与<code>bar.o</code>是怎么生成的。make的“隐含规则”功能会自动为我们自动去推导这两个目标的依赖目标和生成命令。<br>make会在自己的“隐含规则”库中寻找可以用的规则，如果找到，那么就会使用。如果找不到，那么就会报错。在上面的例子中，make调用的隐含规则是：把[.o]的目标的依赖文件置成[.c]，并使用C的编译命令<code>cc –c $(CFLAGS) [.c]</code>来生成[.o]的目标。也就是说，我们完全没有必要写下下面的两条规则：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">foo.o : foo.c</div><div class="line">    cc –c foo.c <span class="variable">$(CFLAGS)</span></div><div class="line">bar.o : bar.c</div><div class="line">    cc –c bar.c <span class="variable">$(CFLAGS)</span></div></pre></td></tr></table></figure></p>
+<p>当然，如果我们为[.o]文件书写了自己的规则，那么make就不会自动推导并调用隐含规则，它会按照我们写好的规则忠实地执行。</p>
+<p>在make的“隐含规则库”中，每一条隐含规则都在库中有其顺序，越靠前的则是越被经常使用的，所以，这会导致我们有些时候即使我们显示地指定了目标依赖，make也不会管。如下面这条规则（没有命令）：</p>
+<pre><code>foo.o : foo.p
+</code></pre><p>依赖文件<code>foo.p</code>（Pascal程序的源文件）有可能变得没有意义。如果目录下存在了<code>foo.c</code>文件，那么我们的隐含规则一样会生效，并会通过<code>foo.c</code>调用C的编译器生成foo.o文件。因为，在隐含规则中，Pascal的规则出现在C的规则之后，所以，make找到可以生成foo.o的C的规则就不再寻找下一条规则了。如果你确实不希望任何隐含规则推导，那么，你就不要只写出“依赖规则”，而不写命令。</p>
+<h3 id="9-2-隐含规则一览"><a href="#9-2-隐含规则一览" class="headerlink" title="9.2 隐含规则一览"></a>9.2 隐含规则一览</h3><p>以下为make内建的隐含规则，如果我们不明确地写下规则，那么，make就会在这些规则中寻找所需要规则和命令。<br>可以使用make的参数<code>-r</code>或<code>--no-builtin-rules</code>选项来取消所有的预设置的隐含规则。<br>即使是我们指定了<code>-r</code>参数，某些隐含规则还是会生效，因为有许多的隐含规则都是使用了“后缀规则”来定义的，所以，只要隐含规则中有“后缀列表”（也就一系统定义在目标.SUFFIXES的依赖目标），那么隐含规则就会生效。默认的后缀列表是：.out, .a, .ln, .o, .c, .cc, .C, .p, .f, .F, .r, .y, .l, .s, .S, .mod, .sym, .def, .h, .info, .dvi, .tex, .texinfo, .texi, .txinfo, .w, .ch .web, .sh, .elc, .el。</p>
+<ol>
+<li><p>编译C程序的隐含规则。<br><code>&lt;n&gt;.o</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.c</code>，并且其生成命令是<code>$(CC) –c $(CPPFLAGS) $(CFLAGS)</code></p>
+</li>
+<li><p>编译C++程序的隐含规则。<br><code>&lt;n&gt;.o</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.cc</code>或是<code>&lt;n&gt;.C</code>，并且其生成命令是<code>$(CXX) –c $(CPPFLAGS) $(CFLAGS)</code>。（建议使用<code>.cc</code>作为C++源文件的后缀，而不是<code>.C</code>）</p>
+</li>
+<li><p>编译Pascal程序的隐含规则。<br><code>&lt;n&gt;.o</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.p</code>，并且其生成命令是<code>$(PC) –c  $(PFLAGS)</code>。</p>
+</li>
+<li><p>编译Fortran/Ratfor程序的隐含规则。<br><code>&lt;n&gt;.o</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.r</code>或<code>&lt;n&gt;.F</code>或<code>&lt;n&gt;.f</code>，并且其生成命令是:<br> <code>.f</code>  <code>$(FC) –c  $(FFLAGS)</code><br> <code>.F</code>  <code>$(FC) –c  $(FFLAGS) $(CPPFLAGS)</code><br> <code>.f</code>  <code>$(FC) –c  $(FFLAGS) $(RFLAGS)</code></p>
+</li>
+<li><p>预处理Fortran/Ratfor程序的隐含规则。<br><code>&lt;n&gt;.f</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.r</code>或<code>&lt;n&gt;.F</code>。这个规则只是转换Ratfor或有预处理的Fortran程序到一个标准的Fortran程序。其使用的命令是：<br> <code>.F</code>  <code>$(FC) –F $(CPPFLAGS) $(FFLAGS)</code><br> <code>.r</code>  <code>$(FC) –F $(FFLAGS) $(RFLAGS)</code></p>
+</li>
+<li><p>编译Modula-2程序的隐含规则。<br><code>&lt;n&gt;.sym</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.def</code>，并且其生成命令是：<code>$(M2C) $(M2FLAGS) $(DEFFLAGS)</code>。<br><code>&lt;n.o&gt;</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.mod</code>，并且其生成命令是：<code>$(M2C) $(M2FLAGS) $(MODFLAGS)</code>。</p>
+</li>
+<li><p>汇编和汇编预处理的隐含规则。<br><code>&lt;n&gt;.o</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.s</code>，默认使用编译品<code>as</code>，并且其生成命令是：<code>$(AS) $(ASFLAGS)</code>。<code>&lt;n&gt;.s</code> 的目标的依赖目标会自动推导为<code>&lt;n&gt;.S</code>，默认使用C预编译器<code>cpp</code>，并且其生成命令是：<code>$(AS) $(ASFLAGS)</code>。</p>
+</li>
+<li><p>链接Object文件的隐含规则。<br><code>&lt;n&gt;</code>目标依赖于<code>&lt;n&gt;.o</code>，通过运行C的编译器来运行链接程序生成（一般是<code>ld</code>），其生成命令是：<code>$(CC) $(LDFLAGS) &lt;n&gt;.o $(LOADLIBES) $(LDLIBS)</code>。这个规则对于只有一个源文件的工程有效，同时也对多个Object文件（由不同的源文件生成）的也有效。例如如下规则：<code>x : y.o z.o</code>。<br>并且<code>x.c</code>、<code>y.c</code>和<code>z.c</code>都存在时，隐含规则将执行如下命令：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cc -c x.c -o x.o</div><div class="line">cc -c y.c -o y.o</div><div class="line">cc -c z.c -o z.o</div><div class="line">cc x.o y.o z.o -o x</div><div class="line">rm -f x.o</div><div class="line">rm -f y.o</div><div class="line">rm -f z.o</div></pre></td></tr></table></figure>
+<p>如果没有一个源文件（如上例中的x.c）和你的目标名字（如上例中的x）相关联，那么，你最好写出自己的生成规则，不然，隐含规则会报错的。</p>
+</li>
+<li><p>Yacc C程序时的隐含规则。<br><code>&lt;n&gt;.c</code>的依赖文件被自动推导为<code>n.y</code>（Yacc生成的文件），其生成命令是：<code>$(YACC) $(YFALGS)</code>。（<code>Yacc</code>是一个语法分析器，关于其细节请查看相关资料）</p>
+</li>
+<li><p>Lex C程序时的隐含规则。<br><code>&lt;n&gt;.c</code>的依赖文件被自动推导为<code>n.l</code>（Lex生成的文件），其生成命令是：<code>$(LEX) $(LFALGS)</code>。（关于<code>Lex</code>的细节请查看相关资料）</p>
+</li>
+<li><p>Lex Ratfor程序时的隐含规则。<br><code>&lt;n&gt;.r</code>的依赖文件被自动推导为<code>n.l</code>（Lex生成的文件），其生成命令是：<code>$(LEX) $(LFALGS)</code>。</p>
+</li>
+<li><p>从C程序、Yacc文件或Lex文件创建Lint库的隐含规则。<br><code>&lt;n&gt;.ln</code> （lint生成的文件）的依赖文件被自动推导为<code>n.c</code>，其生成命令是：<code>$(LINT) $(LINTFALGS) $(CPPFLAGS) -i</code>。对于<code>&lt;n&gt;.y</code>和<code>&lt;n&gt;.l</code>也是同样的规则。</p>
+</li>
+</ol>
+<h3 id="9-3-隐含规则使用的变量"><a href="#9-3-隐含规则使用的变量" class="headerlink" title="9.3 隐含规则使用的变量"></a>9.3 隐含规则使用的变量</h3><p>在隐含规则中的命令中，基本上都是使用了一些预先设置的变量。你可以在你的makefile中改变这些变量的值，或是在make的命令行中传入这些值，或是在你的环境变量中设置这些值，无论怎么样，只要设置了这些特定的变量，那么其就会对隐含规则起作用。当然，你也可以利用make的“-R”或“–no–builtin-variables”参数来取消你所定义的变量对隐含规则的作用。</p>
+<p>例如，第一条隐含规则——编译C程序的隐含规则的命令是<code>$(CC) –c $(CFLAGS) $(CPPFLAGS)</code>。Make默认的编译命令是<code>cc</code>，如果你把变量<code>$(CC)</code>重定义成<code>gcc</code>，把变量<code>$(CFLAGS)</code>重定义成<code>-g</code>，那么，隐含规则中的命令全部会以<code>gcc –c -g $(CPPFLAGS)</code>的样子来执行了。</p>
+<p>我们可以把隐含规则中使用的变量分成两种：一种是命令相关的，如<code>CC</code>；一种是参数相的关，如<code>CFLAGS</code>。下面是所有隐含规则中会用到的变量：</p>
+<h4 id="关于命令的变量"><a href="#关于命令的变量" class="headerlink" title="关于命令的变量"></a>关于命令的变量</h4><ul>
+<li><p><code>AR</code><br>  函数库打包程序。默认命令是<code>ar</code>。 </p>
+</li>
+<li><p><code>AS</code><br>  汇编语言编译程序。默认命令是<code>as</code>。</p>
+</li>
+<li><p><code>CC</code><br>  C语言编译程序。默认命令是<code>cc</code>。</p>
+</li>
+<li><p><code>CXX</code><br>  C++语言编译程序。默认命令是<code>g++</code>。</p>
+</li>
+<li><p><code>CO</code><br>  从 RCS文件中扩展文件程序。默认命令是<code>co</code>。</p>
+</li>
+<li><p><code>CPP</code><br>  C程序的预处理器（输出是标准输出设备）。默认命令是<code>$(CC) –E</code>。</p>
+</li>
+<li><p><code>FC</code><br>  Fortran 和 Ratfor 的编译器和预处理程序。默认命令是<code>f77</code>。</p>
+</li>
+<li><p><code>GET</code><br>  从SCCS文件中扩展文件的程序。默认命令是<code>get</code>。 </p>
+</li>
+<li><p><code>LEX</code><br>  Lex方法分析器程序（针对于C或Ratfor）。默认命令是<code>lex</code>。</p>
+</li>
+<li><p><code>PC</code><br>  Pascal语言编译程序。默认命令是<code>pc</code>。</p>
+</li>
+<li><p><code>YACC</code><br>  Yacc文法分析器（针对于C程序）。默认命令是<code>yacc</code>。</p>
+</li>
+<li><p><code>YACCR</code><br>  Yacc文法分析器（针对于Ratfor程序）。默认命令是<code>yacc –r</code>。</p>
+</li>
+<li><p><code>MAKEINFO</code><br>  转换Texinfo源文件（.texi）到Info文件程序。默认命令是<code>makeinfo</code>。</p>
+</li>
+<li><p><code>TEX</code><br>  从TeX源文件创建TeX DVI文件的程序。默认命令是<code>tex</code>。</p>
+</li>
+<li><p><code>TEXI2DVI</code><br>  从Texinfo源文件创建军TeX DVI 文件的程序。默认命令是<code>texi2dvi</code>。</p>
+</li>
+<li><p><code>WEAVE</code><br>  转换Web到TeX的程序。默认命令是<code>weave</code>。</p>
+</li>
+<li><p><code>CWEAVE</code><br>  转换C Web到TeX的程序。默认命令是<code>cweave</code>。</p>
+</li>
+<li><p><code>TANGLE</code><br>  转换Web到Pascal语言的程序。默认命令是<code>tangle</code>。</p>
+</li>
+<li><p><code>CTANGLE</code><br>  转换C Web到C。默认命令是<code>ctangle</code>。</p>
+</li>
+<li><p><code>RM</code><br>  删除文件命令。默认命令是<code>rm –f</code>。</p>
+</li>
+</ul>
+<h4 id="关于参数的变量"><a href="#关于参数的变量" class="headerlink" title="关于参数的变量"></a>关于参数的变量</h4><ul>
+<li><p><code>ARFLAGS</code><br>  函数库打包程序AR命令的参数。默认值是<code>rv</code>。</p>
+</li>
+<li><p><code>ASFLAGS</code><br>  汇编语言编译器参数。（当明显地调用<code>.s</code>或<code>.S</code>文件时）。 </p>
+</li>
+<li><p><code>CFLAGS</code><br>  C语言编译器参数。</p>
+</li>
+<li><p><code>CXXFLAGS</code><br>  C++语言编译器参数。</p>
+</li>
+<li><p><code>COFLAGS</code><br>  RCS命令参数。 </p>
+</li>
+<li><p><code>CPPFLAGS</code><br>  C预处理器参数。（C++和Fortran编译器也会用到）。</p>
+</li>
+<li><p><code>FFLAGS</code><br>  Fortran语言编译器参数。</p>
+</li>
+<li><p><code>GFLAGS</code><br>  SCCS “get”程序参数。</p>
+</li>
+<li><p><code>LDFLAGS</code><br>  链接器参数。（如：<code>ld</code>）</p>
+</li>
+<li><p><code>LFLAGS</code><br>  Lex文法分析器参数。</p>
+</li>
+<li><p><code>PFLAGS</code><br>  Pascal语言编译器参数。</p>
+</li>
+<li><p><code>RFLAGS</code><br>  Ratfor 程序的Fortran编译器参数。</p>
+</li>
+<li><p><code>YFLAGS</code><br>  Yacc文法分析器参数。</p>
+</li>
+</ul>
+<h3 id="9-4-隐含规则链"><a href="#9-4-隐含规则链" class="headerlink" title="9.4 隐含规则链"></a>9.4 隐含规则链</h3><p>有些时候，一个目标可能被一系列的隐含规则所作用。例如，一个[.o]的文件生成，可能会是先被Yacc的[.y]文件先成[.c]，然后再被C的编译器生成。我们把这一系列的隐含规则叫做“隐含规则链”。</p>
+<p>在上面的例子中，如果文件[.c]存在，那么就直接调用C的编译器的隐含规则，如果没有[.c]文件，但有一个[.y]文件，那么Yacc的隐含规则会被调用，生成[.c]文件，然后，再调用C编译的隐含规则最终由[.c]生成[.o]文件，达到目标。</p>
+<p>我们把这种[.c]的文件（或是目标），叫做中间目标。不管怎么样，make会努力自动推导生成目标的一切方法，不管中间目标有多少，其都会执着地把所有的隐含规则和你书写的规则全部合起来分析，努力达到目标。</p>
+<p>在默认情况下，对于中间目标，它和一般的目标有两个地方所不同：第一个不同是除非中间的目标不存在，才会引发中间规则。第二个不同的是，只要目标成功产生，那么，产生最终目标过程中，所产生的中间目标文件会被以<code>rm -f</code>删除。</p>
+<p>通常，一个被makefile指定成目标或是依赖目标的文件不能被当作中介。然而，你可以明显地说明一个文件或是目标是中介目标，你可以使用伪目标<code>.INTERMEDIATE</code>来强制声明。（如：<code>.INTERMEDIATE：mid</code>）<br>你也可以阻止make自动删除中间目标，要做到这一点，你可以使用伪目标<code>.SECONDARY</code>来强制声明（如：<code>.SECONDARY : sec</code>）。你还可以把你的目标，以模式的方式来指定（如：<code>%.o</code>）成伪目标<code>.PRECIOUS</code>的依赖目标，以保存被隐含规则所生成的中间文件。<br>在“隐含规则链”中，禁止同一个目标出现两次或两次以上，这样一来，就可防止在make自动推导时出现无限递归的情况。<br>Make会优化一些特殊的隐含规则，而不生成中间文件。如，从文件<code>foo.c</code>生成目标程序<code>foo</code>，按道理，make会编译生成中间文件<code>foo.o</code>，然后链接成<code>foo</code>，但在实际情况下，这一动作可以被一条<code>cc</code>的命令完成（<code>cc –o foo foo.c</code>），于是优化过的规则就不会生成中间文件。</p>
+<h3 id="9-5-定义模式规则"><a href="#9-5-定义模式规则" class="headerlink" title="9.5 定义模式规则"></a>9.5 定义模式规则</h3><p>你可以使用模式规则来定义一个隐含规则。一个模式规则就好像一个一般的规则，只是在规则中，目标的定义需要有<code>%</code>字符。<code>%</code>的意思是表示一个或多个任意字符。在依赖目标中同样可以使用<code>%</code>，只是依赖目标中的<code>%</code>的取值，取决于其目标。</p>
+<p>有一点需要注意的是，<code>%</code>的展开发生在变量和函数的展开之后，变量和函数的展开发生在make载入Makefile时，而模式规则中的<code>%</code>则发生在运行时。</p>
+<h4 id="模式规则介绍"><a href="#模式规则介绍" class="headerlink" title="模式规则介绍"></a>模式规则介绍</h4><p>模式规则中，至少在规则的<strong>目标定义</strong>中要包含<code>%</code>，否则，就是一般的规则。<br>目标中的<code>%</code>定义表示对文件名的匹配，<code>%</code>表示长度任意的非空字符串。例如：<code>%.c</code>表示以<code>.c</code>结尾的文件名（文件名的长度至少为3），而<code>s.%.c</code>则表示以<code>s.</code>开头，<code>.c</code>结尾的文件名（文件名的长度至少为5）。</p>
+<p>如果”%”定义在目标中，那么，<strong>目标中的”%”的值决定了依赖目标中的”%”的值</strong>，也就是说，目标中的模式的”%”决定了依赖目标中”%”的样子。例如有一个模式规则如下：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.o : %.c  </div><div class="line">    &lt;command ......&gt;</div></pre></td></tr></table></figure></p>
+<p>其含义是，指出了怎么从所有的[.c]文件生成相应的[.o]文件的规则。如果要生成的目标是<code>a.o b.o</code>，那么<code>%.c</code>就是<code>a.c b.c</code>。</p>
+<p>一旦依赖目标中的”%”模式被确定，那么，make会被要求去匹配当前目录下所有的文件名，一旦找到，make就会规则下的命令，所以，在模式规则中，目标可能会是多个的，如果有模式匹配出多个目标，make就会产生所有的模式目标，此时，make关心的是依赖的文件名和生成目标的命令这两件事。</p>
+<h4 id="模式规则示例"><a href="#模式规则示例" class="headerlink" title="模式规则示例"></a>模式规则示例</h4><p>下面这个例子表示,把所有的[.c]文件都编译成[.o]文件：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.o : %.c</div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></div></pre></td></tr></table></figure></p>
+<p>其中，<code>$@</code>表示所有的目标的挨个值，<code>$&lt;</code>表示了所有依赖目标的挨个值。</p>
+<p>下面的这个例子中有两个目标是模式的：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.tab.c %.tab.h: %.y</div><div class="line">     bison -d <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
+<p>这条规则告诉make把所有的[.y]文件都以<code>bison -d &lt;n&gt;.y</code>执行，然后生成<code>&lt;n&gt;.tab.c</code>和<code>&lt;n&gt;.tab.h</code>文件。（其中，<code>&lt;n&gt;</code>表示一个任意字符串）。如果我们的执行程序<code>foo</code>依赖于文件<code>parse.tab.o</code>和<code>scan.o</code>，并且文件<code>scan.o</code>依赖于文件<code>parse.tab.h</code>，如果<code>parse.y</code>文件被更新了，那么根据上述的规则，<code>bison -d parse.y</code>就会被执行一次，于是，<code>parse.tab.o</code>和<code>scan.o</code>的依赖文件就齐了。</p>
+<h4 id="自动化变量"><a href="#自动化变量" class="headerlink" title="自动化变量"></a>自动化变量</h4><p>在上述的模式规则中，目标和依赖文件都是一系例的文件，那么如何书写一个命令来完成从不同的依赖文件生成相应的目标？因为在每一次的对模式规则的解析时，都会是不同的目标和依赖文件。<br>自动化变量就是完成这个功能的。所谓自动化变量，就是会把模式中所定义的一系列的文件自动地挨个取出，直至所有的符合模式的文件都取完了。这种自动化变量只应出现在规则的命令中。</p>
+<p>下面是所有的自动化变量及其说明：</p>
+<ul>
+<li><p><code>$@</code><br>  表示规则中的目标文件集。在模式规则中，如果有多个目标，那么，<code>$@</code>就是匹配于目标中模式定义的集合。</p>
+</li>
+<li><p><code>$%</code><br>  <strong>仅当</strong>目标是函数库文件中，表示规则中的目标成员名。例如，如果一个目标是<code>foo.a(bar.o)</code>，那么，<code>$%&quot;就是&quot;bar.o</code>，<code>$@&quot;就是&quot;foo.a</code>。如果目标不是函数库文件（Unix下是[.a]，Windows下是[.lib]），那么，其值为空。</p>
+</li>
+<li><p><code>$&lt;</code><br>  依赖目标中的第一个目标名字。如果依赖目标是以模式（即<code>%</code>）定义的，那么<code>$&lt;</code>将是符合模式的一系列的文件集。注意，其是一个一个取出来的。</p>
+</li>
+<li><p><code>$?</code><br>  所有比目标新的依赖目标的集合。以空格分隔。</p>
+</li>
+<li><p><code>$^</code><br>  所有的依赖目标的集合。以空格分隔。如果在依赖目标中有多个重复的，那个这个变量会去除重复的依赖目标，只保留一份。</p>
+</li>
+<li><p><code>$+</code><br>  这个变量很像<code>$^</code>，也是所有依赖目标的集合。只是它不去除重复的依赖目标。</p>
+</li>
+<li><p><code>$*</code><br>  这个变量表示目标模式中<code>%</code>及其之前的部分。如果目标是<code>dir/a.foo.b</code>，并且目标的模式是<code>a.%.b</code>，那么，<code>$*</code>的值就是<code>dir/a.foo</code>。这个变量对于构造有关联的文件名是比较有用。<br>  如果目标中没有模式的定义，那么<code>$*</code>也就不能被推导出，但是，如果目标文件的后缀是make所识别的，那么<code>$*</code>就是除了后缀的那一部分。例如：如果目标是<code>foo.c</code>，因为<code>.c</code>是make所能识别的后缀名，所以，<code>$*</code>的值就是<code>foo</code>。这个特性是GNU make的，很有可能不兼容于其它版本的make。</p>
+</li>
+</ul>
+<p>当你希望只对更新过的依赖文件进行操作时，”$?”在显式规则中很有用，例如，假设有一个函数库文件叫”lib”，其由其它几个object文件更新。那么把object文件打包的比较有效率的Makefile规则是：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lib : foo.o bar.o lose.o win.o</div><div class="line">    ar r lib <span class="variable">$?</span></div></pre></td></tr></table></figure></p>
+<p>在上述所列出来的自动量变量中。四个变量（<code>$@</code>、<code>$&lt;</code>、<code>$%</code>、<code>$*</code>）在扩展时只会有一个文件，而另三个的值是一个文件列表。</p>
+<p>这七个自动化变量还可以取得文件的目录名或是在当前目录下的符合模式的文件名，只需要搭配上”D”或”F”字样。<br>例如，<code>$(@D)</code>表示<code>$@</code>的目录部分（不以斜杠作为结尾），如果<code>$@</code>值是<code>dir/foo.o</code>，那么<code>$(@D)</code>就是<code>dir</code>，而如果”$@”中没有包含斜杠的话，其值就是”.”（当前目录）。<br><code>$(@F)</code>表示”$@”的文件部分，如果<code>$@</code>值是<code>dir/foo.o</code>，那么<code>$(@F)</code>就是<code>foo.o</code>，<code>$(@F)</code>相当于函数<code>$(notdir $@)</code>。</p>
+<h4 id="模式的匹配"><a href="#模式的匹配" class="headerlink" title="模式的匹配"></a>模式的匹配</h4><p>一般来说，一个目标的模式有一个有前缀或是后缀的<code>%</code>，或是没有前后缀，直接就是一个<code>%</code>。因为<code>%</code>代表一个或多个字符，所以在定义好了的模式中，我们把<code>%</code>所匹配的内容叫做“茎”，例如<code>%.c</code>所匹配的文件<code>test.c</code>中<code>test</code>就是“茎”。因为在目标和依赖目标中同时有<code>%</code>时，依赖目标的“茎”会传给目标，当做目标中的“茎”。</p>
+<p>当一个模式匹配包含有斜杠（实际也不经常包含）的文件时，那么在进行模式匹配时，目录部分会首先被移开，然后进行匹配，成功后，再把目录加回去。在进行“茎”的传递时，我们需要知道这个步骤。例如有一个模式<code>e%t</code>，文件<code>src/eat</code>匹配于该模式，于是<code>src/a</code>就是其“茎”，如果这个模式定义在依赖目标中，而被依赖于这个模式的目标中又有个模式<code>c%r</code>，那么，目标就是<code>src/car</code>。（”茎”被传递）</p>
+<h4 id="重载内建隐含规则"><a href="#重载内建隐含规则" class="headerlink" title="重载内建隐含规则"></a>重载内建隐含规则</h4><p>可以重载内建的隐含规则（或是定义一个全新的），例如你可以重新构造和内建隐含规则不同的命令，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.o : %.c</div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(CFLAGS)</span> -D<span class="variable">$(date)</span></div></pre></td></tr></table></figure></p>
+<p>你可以取消内建的隐含规则，只要不在后面写命令就行。如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">%.o : %.s</div></pre></td></tr></table></figure></p>
+<p>同样，你也可以重新定义一个全新的隐含规则，其在隐含规则中的位置取决于你在哪里写下这个规则。朝前的位置就靠前。</p>
+<h3 id="9-6-老式风格的”后缀规则”"><a href="#9-6-老式风格的”后缀规则”" class="headerlink" title="9.6 老式风格的”后缀规则”"></a>9.6 老式风格的”后缀规则”</h3><p>前面所说的<code>%.c:%.o</code>为模式规则，还有一种较老的方式<code>.c.o</code>为后缀规则。后缀规则有两种方式：”双后缀”和”单后缀”。</p>
+<p>双后缀规则定义了一对后缀：目标文件的后缀和依赖目标（源文件）的后缀。如<code>.c.o</code>相当于<code>%o : %c</code>。<br>单后缀规则只定义一个后缀，也就是源文件的后缀。如<code>.c</code>相当于<code>% : %.c</code>。</p>
+<p>后缀规则中所定义的后缀应该是make所认识的，如果一个后缀是make所认识的，那么这个规则就是单后缀规则，而如果两个连在一起的后缀都被make所认识，那就是双后缀规则。<br>例如：<code>.c</code>和<code>.o</code>都是make所知道。因而，如果你定义了一个规则是<code>.c.o</code>那么其就是双后缀规则，意义就是<code>.c</code>是源文件的后缀，<code>.o</code>是目标文件的后缀。如下示例：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">.c.o:</span></div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
+<p>后缀规则不允许任何的依赖文件，如果有依赖文件的话，那就不是后缀规则，那些后缀统统被认为是文件名，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">.c.o: foo.h</span></div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
+<p>这个例子的意思为文件<code>.c.o</code>依赖于文件<code>foo.h</code>，而不是我们想要的这样：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">%.o: %.c foo.h</span></div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
+<p>后缀规则中，如果没有命令，那是毫无意义的。因为他也不会移去内建的隐含规则。</p>
+<p>而要让make知道一些特定的后缀，我们可以使用伪目标<code>.SUFFIXES</code>来定义或是删除，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="section">.SUFFIXES: .hack .win</span></div></pre></td></tr></table></figure></p>
+<p>把后缀.hack和.win加入后缀列表中的末尾。<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">.SUFFIXES:              # 删除默认的后缀</span></div><div class="line"><span class="section">.SUFFIXES: .c .o .h   # 定义自己的后缀</span></div></pre></td></tr></table></figure></p>
+<p>先清除默认后缀，后定义自己的后缀列表。</p>
+<p>make的参数<code>-r</code>或<code>-no-builtin-rules</code>也会使用得默认的后缀列表为空。而变量<code>SUFFIXE</code>被用来定义默认的后缀列表，你可以用<code>.SUFFIXES</code>来改变后缀列表，但请不要改变变量<code>SUFFIXE</code>的值。</p>
+<h3 id="9-7-隐含规则搜索算法"><a href="#9-7-隐含规则搜索算法" class="headerlink" title="9.7 隐含规则搜索算法"></a>9.7 隐含规则搜索算法</h3><p>比如我们有一个目标叫 <code>T</code>，下面是搜索目标<code>T</code>的规则的算法。<br>如果目标是<code>archive(member)&quot;</code>的函数库文件模式，那么这个算法会被运行两次，第一次是找目标<code>T</code>，如果没有找到的话，那么进入第二次，第二次会把<code>member</code>当作<code>T</code>来搜索。</p>
+<ol>
+<li><p>把<code>T</code>的目录部分分离出来。叫<code>D</code>，而剩余部分叫<code>N</code>。（如：如果<code>T</code>是<code>src/foo.o</code>，那么，<code>D</code>就是<code>src/</code>，<code>N</code>就是<code>foo.o</code>）</p>
+</li>
+<li><p>创建所有匹配于T或是N的模式规则列表。</p>
+</li>
+<li><p>如果在模式规则列表中有匹配所有文件的模式，如<code>%</code>，那么从列表中移除其它的模式。</p>
+</li>
+<li><p>移除列表中没有命令的规则。</p>
+</li>
+<li><p>对于第一个在列表中的模式规则：<br> 1）推导其”茎”<code>S</code>，<code>S</code>应该是T或是<code>N</code>匹配于模式中<code>%</code>非空的部分。<br> 2）计算依赖文件。把依赖文件中的<code>%</code>都替换成”茎”<code>S</code>。如果目标模式中没有包含斜框字符，而把<code>D</code>加在第一个依赖文件的开头。<br> 3）测试是否所有的依赖文件都存在或是理当存在。（如果有一个文件被定义成另外一个规则的目标文件，或者是一个显式规则的依赖文件，那么这个文件就叫”理当存在”）<br> 4）如果所有的依赖文件存在或是理当存在，或是就没有依赖文件。那么这条规则将被采用，退出该算法。</p>
+</li>
+<li><p>如果经过第5步，没有模式规则被找到，那么就做更进一步的搜索。对于存在于列表中的第一个模式规则：<br> 1）如果规则是终止规则，那就忽略它，继续下一条模式规则。<br> 2）计算依赖文件。（同第5步）<br> 3）测试所有的依赖文件是否存在或是理当存在。<br> 4）对于不存在的依赖文件，递归调用这个算法查找他是否可以被隐含规则找到。<br> 5）如果所有的依赖文件存在或是理当存在，或是就根本没有依赖文件。那么这条规则被采用，退出该算法。</p>
+</li>
+<li><p>如果没有隐含规则可以使用，查看<code>.DEFAULT</code>规则，如果有，采用，把<code>.DEFAULT</code>的命令给<code>T</code>使用。</p>
+</li>
+</ol>
+<p>一旦规则被找到，就会执行其相当的命令，而此时，我们的自动化变量的值才会生成。</p>
+<hr>
+<h2 id="10-使用make更新函数库文件"><a href="#10-使用make更新函数库文件" class="headerlink" title="10 使用make更新函数库文件"></a>10 使用make更新函数库文件</h2><p>函数库文件也就是对Object文件（程序编译的中间文件）的打包文件。在Unix下，一般是由命令”ar”来完成打包工作。</p>
+<h3 id="10-1-函数库文件的成员"><a href="#10-1-函数库文件的成员" class="headerlink" title="10.1 函数库文件的成员"></a>10.1 函数库文件的成员</h3><p>一个函数库文件由多个文件组成。你可以以如下格式指定函数库文件及其组成：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">archive(member)</div></pre></td></tr></table></figure></p>
+<p>这个不是一个命令，而一个目标和依赖的定义。一般来说，这种用法基本上就是为了<code>ar</code>命令来服务的。如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">foolib(hack.o) : hack.o</div><div class="line">    ar cr foolib hack.o</div></pre></td></tr></table></figure></p>
+<p>如果要指定多个member，那就以空格分开，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">foolib(hack.o kludge.o)</div><div class="line"><span class="comment">#等价于：</span></div><div class="line">foolib(hack.o) foolib(kludge.o)</div></pre></td></tr></table></figure></p>
+<p>还可以使用Shell的文件通配符来定义：<code>foolib(*.o)</code></p>
+<h3 id="10-2-函数库成员的隐含规则"><a href="#10-2-函数库成员的隐含规则" class="headerlink" title="10.2 函数库成员的隐含规则"></a>10.2 函数库成员的隐含规则</h3><p>当make搜索一个目标的隐含规则时，一个特殊的特性是，如果这个目标是<code>a(m)</code>形式的，其会把目标变成<code>(m)</code>。于是，如果我们的成员是<code>%.o</code>的模式定义，并且如果我们使用<code>make foo.a(bar.o)</code>的形式调用Makefile时，隐含规则会去找<code>bar.o</code>的规则，如果没有定义<code>bar.o</code>的规则，那么内建隐含规则生效，make会去找<code>bar.c</code>文件来生成<code>bar.o</code>，如果找得到的话，make执行的命令大致如下：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cc -c bar.c -o bar.o</div><div class="line">ar r foo.a bar.o</div><div class="line">rm -f bar.o</div></pre></td></tr></table></figure></p>
+<h3 id="10-3-函数库文件的后缀规则"><a href="#10-3-函数库文件的后缀规则" class="headerlink" title="10.3 函数库文件的后缀规则"></a>10.3 函数库文件的后缀规则</h3><p>可以使用”后缀规则”和”隐含规则”来生成函数库打包文件，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="section">.c.a:</span></div><div class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(AR)</span> r <span class="variable">$@</span> <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(RM)</span> <span class="variable">$*</span>.o</div><div class="line"></div><div class="line"><span class="comment"># 其等效于：</span></div><div class="line">(%.o) : %.c</div><div class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(AR)</span> r <span class="variable">$@</span> <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(RM)</span> <span class="variable">$*</span>.o</div></pre></td></tr></table></figure></p>
+<h3 id="10-4-注意事项"><a href="#10-4-注意事项" class="headerlink" title="10.4 注意事项"></a>10.4 注意事项</h3><p>在进行函数库打包文件生成时，请小心使用make的并行机制（<code>-j</code>参数）。如果多个ar命令在同一时间运行在同一个函数库打包文件上，就很有可以损坏这个函数库文件。所以，在make未来的版本中，应该提供一种机制来避免并行操作发生在函数打包文件上。</p>
+<p>但就目前而言，你还是应该不要尽量不要使用<code>-j</code>参数。</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+            <li class="next">
+                <a href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" title= 从VS转移到VScode（由未找到预定义引出的问题） >
+                    <span>Next Post</span>
+                    <span>从VS转移到VScode（由未找到预定义引出的问题）</span>
+                </a>
+            </li>
+        
+        
+            <li class="previous">
+                <a href= "/2018/08/18/makefile(2)/" title= Makefile学习（二） >
+                    <span>Previous Post</span>
+                    <span>Makefile学习（二）</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:liuzongyanvic@foxmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+            
+                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
+            
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-make的运行"><span class="toc-number">1.</span> <span class="toc-text">8 make的运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-make的退出码"><span class="toc-number">1.1.</span> <span class="toc-text">8.1 make的退出码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-指定Makefile"><span class="toc-number">1.2.</span> <span class="toc-text">8.2 指定Makefile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-指定目标"><span class="toc-number">1.3.</span> <span class="toc-text">8.3 指定目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-make的参数"><span class="toc-number">1.4.</span> <span class="toc-text">8.4 make的参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-隐含规则"><span class="toc-number">2.</span> <span class="toc-text">9 隐含规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-使用隐含规则"><span class="toc-number">2.1.</span> <span class="toc-text">9.1 使用隐含规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-隐含规则一览"><span class="toc-number">2.2.</span> <span class="toc-text">9.2 隐含规则一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-隐含规则使用的变量"><span class="toc-number">2.3.</span> <span class="toc-text">9.3 隐含规则使用的变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关于命令的变量"><span class="toc-number">2.3.1.</span> <span class="toc-text">关于命令的变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关于参数的变量"><span class="toc-number">2.3.2.</span> <span class="toc-text">关于参数的变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4-隐含规则链"><span class="toc-number">2.4.</span> <span class="toc-text">9.4 隐含规则链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-5-定义模式规则"><span class="toc-number">2.5.</span> <span class="toc-text">9.5 定义模式规则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#模式规则介绍"><span class="toc-number">2.5.1.</span> <span class="toc-text">模式规则介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模式规则示例"><span class="toc-number">2.5.2.</span> <span class="toc-text">模式规则示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自动化变量"><span class="toc-number">2.5.3.</span> <span class="toc-text">自动化变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模式的匹配"><span class="toc-number">2.5.4.</span> <span class="toc-text">模式的匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重载内建隐含规则"><span class="toc-number">2.5.5.</span> <span class="toc-text">重载内建隐含规则</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-6-老式风格的”后缀规则”"><span class="toc-number">2.6.</span> <span class="toc-text">9.6 老式风格的”后缀规则”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-7-隐含规则搜索算法"><span class="toc-number">2.7.</span> <span class="toc-text">9.7 隐含规则搜索算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-使用make更新函数库文件"><span class="toc-number">3.</span> <span class="toc-text">10 使用make更新函数库文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-1-函数库文件的成员"><span class="toc-number">3.1.</span> <span class="toc-text">10.1 函数库文件的成员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-2-函数库成员的隐含规则"><span class="toc-number">3.2.</span> <span class="toc-text">10.2 函数库成员的隐含规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-3-函数库文件的后缀规则"><span class="toc-number">3.3.</span> <span class="toc-text">10.3 函数库文件的后缀规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-4-注意事项"><span class="toc-number">3.4.</span> <span class="toc-text">10.4 注意事项</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header sidebar-header-show-archive">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 10 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2018/08/31/头文件包含以及库文件包含/" >头文件包含以及库文件包含</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >从VS转移到VScode（由未找到预定义引出的问题）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2018/08/19/makefile(3)/" >Makefile学习（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2018/08/18/makefile(2)/" >Makefile学习（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2018/08/17/makefile(1)/" >Makefile学习（一）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/28</span><a class="archive-post-title" href= "/2018/07/29/C++类零碎/" >C++类零碎</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href= "/2018/07/26/typedef函数指针/" >typedef与函数指针</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span><a class="archive-post-title" href= "/2017/11/06/ubuntu安装后要做的一些事/" >Ubuntu安装后要做的一些事</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/04/2017-11-03-seafile/" >seafile部署记录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">toy</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Linux</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">C++</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">想法</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    </body>
+</html>
+
+

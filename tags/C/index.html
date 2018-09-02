@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        L的小本子
+        ZyLiu&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -66,7 +66,7 @@
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
     
-    <a class="home-link" href=/>L的小本子</a>
+    <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
     <div class="wrapper">
         <div class="site-intro">
@@ -155,6 +155,71 @@
         </script>
         <div class="container container-unloaded">
             <main class="main index-page">
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/31/头文件包含以及库文件包含/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>头文件包含以及库文件包含</span>
+                    </h2>
+                <div class="abstract-content">
+                    防止重复包含头文件在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用#pragma once的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。以某个头文件&quot;header.h&quot;为例：123456789# ifndef __HEADER_H__#define __HEADER_H__/* *header.h  body * */#endif
+如果该头文件已被包含，那么头文件中的定义不会被重复定义。
+库文件的包含在Windows中...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/31</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>从VS转移到VScode（由未找到预定义引出的问题）</span>
+                    </h2>
+                <div class="abstract-content">
+                    作为代码编辑器的VScode预定义今天看到代码中有一处：12345#if defined FF_LOG_ZZSR#include "../VACommon/log/sr_log.h"#elif defined FF_LOG_ZZHX#include "../VACommon/log/HX_log.h"#endif
+搜索编整个工程却没有找到FF_LOG_ZZHX，然而其下方的#include的代码却生效了，因此感到很疑惑。
+实际上是在属性 - 配置属性 - C/C++ - 预处理器定义中进行了预处理定义，这样在所有代码中都有了FF_LOG_ZZHX的预定义。
+当使用VSCode打开源文件时...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编辑器>编辑器</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/23</span>
+                </div>
+            </div>
+        </article>
     
     
     
@@ -328,7 +393,96 @@ private构造函数还...
     
     
     
-    <div class="total-archive"> Total : 5 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 10 </div>
     
     <div class="post-archive">
     
@@ -337,6 +491,31 @@ private构造函数还...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2018/08/31/头文件包含以及库文件包含/" >头文件包含以及库文件包含</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >从VS转移到VScode（由未找到预定义引出的问题）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2018/08/19/makefile(3)/" >Makefile学习（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2018/08/18/makefile(2)/" >Makefile学习（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2018/08/17/makefile(1)/" >Makefile学习（一）</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -386,6 +565,12 @@ private构造函数还...
         <span class="sidebar-tag-name"><a href= "#">想法</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

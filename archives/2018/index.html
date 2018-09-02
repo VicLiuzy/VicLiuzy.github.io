@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        L的小本子
+        ZyLiu&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -66,7 +66,7 @@
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
     
-    <a class="home-link" href=/>L的小本子</a>
+    <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
     <div class="wrapper">
         <div class="site-intro">
@@ -155,6 +155,171 @@
         </script>
         <div class="container container-unloaded">
             <main class="main index-page">
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/31/头文件包含以及库文件包含/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>头文件包含以及库文件包含</span>
+                    </h2>
+                <div class="abstract-content">
+                    防止重复包含头文件在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用#pragma once的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。以某个头文件&quot;header.h&quot;为例：123456789# ifndef __HEADER_H__#define __HEADER_H__/* *header.h  body * */#endif
+如果该头文件已被包含，那么头文件中的定义不会被重复定义。
+库文件的包含在Windows中...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/31</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>从VS转移到VScode（由未找到预定义引出的问题）</span>
+                    </h2>
+                <div class="abstract-content">
+                    作为代码编辑器的VScode预定义今天看到代码中有一处：12345#if defined FF_LOG_ZZSR#include "../VACommon/log/sr_log.h"#elif defined FF_LOG_ZZHX#include "../VACommon/log/HX_log.h"#endif
+搜索编整个工程却没有找到FF_LOG_ZZHX，然而其下方的#include的代码却生效了，因此感到很疑惑。
+实际上是在属性 - 配置属性 - C/C++ - 预处理器定义中进行了预处理定义，这样在所有代码中都有了FF_LOG_ZZHX的预定义。
+当使用VSCode打开源文件时...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编辑器>编辑器</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/23</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/19/makefile(3)/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>Makefile学习（三）</span>
+                    </h2>
+                <div class="abstract-content">
+                    8 make的运行一般来说，最简单的就是直接在命令行下输入make命令，make命令会找当前目录的makefile来执行，一切都是自动的。但也有时你也许只想让make重编译某些文件，而不是整个工程，而又有的时候你有几套编译规则，你想在不同的时候使用不同的编译规则，等等。本章节就是讲述如何使用make命令的。
+8.1 make的退出码make命令执行后有三个退出码：
+
+0 —— 表示成功执行。
+1 —— 如果make运行时出现任何错误，其返回1。
+2 —— 如果你使用了make的“-q”选项，并且make使得一些目标不需要更新，那么返回2。
+
+8.2 指定MakefileGNU make找...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Makefile>Makefile</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/19</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/18/makefile(2)/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>Makefile学习（二）</span>
+                    </h2>
+                <div class="abstract-content">
+                    5 使用变量在Makefile中的定义的变量，就像是C/C++语言中的宏一样，他代表了一个文本字串，在Makefile中执行的时候其会自动原模原样地展开在所使用的地方。其与C/C++所不同的是，你可以在Makefile中改变其值。在Makefile中，变量可以使用在“目标”，“依赖目标”，“命令”或 是Makefile的其它部分中。
+变量的命名字可以包含字符、数字，下划线（可以是数字开头），但不应该含有“:”、“#”、“=”或是空字符（空格、回车等）。变量是大小写敏感的，“foo”、“Foo”和“FOO”是三个不同的变量名。传统的Makefile的变量名是全大写的命名方式，但推荐使用大小...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Makefile>Makefile</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/18</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/17/makefile(1)/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>Makefile学习（一）</span>
+                    </h2>
+                <div class="abstract-content">
+                    0 什么是Makeflie0.1 makefile关系到了整个工程的编译规则一个工程中的源文件不计数，其按类型、功能、模块分别放在若干个目录中，makefile定义了一系列的规则来指定，哪些文件需要先编译，哪些文件需要后编译，哪些文件需要重新编译，甚至于进行更复杂的功能操作，因为makefile就像一个Shell脚本一样，其中也可以执行操作系统的命令。一旦写好，只需要一个make命令，整个工程完全自动编译，极大的提高了软件开发的效率。
+0.2 编译的过程
+编译首先编译产生目标文件(object file/.obj/.o)。编译时，编译器需要的是语法的正确，函数与变量的声明的正确。只要所有...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Makefile>Makefile</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/17</span>
+                </div>
+            </div>
+        </article>
     
     
     
@@ -328,7 +493,96 @@ private构造函数还...
     
     
     
-    <div class="total-archive"> Total : 5 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 10 </div>
     
     <div class="post-archive">
     
@@ -337,6 +591,31 @@ private构造函数还...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2018/08/31/头文件包含以及库文件包含/" >头文件包含以及库文件包含</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >从VS转移到VScode（由未找到预定义引出的问题）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2018/08/19/makefile(3)/" >Makefile学习（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2018/08/18/makefile(2)/" >Makefile学习（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2018/08/17/makefile(1)/" >Makefile学习（一）</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -386,6 +665,12 @@ private构造函数还...
         <span class="sidebar-tag-name"><a href= "#">想法</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

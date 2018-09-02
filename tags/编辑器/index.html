@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        seafile部署记录 · ZyLiu&#39;s Blog
+        ZyLiu&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -60,22 +60,11 @@
     
 </head>
     
-        <body class="post-body">
-    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >ZyLiu&#39;s Blog</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">seafile部署记录</a>
-            </div>
-    </div>
     
     <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
@@ -83,43 +72,21 @@
         <div class="site-intro">
     
     <!-- 主页  -->
-    
-    
-    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/intro/death-note-l4.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            seafile部署记录
-            <!-- 404 -->
-            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
-            
-            <!-- 404 -->
-            
         </p>
         <!-- 文章页meta -->
-        
-            <!-- 文章页标签  -->
-            
-                <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = toy>toy</a>
-    
-</div>
-            
-            <div class="post-intro-meta">
-                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2017/11/03</span>
-            </div>
         
     </div>
 </div>
@@ -187,70 +154,44 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main post-page">
-    <article class="article-entry">
-        <p>近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用<a href="&quot;https://www.xiaoz.me/archives/8480&quot;">xiaoz</a>的一键搭建脚本。  </p>
-<h3 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h3><ul>
-<li>CenOS 7 64位  </li>
-<li>Python &gt;= 2.7</li>
-<li>SqLite 3  </li>
-</ul>
-<hr>
-<h3 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h3><p>输入以下命令以进行安装  </p>
-<pre><code class="bash">$ yum -y install wget  
-$ wget https://raw.githubusercontent.com/helloxz/seafile/<span class="variable">$master</span>/install_seafile.sh  
-$ chmod +x install_seafile.sh &amp;&amp; ./install_seafile.sh
-</code></pre>
-<blockquote>
-<p>其中最后一条命令可以用于卸载。</p>
-</blockquote>
-<p>安装过程跟着脚本走就可以，注意填写<em>server’s ip or domain</em>时不要瞎填，填自己vps的公网ip即可。<br>安装完成后使用<code>http://公网ip:8000</code>进行访问。</p>
-<hr>
-<h3 id="维护相关"><a href="#维护相关" class="headerlink" title="维护相关"></a>维护相关</h3><p>官方帮助文档：<a href="https://manual-cn.seafile.com/" target="_blank" rel="external">https://manual-cn.seafile.com/</a><br>客户端下载：<a href="https://www.seafile.com/download/" target="_blank" rel="external">https://www.seafile.com/download/</a>  </p>
-<p>使用以下命令维护：</p>
-<pre><code class="bash"><span class="comment">#安装目录  </span>
-/home/MyCloud  
-<span class="comment">#启动服务  </span>
-/home/MyCloud/seafile-server/seafile.sh start  
-/home/MyCloud/seafile-server/seahub.sh start  
-<span class="comment">#停止服务  </span>
-/home/MyCloud/seafile-server/seafile.sh stop  
-/home/MyCloud/seafile-server/seahub.sh stop  
-<span class="comment">#重置管理员账号   </span>
-/home/MyCloud/seafile-server/reset-admin.sh
-</code></pre>
-
-    </article>
-    <!-- 前后页  -->
-    <ul class="post-pager">
-        
-            <li class="next">
-                <a href= "/2017/11/06/ubuntu安装后要做的一些事/" title= Ubuntu安装后要做的一些事 >
-                    <span>Next Post</span>
-                    <span>Ubuntu安装后要做的一些事</span>
-                </a>
-            </li>
-        
-        
-            <li class="previous">
-                <a href= "/2017/11/03/hello-world/" title= Hello World >
-                    <span>Previous Post</span>
-                    <span>Hello World</span>
-                </a>
-            </li>
-        
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
-
-<!-- City版安装代码已完成 -->
+            <main class="main index-page">
     
     
-    <!--PC版-->
-
-    <!--PC版-->
-
-
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>从VS转移到VScode（由未找到预定义引出的问题）</span>
+                    </h2>
+                <div class="abstract-content">
+                    作为代码编辑器的VScode预定义今天看到代码中有一处：12345#if defined FF_LOG_ZZSR#include "../VACommon/log/sr_log.h"#elif defined FF_LOG_ZZHX#include "../VACommon/log/HX_log.h"#endif
+搜索编整个工程却没有找到FF_LOG_ZZHX，然而其下方的#include的代码却生效了，因此感到很疑惑。
+实际上是在属性 - 配置属性 - C/C++ - 预处理器定义中进行了预处理定义，这样在所有代码中都有了FF_LOG_ZZHX的预定义。
+当使用VSCode打开源文件时...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编辑器>编辑器</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/23</span>
+                </div>
+            </div>
+        </article>
+    
+    <!-- paginator  -->
     
 </main>
             <!-- profile -->
@@ -298,13 +239,6 @@ $ chmod +x install_seafile.sh &amp;&amp; ./install_seafile.sh
 </footer>
     </div>
     <!-- toc -->
-    
-    <div class="toc-wrapper">
-        <div class="toc-catalog">
-            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
-        </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境要求"><span class="toc-number">1.</span> <span class="toc-text">环境要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始安装"><span class="toc-number">2.</span> <span class="toc-text">开始安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#维护相关"><span class="toc-number">3.</span> <span class="toc-text">维护相关</span></a></li></ol>
-    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
