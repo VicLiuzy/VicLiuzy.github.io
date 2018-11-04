@@ -159,6 +159,138 @@
     
     
         <article class="index-post">
+            <a class="content-show-full" href = "/2018/11/15/Gradle使用/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>Hello World, Gradle</span>
+                    </h2>
+                <div class="abstract-content">
+                    
+前言：为了跑通gradle，差点没费死劲，本文记录配置gradle过程中踩过的坑
+
+gradle是什么，为什么要配置gradleGradle是一个基于JVM的构建工具，是一款通用灵活的构建工具，支持maven，Ivy仓库，支持传递性依赖管理，而不需要远程仓库或者是pom.xml和ivy.xml配置文件，基于Groovy，build脚本使用Groovy编写。
+以上内容来自百度百科，对于我来说，将编译好的so文件与java代码打包成apk文件必须使用gradle，对此我暂时只知道这么多。
+gradle安装下载，解压，配置环境变量，无需多言。值得注意的一点是GRADLE_USER_HOME这...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Android>Android</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 构建>构建</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/11/14</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/11/11/QNX平台获取ip与mac/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>IP地址与mac地址获取小结</span>
+                    </h2>
+                <div class="abstract-content">
+                    Linux平台获取IP地址首先是使用ioctl获取IP地址的方法，代码如下：  
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#include &lt;iostream&gt;#include &lt;stdio.h&gt;#include &lt;errno.h&gt;#include &lt;string.h&gt;#in...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = QNX>QNX</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 网络>网络</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/11/10</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/09/30/内存泄露检测/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>内存泄露检测--mtrace的使用</span>
+                    </h2>
+                <div class="abstract-content">
+                    代码配置首先检测单一文件的内存泄漏。
+有以下程序：123456789101112131415161718#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#include &lt;mcheck.h&gt;#include &lt;unistd.h&gt;int main() &#123;    setenv("MALLOC_TRACE", "mem.log", 1);    mtrace();    int cnt = 100;    while (0 != cnt--) &#123;    	int *p = (int *)malloc(...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 内存泄露>内存泄露</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/09/30</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/09/25/Core File的生成与查看/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>Core File的生成和查看</span>
+                    </h2>
+                <div class="abstract-content">
+                    coredump配置开启coredump功能输入命令ulimit，其输出代表生成的core文件大小的限制，如果输出为0，则说明coredump功能没有开启。
+使用命令ulimit -c unlimited开启coredump功能，并且不限制core文件的大小。
+如果要限制core文件的大小，则将unlimited替换为要限制的core文件的大小，单位为block（KB）。
+Core文件的保存路径core文件的生成位置由/proc/sys/kernel/core_pattern中的配置决定。默认情况下，其内容为cor，程序出错时将在工作目录生成名为core的core文件。（此处不确定）可以...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = GDB>GDB</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/09/25</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="content-show-full" href = "/2018/08/31/头文件包含以及库文件包含/" >
                     <h2 class="abstract-title">
                         
@@ -357,138 +489,11 @@ private构造函数还...
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/26/typedef函数指针/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>typedef与函数指针</span>
-                    </h2>
-                <div class="abstract-content">
-                    typedef基本今日在代码中看到：
-123456typedef void (ISSCALLBACK *Proc_MVWOnMsgProc)(    const void*         pUsrArg,     /* [In] User defined parameter */    unsigned int        uMsg,        /* [In] The message identifier */    unsigned int        wParam,      /* [In] Message additional information */    cons...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = C++>C++</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/25</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/06/ubuntu安装后要做的一些事/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Ubuntu安装后要做的一些事</span>
-                    </h2>
-                <div class="abstract-content">
-                    ubuntu我重装了不知道有多少遍，每次重装时都要重复进行一些操作，这次干脆将这些常用操作记录下来，以便下次重装时查询。
-
-更换软件源
-编辑源  
-1$ sudo gedit /etc/apt/sources.list
-  将原内容更换为：  
-12345678910deb https://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiversedeb https://linux.xidian.edu.cn/mirrors/ xenial-security main restricted ...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/05</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/04/2017-11-03-seafile/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>seafile部署记录</span>
-                    </h2>
-                <div class="abstract-content">
-                    近日在网上看到vps可以部署私有云存储，正好手头上的vps除了SS搭梯子没有别的用途，遂在网上寻找云存储搭建教程。最后决定使用xiaoz的一键搭建脚本。  
-环境要求
-CenOS 7 64位  
-Python &gt;= 2.7
-SqLite 3  
-
-
-开始安装输入以下命令以进行安装  
-$ yum -y install wget  
-$ wget https://raw.githubusercontent.com/helloxz/seafile/$master/install_seafile.sh  
-$ chmod +x install_seafile.sh &amp;&amp; ...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = toy>toy</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/03</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/03/hello-world/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Hello World</span>
-                    </h2>
-                <div class="abstract-content">
-                    开坑感言终于在拖延了这么久之后，用了两个晚上和一个下午把这个博客搭建起来。  
-其实之前并没有写博客的习惯，但经常有一些事情，还是希望记录下来。有时有些想法转瞬即逝，但却没有及时抓住，过几日就忘得差不多了；有些脚本、代码或者方法，不记录下来，等再次遇到又要求助于百度，实在是麻烦；一本书看毕，无论是小说还是技术书籍，总有些收获，也能写上一两篇文章。  
-本博客托管于github，其实基本不会有什么人来访问（因为我github就没怎么用过），主要就是记录给自己看，相当于一个云笔记了。hexo的主题还是很给力的，非常美观，自定义程度高，多少也能接触一些前端技术。正文使用markdown编写，省...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 想法>想法</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/03</span>
-                </div>
-            </div>
-        </article>
-    
     <!-- paginator  -->
+    
+    <nav class="page-nav">
+        <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">#NEXT</a>
+    </nav>
     
 </main>
             <!-- profile -->
@@ -682,9 +687,7 @@ $ chmod +x install_seafile.sh &amp;&amp; ...
     
     
     
-    
-    
-    <div class="total-archive"> Total : 10 </div>
+    <div class="total-archive"> Total : 14 </div>
     
     <div class="post-archive">
     
@@ -693,6 +696,26 @@ $ chmod +x install_seafile.sh &amp;&amp; ...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/14</span><a class="archive-post-title" href= "/2018/11/15/Gradle使用/" >Hello World, Gradle</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2018/11/11/QNX平台获取ip与mac/" >IP地址与mac地址获取小结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/30</span><a class="archive-post-title" href= "/2018/09/30/内存泄露检测/" >内存泄露检测--mtrace的使用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/2018/09/25/Core File的生成与查看/" >Core File的生成和查看</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -773,6 +796,18 @@ $ chmod +x install_seafile.sh &amp;&amp; ...
         <span class="sidebar-tag-name"><a href= "#">编译</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">GDB</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Android</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">构建</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">QNX</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">网络</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">内存泄露</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

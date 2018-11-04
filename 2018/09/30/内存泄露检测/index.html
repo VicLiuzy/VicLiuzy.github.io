@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        内存泄露检测--mtrace的使用 · ZyLiu&#39;s Blog
+        
+    </title>
+    <link rel="icon" href= /favicon.ico>
+    <!-- TODO: 在font-face加载完毕后改变字体  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+    <!-- 提前加载place holder  -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+    </style>
+    <style type="text/css">
+        .site-intro-placeholder {
+            position: absolute;
+            z-index: -2;
+            top: 0;
+            left: 0px;
+            width: calc(100% + 300px);
+            height: 100%;
+            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+            background-position: center center;
+            transform: translate3d(-226px, 0, 0);
+            animation: gradient-move 2.5s ease-out 0s 1;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+    <link rel="stylesheet" href = /css/style.css?v=20171020 />
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "7c848dd260175b67ee7a402af3c08312";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >ZyLiu&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">内存泄露检测--mtrace的使用</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>ZyLiu's Blog</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/death-note-l4.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            内存泄露检测--mtrace的使用
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 内存泄露>内存泄露</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/09/30</span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <script>
+            var browser = {
+                    versions: function () {
+                        var u = window.navigator.userAgent;
+                        return {
+                            userAgent: u,
+                            trident: u.indexOf('Trident') > -1, //IE内核
+                            presto: u.indexOf('Presto') > -1, //opera内核
+                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+                            iPad: u.indexOf('iPad') > -1, //是否为iPad
+                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+                        };
+                    }()
+                }
+
+            function fontLoaded(){
+                console.log('font loaded');
+                if (document.getElementsByClassName('site-intro-meta')) {
+                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+                        if (postIntroTags) {
+                            postIntroTags.classList.add('post-fade-in');
+                        }
+                        if (postIntroMeat) {
+                            postIntroMeat.classList.add('post-fade-in');
+                        }
+                    }
+                }
+                
+            console.log("userAgent:" + browser.versions.userAgent);
+            // UC不支持跨域，所以直接显示
+            if (browser.versions.uc) {
+                console.log("UCBrowser");
+                fontLoaded();
+            } else {
+                WebFont.load({
+                    custom: {
+                        families: ['Oswald-Regular']
+                    },
+                    loading: function () {  //所有字体开始加载
+                        // console.log('loading');
+                    },
+                    active: function () {  //所有字体已渲染
+                        fontLoaded();
+                    },
+                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+                        console.log('inactive: timeout');
+                        fontLoaded();
+                    },
+                    timeout: 7000 // Set the timeout to two seconds
+                });
+            }
+        </script>
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="代码配置"><a href="#代码配置" class="headerlink" title="代码配置"></a>代码配置</h2><p>首先检测单一文件的内存泄漏。</p>
+<p>有以下程序：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mcheck.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    setenv(<span class="string">"MALLOC_TRACE"</span>, <span class="string">"mem.log"</span>, <span class="number">1</span>);</div><div class="line">    mtrace();</div><div class="line"></div><div class="line">    <span class="keyword">int</span> cnt = <span class="number">100</span>;</div><div class="line">    <span class="keyword">while</span> (<span class="number">0</span> != cnt--) &#123;</div><div class="line">    	<span class="keyword">int</span> *p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">        usleep(<span class="number">10</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"over\n"</span>);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其中<code>mtrace()</code>依赖于头文件<code>mcheck.h</code>，其只能检测使用glibc的内存分配函数分配的内存，也就是<code>malloc()</code>等内存分配函数，而不支持C++中的<code>new</code>操作符。<br><code>usleep()</code>依赖头文件<code>unistd.h</code>，其休眠1us。</p>
+<p>需要<code>export MALLOC_TRACE=mem.log</code>来指定工作路径，从而指定生成的log。<br>或者调用<code>setenv(&quot;MALLOC_TRACE&quot;, &quot;mem.log&quot;, 1);</code>。依赖于头文件<code>stdlib.h</code>。</p>
+<p>使用如下make文件进行编译，重点在于必须加<code>-g</code>，编译优化选项必须为<code>-O0</code>（或者默认）：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">test : test.o</div><div class="line">	gcc -o <span class="variable">$@</span> <span class="variable">$^</span></div><div class="line"></div><div class="line">test.o : test.cpp</div><div class="line">	gcc -c -O0 <span class="variable">$^</span> -g</div></pre></td></tr></table></figure></p>
+<h2 id="查看log"><a href="#查看log" class="headerlink" title="查看log"></a>查看log</h2><p>代码运行后生成log，使用命令<code>mtrace progname logname</code>进行log查看。<br>其中<code>progname</code>为二进制文件名，<code>logname</code>为log的文件名。<br>如果没有内存泄漏会报<code>No memory leaks.</code>。而上述程序的输出结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Memory not freed:</div><div class="line">-----------------</div><div class="line">           Address     Size     Caller</div><div class="line">0x00000000023be6a0      0x8  at /home/zyliu12/Documents/memoryleak/onefile/test.cpp:12</div><div class="line">0x00000000023be6c0      0x8  at /home/zyliu12/Documents/memoryleak/onefile/test.cpp:12</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>从而将所有已<code>malloc</code>而未<code>free</code>的内存的<code>malloc</code>处打印出来。</p>
+<h2 id="编译生成库文件"><a href="#编译生成库文件" class="headerlink" title="编译生成库文件"></a>编译生成库文件</h2><p>首先将内存泄露的函数转移到另一个文件<code>fun.cpp</code>中：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"fun.h"</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">memleak</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> cnt = <span class="number">100</span>;</div><div class="line">    <span class="keyword">while</span> (<span class="number">0</span> != cnt--) &#123;</div><div class="line">    	<span class="keyword">int</span> *p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">        usleep(<span class="number">10</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> *p2 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">40</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在<code>main.cpp</code>中调用该函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mcheck.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"fun.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    setenv(<span class="string">"MALLOC_TRACE"</span>, <span class="string">"taoge.log"</span>, <span class="number">1</span>);</div><div class="line">    mtrace();</div><div class="line">    memleak();</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"over\n"</span>);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样<code>mtrace()</code>与内存泄漏的函数不在一个文件中，我们来看看能否检测出内存泄漏的位置。</p>
+<p>一步生成二进制文件的makefile为：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">TARGET := test</div><div class="line">SRC_CXX := fun.cpp main.cpp</div><div class="line"></div><div class="line">all : clean <span class="variable">$(TARGET)</span></div><div class="line"></div><div class="line">clean :</div><div class="line">	-@rm -rf *.o *.gch <span class="variable">$(TARGET)</span></div><div class="line"></div><div class="line"><span class="variable">$(TARGET)</span> : <span class="variable">$(SRC_CXX)</span></div><div class="line">	gcc -o <span class="variable">$@</span> <span class="variable">$^</span> -g</div></pre></td></tr></table></figure>
+<p>运行<code>test</code>并使用命令<code>mtrace test taoge.log</code>看到以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Memory not freed:</div><div class="line">-----------------</div><div class="line">           Address     Size     Caller</div><div class="line">0x000000000098e6a0      0x8  at /home/zyliu12/Documents/memoryleak/staticlib/fun.cpp:9</div><div class="line">...</div><div class="line">0x000000000098f320     0xa0  at /home/zyliu12/Documents/memoryleak/staticlib/fun.cpp:12</div></pre></td></tr></table></figure></p>
+<p>此时能够正常判断内存泄露。</p>
+<p>使用以下make文件先将<code>fun.cpp</code>生成为动态库so文件。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">TARGET := test</div><div class="line">SRC_CXX := main.cpp</div><div class="line">SHARED := libfun.so</div><div class="line"></div><div class="line">all : clean <span class="variable">$(SHARED)</span> <span class="variable">$(TARGET)</span></div><div class="line"></div><div class="line">clean :</div><div class="line">	-@rm -rf *.o *.gch <span class="variable">$(TARGET)</span> <span class="variable">$(SHARED)</span></div><div class="line"></div><div class="line"><span class="variable">$(SHARED)</span> : fun.cpp</div><div class="line">	gcc -g <span class="variable">$^</span> -fPIC -shared -Wl,-soname,<span class="variable">$(SHARED)</span> -o <span class="variable">$(SHARED)</span> -lc</div><div class="line"></div><div class="line"><span class="variable">$(TARGET)</span> : <span class="variable">$(SRC_CXX)</span></div><div class="line">	gcc -o <span class="variable">$@</span> <span class="variable">$^</span> -g -L. -lfun</div></pre></td></tr></table></figure>
+<p>在执行二进制文件之前，需要先设置工作路径：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$&#123;pwd&#125;</span>:<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span></div></pre></td></tr></table></figure>
+<p>运行二进制文件生成log，使用命令<code>mtrace test taoge.log</code>看到以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">0x0000000000b466a0    0x400  at 0x7fd589037185</div><div class="line">...</div><div class="line">0x0000000000b47690      0x8  at 0x7fd58939377a</div><div class="line">0x0000000000b476b0      0x8  at 0x7fd58939377a</div></pre></td></tr></table></figure></p>
+<p>可以看到只有地址而没有代码行号。</p>
+<h2 id="定位内存泄漏行号"><a href="#定位内存泄漏行号" class="headerlink" title="定位内存泄漏行号"></a>定位内存泄漏行号</h2><p>主要是通过<code>addr2line</code>由地址定位到行号。</p>
+<p>为了得到加载库的地址，首先在代码中添加：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"pid=%d\n"</span>, getpid());</div></pre></td></tr></table></figure></p>
+<p>这行代码可用于获得程序的pid。在获得程序pid之后，假设pid为7954，进入<code>/proc</code>目录，执行指令<code>cat 7954/maps</code>。其输出如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">00400000-00401000 r-xp 00000000 08:01 404531                             /home/zyliu12/Documents/memoryleak/staticlib/test</div><div class="line">00600000-00601000 r--p 00000000 08:01 404531                             /home/zyliu12/Documents/memoryleak/staticlib/test</div><div class="line">00601000-00602000 rw-p 00001000 08:01 404531                             /home/zyliu12/Documents/memoryleak/staticlib/test</div><div class="line">017b2000-017d3000 rw-p 00000000 00:00 0                                  [heap]</div><div class="line">7fb30a05e000-7fb30a21e000 r-xp 00000000 08:01 660718                     /lib/x86_64-linux-gnu/libc-2.23.so</div><div class="line">7fb30a21e000-7fb30a41d000 ---p 001c0000 08:01 660718                     /lib/x86_64-linux-gnu/libc-2.23.so</div><div class="line">7fb30a41d000-7fb30a421000 r--p 001bf000 08:01 660718                     /lib/x86_64-linux-gnu/libc-2.23.so</div><div class="line">7fb30a421000-7fb30a423000 rw-p 001c3000 08:01 660718                     /lib/x86_64-linux-gnu/libc-2.23.so</div><div class="line">7fb30a423000-7fb30a427000 rw-p 00000000 00:00 0 </div><div class="line">7fb30a427000-7fb30a428000 r-xp 00000000 08:01 404409                     /home/zyliu12/Documents/memoryleak/staticlib/libfun.so</div><div class="line">7fb30a428000-7fb30a627000 ---p 00001000 08:01 404409                     /home/zyliu12/Documents/memoryleak/staticlib/libfun.so</div><div class="line">7fb30a627000-7fb30a628000 r--p 00000000 08:01 404409                     /home/zyliu12/Documents/memoryleak/staticlib/libfun.so</div><div class="line">7fb30a628000-7fb30a629000 rw-p 00001000 08:01 404409                     /home/zyliu12/Documents/memoryleak/staticlib/libfun.so</div><div class="line">7fb30a629000-7fb30a64f000 r-xp 00000000 08:01 660690                     /lib/x86_64-linux-gnu/ld-2.23.so</div><div class="line">7fb30a833000-7fb30a836000 rw-p 00000000 00:00 0 </div><div class="line">7fb30a84c000-7fb30a84e000 rw-p 00000000 00:00 0 </div><div class="line">7fb30a84e000-7fb30a84f000 r--p 00025000 08:01 660690                     /lib/x86_64-linux-gnu/ld-2.23.so</div><div class="line">7fb30a84f000-7fb30a850000 rw-p 00026000 08:01 660690                     /lib/x86_64-linux-gnu/ld-2.23.so</div><div class="line">7fb30a850000-7fb30a851000 rw-p 00000000 00:00 0 </div><div class="line">7ffd7c1e6000-7ffd7c207000 rw-p 00000000 00:00 0                          [stack]</div><div class="line">7ffd7c23b000-7ffd7c23d000 r--p 00000000 00:00 0                          [vvar]</div><div class="line">7ffd7c23d000-7ffd7c23f000 r-xp 00000000 00:00 0                          [vdso]</div><div class="line">ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]</div></pre></td></tr></table></figure></p>
+<p>可以看到<code>libfun.so</code>的加载地址以<code>7fb30a427000</code>开始。<br>再次查看<code>mtrace test taoge.log</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0x00000000017b26a0      0x8  at 0x7fb30a42771e</div></pre></td></tr></table></figure></p>
+<p><code>0x7fb30a42771e - 0x7fb30a427000</code>可得<code>0x00000000071e</code>，这就是出错代码在<code>libfun.so</code>中的相对位置。<br>执行指令<code>addr2line -e ./libfun.so 0x00000000071e</code>，可得出错代码行号：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/zyliu12/Documents/memoryleak/staticlib/fun.cpp:10</div></pre></td></tr></table></figure></p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+            <li class="next">
+                <a href= "/2018/11/11/QNX平台获取ip与mac/" title= IP地址与mac地址获取小结 >
+                    <span>Next Post</span>
+                    <span>IP地址与mac地址获取小结</span>
+                </a>
+            </li>
+        
+        
+            <li class="previous">
+                <a href= "/2018/09/25/Core File的生成与查看/" title= Core File的生成和查看 >
+                    <span>Previous Post</span>
+                    <span>Core File的生成和查看</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:liuzongyanvic@foxmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+            
+                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
+            
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#代码配置"><span class="toc-number">1.</span> <span class="toc-text">代码配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看log"><span class="toc-number">2.</span> <span class="toc-text">查看log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译生成库文件"><span class="toc-number">3.</span> <span class="toc-text">编译生成库文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位内存泄漏行号"><span class="toc-number">4.</span> <span class="toc-text">定位内存泄漏行号</span></a></li></ol>
+    </div>
+    
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header sidebar-header-show-archive">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 14 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/14</span><a class="archive-post-title" href= "/2018/11/15/Gradle使用/" >Hello World, Gradle</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2018/11/11/QNX平台获取ip与mac/" >IP地址与mac地址获取小结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/30</span><a class="archive-post-title" href= "/2018/09/30/内存泄露检测/" >内存泄露检测--mtrace的使用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/2018/09/25/Core File的生成与查看/" >Core File的生成和查看</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2018/08/31/头文件包含以及库文件包含/" >头文件包含以及库文件包含</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >从VS转移到VScode（由未找到预定义引出的问题）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2018/08/19/makefile(3)/" >Makefile学习（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2018/08/18/makefile(2)/" >Makefile学习（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2018/08/17/makefile(1)/" >Makefile学习（一）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/28</span><a class="archive-post-title" href= "/2018/07/29/C++类零碎/" >C++类零碎</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href= "/2018/07/26/typedef函数指针/" >typedef与函数指针</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span><a class="archive-post-title" href= "/2017/11/06/ubuntu安装后要做的一些事/" >Ubuntu安装后要做的一些事</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/04/2017-11-03-seafile/" >seafile部署记录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">toy</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Linux</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">C++</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">想法</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">GDB</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Android</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">构建</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">QNX</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">网络</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">内存泄露</a></span>
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    </body>
+</html>
+
+
