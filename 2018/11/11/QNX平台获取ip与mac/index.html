@@ -1,37 +1,85 @@
 <!DOCTYPE html>
-<html>
-    <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>
-        
-        IP地址与mac地址获取小结 · ZyLiu&#39;s Blog
-        
-    </title>
-    <link rel="icon" href= /favicon.ico>
-    <!-- TODO: 在font-face加载完毕后改变字体  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
-    <!-- 提前加载place holder  -->
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Vic Liu">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Vic Liu">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta name="description" content="Linux平台获取IP地址首先是使用ioctl获取IP地址的方法，代码如下：   12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#inc">
+<meta name="keywords" content="Linux,QNX,网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IP地址与mac地址获取小结">
+<meta property="og:url" content="http://yoursite.com/2018/11/11/QNX平台获取ip与mac/index.html">
+<meta property="og:site_name" content="What happened">
+<meta property="og:description" content="Linux平台获取IP地址首先是使用ioctl获取IP地址的方法，代码如下：   12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#inc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-10T07:08:08.051Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IP地址与mac地址获取小结">
+<meta name="twitter:description" content="Linux平台获取IP地址首先是使用ioctl获取IP地址的方法，代码如下：   12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#inc">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <link rel="alternate" href="/atom.xml" title="ZyLiu&#39;s Blog" type="application/atom+xml">
+    
+    <title>IP地址与mac地址获取小结 · ZyLiu&#39;s Blog</title>
     <style type="text/css">
-        @font-face {
-            font-family: 'Oswald-Regular';
-            src: url('/font/Oswald-Regular.ttf');
-        }
-    </style>
-    <style type="text/css">
-        .site-intro-placeholder {
-            position: absolute;
-            z-index: -2;
-            top: 0;
-            left: 0px;
-            width: calc(100% + 300px);
-            height: 100%;
-            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
-            background-position: center center;
-            transform: translate3d(-226px, 0, 0);
-            animation: gradient-move 2.5s ease-out 0s 1;
-        }
-        @keyframes gradient-move {
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
         0% {
             transform: translate3d(-226px, 0, 0);
         }
@@ -39,32 +87,143 @@
             transform: translate3d(0, 0, 0);
         }
     }
+
 </style>
-    <link rel="stylesheet" href = /css/style.css?v=20171020 />
-    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
     
-    <script src="/scripts/main.js" defer></script>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
     <!-- 百度统计  -->
-    
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-        var hm = document.createElement("script");
-        hm.src = "7c848dd260175b67ee7a402af3c08312";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
     
     <!-- 谷歌统计  -->
     
 </head>
+
     
         <body class="post-body">
     
     
 <header class="header">
 
+    <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
     
@@ -80,15 +239,24 @@
     <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
     <div class="wrapper">
-        <div class="site-intro">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
     
     <!-- 主页  -->
     
     
     <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/intro/death-note-l4.jpg)"></div>
     <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
@@ -108,133 +276,194 @@
         </p>
         <!-- 文章页meta -->
         
-            <!-- 文章页标签  -->
-            
-                <div class= post-intro-tags >
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = Linux>Linux</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Linux">Linux</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-href = QNX>QNX</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "QNX">QNX</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-href = 网络>网络</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "网络">网络</a>
     
 </div>
-            
-            <div class="post-intro-meta">
-                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/11/10</span>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.3k</span>阅读时长: <span class="post-count reading-time">7 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/11/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
             </div>
         
     </div>
 </div>
-        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <script>
-            var browser = {
-                    versions: function () {
-                        var u = window.navigator.userAgent;
-                        return {
-                            userAgent: u,
-                            trident: u.indexOf('Trident') > -1, //IE内核
-                            presto: u.indexOf('Presto') > -1, //opera内核
-                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
-                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
-                            iPad: u.indexOf('iPad') > -1, //是否为iPad
-                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
-                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
-                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
-                        };
-                    }()
-                }
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
 
-            function fontLoaded(){
-                console.log('font loaded');
-                if (document.getElementsByClassName('site-intro-meta')) {
-                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
-                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
-                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
-                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
-                        if (postIntroTags) {
-                            postIntroTags.classList.add('post-fade-in');
-                        }
-                        if (postIntroMeat) {
-                            postIntroMeat.classList.add('post-fade-in');
-                        }
-                    }
-                }
-                
-            console.log("userAgent:" + browser.versions.userAgent);
-            // UC不支持跨域，所以直接显示
-            if (browser.versions.uc) {
-                console.log("UCBrowser");
-                fontLoaded();
-            } else {
-                WebFont.load({
-                    custom: {
-                        families: ['Oswald-Regular']
-                    },
-                    loading: function () {  //所有字体开始加载
-                        // console.log('loading');
-                    },
-                    active: function () {  //所有字体已渲染
-                        fontLoaded();
-                    },
-                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
-                        console.log('inactive: timeout');
-                        fontLoaded();
-                    },
-                    timeout: 7000 // Set the timeout to two seconds
-                });
-            }
-        </script>
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
         <h2 id="Linux平台获取IP地址"><a href="#Linux平台获取IP地址" class="headerlink" title="Linux平台获取IP地址"></a>Linux平台获取IP地址</h2><p>首先是使用<code>ioctl</code>获取IP地址的方法，代码如下：  </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;net/if.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/ioctl.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">getIPAddr</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; ipAddrs)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> fd;</div><div class="line">	<span class="keyword">int</span> interfaceNum = <span class="number">0</span>;</div><div class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">buf</span>[16];</span></div><div class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ifconf</span> <span class="title">ifc</span>;</span></div><div class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">ifrcopy</span>;</span></div><div class="line">	<span class="keyword">char</span> ip[<span class="number">32</span>] = &#123;<span class="number">0</span>&#125;;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> ((fd = socket(AF_INET, SOCK_DGRAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) &#123;</div><div class="line">		perror(<span class="string">"socket"</span>);</div><div class="line">		close(fd);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	ifc.ifc_len = <span class="keyword">sizeof</span>(buf);</div><div class="line">	ifc.ifc_req = buf;</div><div class="line">	<span class="keyword">if</span> (!ioctl(fd, SIOCGIFCONF, (<span class="keyword">char</span> *)&amp;ifc)) &#123;</div><div class="line">		interfaceNum = ifc.ifc_len / <span class="keyword">sizeof</span>(struct ifreq);</div><div class="line">		<span class="keyword">while</span> (interfaceNum-- &gt; <span class="number">0</span>) &#123;</div><div class="line">			ifrcopy = buf[interfaceNum];</div><div class="line">			<span class="keyword">if</span> (ioctl(fd, SIOCGIFFLAGS, &amp;ifrcopy)) &#123;</div><div class="line">				<span class="built_in">printf</span>(<span class="string">"ioctl: %s [%s:%d]\n"</span>, strerror(errno), __FILE__, __LINE__);</div><div class="line">				close(fd);</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="comment">//get the IP of this interface</span></div><div class="line">			<span class="keyword">if</span> (!ioctl(fd, SIOCGIFADDR, (<span class="keyword">char</span> *)&amp;buf[interfaceNum])) &#123;</div><div class="line">				<span class="built_in">snprintf</span>(ip, <span class="keyword">sizeof</span>(ip), <span class="string">"%s"</span>, (<span class="keyword">char</span> *)inet_ntoa(((struct sockaddr_in *)&amp;(buf[interfaceNum].ifr_addr))-&gt;sin_addr));</div><div class="line">				ipAddrs.push_back(<span class="built_in">string</span>(ip));</div><div class="line">			&#125; </div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				<span class="built_in">printf</span>(<span class="string">"ioctl: %s [%s:%d]\n"</span>, strerror(errno), __FILE__, __LINE__);</div><div class="line">				close(fd);</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125; </div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"ioctl: %s [%s:%d]\n"</span>, strerror(errno), __FILE__, __LINE__);</div><div class="line">		close(fd);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	close(fd);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; iplist;</div><div class="line">	getIPAddr(iplist);</div><div class="line">	</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"get "</span> &lt;&lt; iplist.size() &lt;&lt; <span class="string">" ip."</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	</div><div class="line">	<span class="keyword">int</span> ipnum = iplist.size();</div><div class="line">	</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ipnum; i++) &#123;</div><div class="line">		<span class="built_in">string</span> ip = iplist[i];</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"ip"</span> &lt;&lt; i &lt;&lt; <span class="string">": "</span>;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"%s\n"</span>, ip.c_str());</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;net/if.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/ioctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getIPAddr</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; ipAddrs)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> fd;</span><br><span class="line">	<span class="keyword">int</span> interfaceNum = <span class="number">0</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">buf</span>[16];</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ifconf</span> <span class="title">ifc</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">ifrcopy</span>;</span></span><br><span class="line">	<span class="keyword">char</span> ip[<span class="number">32</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ((fd = socket(AF_INET, SOCK_DGRAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">		perror(<span class="string">"socket"</span>);</span><br><span class="line">		close(fd);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ifc.ifc_len = <span class="keyword">sizeof</span>(buf);</span><br><span class="line">	ifc.ifc_req = buf;</span><br><span class="line">	<span class="keyword">if</span> (!ioctl(fd, SIOCGIFCONF, (<span class="keyword">char</span> *)&amp;ifc)) &#123;</span><br><span class="line">		interfaceNum = ifc.ifc_len / <span class="keyword">sizeof</span>(struct ifreq);</span><br><span class="line">		<span class="keyword">while</span> (interfaceNum-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			ifrcopy = buf[interfaceNum];</span><br><span class="line">			<span class="keyword">if</span> (ioctl(fd, SIOCGIFFLAGS, &amp;ifrcopy)) &#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">"ioctl: %s [%s:%d]\n"</span>, strerror(errno), __FILE__, __LINE__);</span><br><span class="line">				close(fd);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//get the IP of this interface</span></span><br><span class="line">			<span class="keyword">if</span> (!ioctl(fd, SIOCGIFADDR, (<span class="keyword">char</span> *)&amp;buf[interfaceNum])) &#123;</span><br><span class="line">				<span class="built_in">snprintf</span>(ip, <span class="keyword">sizeof</span>(ip), <span class="string">"%s"</span>, (<span class="keyword">char</span> *)inet_ntoa(((struct sockaddr_in *)&amp;(buf[interfaceNum].ifr_addr))-&gt;sin_addr));</span><br><span class="line">				ipAddrs.push_back(<span class="built_in">string</span>(ip));</span><br><span class="line">			&#125; </span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">"ioctl: %s [%s:%d]\n"</span>, strerror(errno), __FILE__, __LINE__);</span><br><span class="line">				close(fd);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"ioctl: %s [%s:%d]\n"</span>, strerror(errno), __FILE__, __LINE__);</span><br><span class="line">		close(fd);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	close(fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; iplist;</span><br><span class="line">	getIPAddr(iplist);</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"get "</span> &lt;&lt; iplist.size() &lt;&lt; <span class="string">" ip."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> ipnum = iplist.size();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ipnum; i++) &#123;</span><br><span class="line">		<span class="built_in">string</span> ip = iplist[i];</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"ip"</span> &lt;&lt; i &lt;&lt; <span class="string">": "</span>;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%s\n"</span>, ip.c_str());</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上代码通过<code>ioctl</code>获得本机的ip，核心代码为：  </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fd = socket(AF_INET, SOCK_DGRAM, <span class="number">0</span>);</div><div class="line">ioctl(fd, SIOCGIFADDR, (<span class="keyword">char</span> *)&amp;buf[interfaceNum]);</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fd = socket(AF_INET, SOCK_DGRAM, <span class="number">0</span>);</span><br><span class="line">ioctl(fd, SIOCGIFADDR, (<span class="keyword">char</span> *)&amp;buf[interfaceNum]);</span><br></pre></td></tr></table></figure>
 <p>当<code>ioctl</code>第二个参数为<code>SIOCGIFADDR</code>，得到的结果就是ip地址。  </p>
 <h2 id="Linux获得mac地址"><a href="#Linux获得mac地址" class="headerlink" title="Linux获得mac地址"></a>Linux获得mac地址</h2><p>下面是一种最常用的使用<code>ioctl</code>获取mac地址的方法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;stdio.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;sys/ioctl.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;sys/socket.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;netinet/in.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;net/if.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;string.h&gt; </span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123; </div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">m_ifreq</span>;</span> </div><div class="line">    <span class="keyword">int</span> sock; </div><div class="line"></div><div class="line">    <span class="keyword">if</span>(argc!=<span class="number">2</span>) &#123; </div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Usage: ethname\n "</span>); </div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>; </div><div class="line">    &#125; </div><div class="line">    <span class="keyword">if</span>((sock = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) &#123; </div><div class="line">        perror(<span class="string">"socket"</span>); </div><div class="line">        <span class="keyword">return</span> <span class="number">2</span>; </div><div class="line">    &#125; </div><div class="line"></div><div class="line">    <span class="built_in">strcpy</span>(m_ifreq.ifr_name,argv[<span class="number">1</span>]); </div><div class="line">    <span class="keyword">if</span>(ioctl(sock, SIOCGIFHWADDR, &amp;m_ifreq) &lt; <span class="number">0</span>) &#123; </div><div class="line">        perror(<span class="string">"ioctl"</span>); </div><div class="line">        <span class="keyword">return</span> <span class="number">3</span>; </div><div class="line">    &#125; </div><div class="line">    <span class="built_in">printf</span>( <span class="string">"%02x:%02x:%02x:%02x:%02x:%02x\n"</span>, </div><div class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">0</span>], </div><div class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">1</span>], </div><div class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">2</span>], </div><div class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">3</span>], </div><div class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">4</span>], </div><div class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">5</span>]); </div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;stdio.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;sys/ioctl.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;sys/socket.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;netinet/in.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;net/if.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>   <span class="meta-string">&lt;string.h&gt; </span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123; </span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">m_ifreq</span>;</span> </span><br><span class="line">    <span class="keyword">int</span> sock; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(argc!=<span class="number">2</span>) &#123; </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Usage: ethname\n "</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span>((sock = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) &#123; </span><br><span class="line">        perror(<span class="string">"socket"</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>; </span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="built_in">strcpy</span>(m_ifreq.ifr_name,argv[<span class="number">1</span>]); </span><br><span class="line">    <span class="keyword">if</span>(ioctl(sock, SIOCGIFHWADDR, &amp;m_ifreq) &lt; <span class="number">0</span>) &#123; </span><br><span class="line">        perror(<span class="string">"ioctl"</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"%02x:%02x:%02x:%02x:%02x:%02x\n"</span>, </span><br><span class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">0</span>], </span><br><span class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">1</span>], </span><br><span class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">2</span>], </span><br><span class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">3</span>], </span><br><span class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">4</span>], </span><br><span class="line">            (<span class="keyword">unsigned</span> <span class="keyword">char</span>)m_ifreq.ifr_hwaddr.sa_data[<span class="number">5</span>]); </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>获得mac地址的核心代码为：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sock=socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</div><div class="line">ioctl(sock, SIOCGIFHWADDR, &amp;m_ifreq);</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sock=socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">ioctl(sock, SIOCGIFHWADDR, &amp;m_ifreq);</span><br></pre></td></tr></table></figure>
 <p>获取到的mac地址放在结构体<code>m_ifreq.ifr_hwaddr.sa_data</code>中。</p>
 <h2 id="QNX平台获取mac的方法"><a href="#QNX平台获取mac的方法" class="headerlink" title="QNX平台获取mac的方法"></a>QNX平台获取mac的方法</h2><p>在QNX平台中，<code>net/if.h</code>与linux下不同，<code>ifreq</code>结构体的定义中不存在<code>ifr_hwaddr</code>的成员，我估计<code>ioctl</code>的实现方式也不同，因此上述方法不能使用。</p>
 <p>这时应该转而使用<code>ifaddrs.h</code>中的方法：<code>getifaddrs</code>。示例代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ifaddrs.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __linux__</span></div><div class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></div><div class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netpacket/packet.h&gt;</span></span></div><div class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;net/ethernet.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;net/if_dl.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">listmacaddrs</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifaddrs</span> *<span class="title">ifap</span>, *<span class="title">ifaptr</span>;</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (getifaddrs(&amp;ifap) == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">for</span>(ifaptr = ifap; ifaptr != <span class="literal">NULL</span>; ifaptr = (ifaptr)-&gt;ifa_next) &#123;</div><div class="line">            <span class="meta">#<span class="meta-keyword">ifdef</span> __linux__</span></div><div class="line">                <span class="keyword">char</span> macp[INET6_ADDRSTRLEN];</div><div class="line">                <span class="keyword">if</span> (((ifaptr)-&gt;ifa_addr)-&gt;sa_family == AF_PACKET) &#123;</div><div class="line">                    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_ll</span> *<span class="title">s</span> = (<span class="title">struct</span> <span class="title">sockaddr_ll</span>*)(<span class="title">ifaptr</span>-&gt;<span class="title">ifa_addr</span>);</span></div><div class="line">                    <span class="keyword">int</span> i;</div><div class="line">                    <span class="keyword">int</span> len = <span class="number">0</span>;</div><div class="line">                    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</div><div class="line">                        len += <span class="built_in">sprintf</span>(macp+len, <span class="string">"%02X%s"</span>, s-&gt;sll_addr[i], i &lt; <span class="number">5</span> ? <span class="string">":"</span>:<span class="string">""</span>);</div><div class="line">                    &#125;</div><div class="line">                    <span class="built_in">printf</span>(<span class="string">"%s: %s\n"</span>, (ifaptr)-&gt;ifa_name, macp);</div><div class="line">                &#125;</div><div class="line">            <span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line">            <span class="keyword">if</span> (((ifaptr)-&gt;ifa_addr)-&gt;sa_family == AF_LINK) &#123;</div><div class="line">                ptr = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)LLADDR((struct sockaddr_dl *)(ifaptr)-&gt;ifa_addr);</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"%s: %02x:%02x:%02x:%02x:%02x:%02x\n"</span>,</div><div class="line">                                    (ifaptr)-&gt;ifa_name,</div><div class="line">                                    *ptr, *(ptr+<span class="number">1</span>), *(ptr+<span class="number">2</span>), *(ptr+<span class="number">3</span>), *(ptr+<span class="number">4</span>), *(ptr+<span class="number">5</span>));</div><div class="line">            &#125;</div><div class="line">            <span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line">        &#125;</div><div class="line">        freeifaddrs(ifap);</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ifaddrs.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __linux__</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netpacket/packet.h&gt;</span></span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;net/ethernet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;net/if_dl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listmacaddrs</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifaddrs</span> *<span class="title">ifap</span>, *<span class="title">ifaptr</span>;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (getifaddrs(&amp;ifap) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span>(ifaptr = ifap; ifaptr != <span class="literal">NULL</span>; ifaptr = (ifaptr)-&gt;ifa_next) &#123;</span><br><span class="line">            <span class="meta">#<span class="meta-keyword">ifdef</span> __linux__</span></span><br><span class="line">                <span class="keyword">char</span> macp[INET6_ADDRSTRLEN];</span><br><span class="line">                <span class="keyword">if</span> (((ifaptr)-&gt;ifa_addr)-&gt;sa_family == AF_PACKET) &#123;</span><br><span class="line">                    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_ll</span> *<span class="title">s</span> = (<span class="title">struct</span> <span class="title">sockaddr_ll</span>*)(<span class="title">ifaptr</span>-&gt;<span class="title">ifa_addr</span>);</span></span><br><span class="line">                    <span class="keyword">int</span> i;</span><br><span class="line">                    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">                        len += <span class="built_in">sprintf</span>(macp+len, <span class="string">"%02X%s"</span>, s-&gt;sll_addr[i], i &lt; <span class="number">5</span> ? <span class="string">":"</span>:<span class="string">""</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">"%s: %s\n"</span>, (ifaptr)-&gt;ifa_name, macp);</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">            <span class="keyword">if</span> (((ifaptr)-&gt;ifa_addr)-&gt;sa_family == AF_LINK) &#123;</span><br><span class="line">                ptr = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)LLADDR((struct sockaddr_dl *)(ifaptr)-&gt;ifa_addr);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%s: %02x:%02x:%02x:%02x:%02x:%02x\n"</span>,</span><br><span class="line">                                    (ifaptr)-&gt;ifa_name,</span><br><span class="line">                                    *ptr, *(ptr+<span class="number">1</span>), *(ptr+<span class="number">2</span>), *(ptr+<span class="number">3</span>), *(ptr+<span class="number">4</span>), *(ptr+<span class="number">5</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        &#125;</span><br><span class="line">        freeifaddrs(ifap);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用<code>getifaddrs(&amp;ifap)</code>将mac地址与ip地址同时放到<code>ifap</code>结构体中，该结构体的类型为<code>ifaddrs</code>。</p>
-<p>其核心代码为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ifaddrs</span> *<span class="title">ifap</span>,  *<span class="title">ifaptr</span>;</span></div><div class="line">getifaddrs(&amp;ifap);</div><div class="line"><span class="keyword">for</span>(ifaptr = ifap; ifaptr != <span class="literal">NULL</span>; ifaptr = (ifaptr)-&gt;ifa_next) &#123;</div><div class="line">	ptr = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)LLADDR((struct sockaddr_dl *)(ifaptr)-&gt;ifa_addr);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s: %02x:%02x:%02x:%02x:%02x:%02x\n"</span>, (ifaptr)-&gt;ifa_name, *ptr, *(ptr+<span class="number">1</span>), *(ptr+<span class="number">2</span>), *(ptr+<span class="number">3</span>), *(ptr+<span class="number">4</span>), *(ptr+<span class="number">5</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其核心代码为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ifaddrs</span> *<span class="title">ifap</span>,  *<span class="title">ifaptr</span>;</span></span><br><span class="line">getifaddrs(&amp;ifap);</span><br><span class="line"><span class="keyword">for</span>(ifaptr = ifap; ifaptr != <span class="literal">NULL</span>; ifaptr = (ifaptr)-&gt;ifa_next) &#123;</span><br><span class="line">	ptr = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)LLADDR((struct sockaddr_dl *)(ifaptr)-&gt;ifa_addr);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s: %02x:%02x:%02x:%02x:%02x:%02x\n"</span>, (ifaptr)-&gt;ifa_name, *ptr, *(ptr+<span class="number">1</span>), *(ptr+<span class="number">2</span>), *(ptr+<span class="number">3</span>), *(ptr+<span class="number">4</span>), *(ptr+<span class="number">5</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><code>ifaddrs::ifa_name</code>为网卡名，<code>ifaddrs::ifa_addr</code>中存放mac地址。</p>
 <p>通过<code>getnameinfo</code>可获得ip地址，ip地址在<code>host</code>中：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = getnameinfo(ifa-&gt;ifa_addr, (family == AF_INET)?<span class="keyword">sizeof</span>(struct sockaddr_in):<span class="keyword">sizeof</span>(struct sockaddr_in6), host, NI_MAXHOST, <span class="literal">NULL</span>, <span class="number">0</span>, NUMERICHOST);</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = getnameinfo(ifa-&gt;ifa_addr, (family == AF_INET)?<span class="keyword">sizeof</span>(struct sockaddr_in):<span class="keyword">sizeof</span>(struct sockaddr_in6), host, NI_MAXHOST, <span class="literal">NULL</span>, <span class="number">0</span>, NUMERICHOST);</span><br></pre></td></tr></table></figure>
 <p>完整代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ifaddrs.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifaddrs</span> *<span class="title">ifaddr</span>, *<span class="title">ifa</span>;</span></div><div class="line">    <span class="keyword">int</span> family, s;</div><div class="line">    <span class="keyword">char</span> host[NI_MAXHOST];</div><div class="line"> </div><div class="line">    <span class="keyword">if</span> (getifaddrs(&amp;ifaddr) == <span class="number">-1</span>) &#123;</div><div class="line">        perror(<span class="string">"getifaddrs"</span>);</div><div class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="comment">/* Walk through linked list, maintaining head pointer so we</span></div><div class="line"><span class="comment">     *               can free list later */</span></div><div class="line"> </div><div class="line">    <span class="keyword">for</span> (ifa = ifaddr; ifa != <span class="literal">NULL</span>; ifa = ifa-&gt;ifa_next) &#123;</div><div class="line">        <span class="keyword">if</span> (ifa-&gt;ifa_addr == <span class="literal">NULL</span>)</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line"> </div><div class="line">        family = ifa-&gt;ifa_addr-&gt;sa_family;</div><div class="line"> </div><div class="line">        <span class="comment">/* Display interface name and family (including symbolic</span></div><div class="line"><span class="comment">         *                   form of the latter for the common families) */</span></div><div class="line"> </div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%s  address family: %d%s\n"</span>,</div><div class="line">                ifa-&gt;ifa_name, family,</div><div class="line">                (family == AF_PACKET) ? <span class="string">" (AF_PACKET)"</span> :</div><div class="line">                (family == AF_INET) ?   <span class="string">" (AF_INET)"</span> :</div><div class="line">                (family == AF_INET6) ?  <span class="string">" (AF_INET6)"</span> : <span class="string">""</span>);</div><div class="line"> </div><div class="line">        <span class="comment">/* For an AF_INET* interface address, display the address */</span></div><div class="line"> </div><div class="line">        <span class="keyword">if</span> (family == AF_INET || family == AF_INET6) &#123;</div><div class="line">            s = getnameinfo(ifa-&gt;ifa_addr,</div><div class="line">                    (family == AF_INET) ? <span class="keyword">sizeof</span>(struct sockaddr_in) :</div><div class="line">                    <span class="keyword">sizeof</span>(struct sockaddr_in6),</div><div class="line">                    host, NI_MAXHOST, <span class="literal">NULL</span>, <span class="number">0</span>, NI_NUMERICHOST);</div><div class="line">            <span class="keyword">if</span> (s != <span class="number">0</span>) &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"getnameinfo() failed: %s\n"</span>, gai_strerror(s));</div><div class="line">                <span class="built_in">exit</span>(EXIT_FAILURE);</div><div class="line">            &#125;</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"\taddress: &lt;%s&gt;\n"</span>, host);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    freeifaddrs(ifaddr);</div><div class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ifaddrs.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifaddrs</span> *<span class="title">ifaddr</span>, *<span class="title">ifa</span>;</span></span><br><span class="line">    <span class="keyword">int</span> family, s;</span><br><span class="line">    <span class="keyword">char</span> host[NI_MAXHOST];</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> (getifaddrs(&amp;ifaddr) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">"getifaddrs"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Walk through linked list, maintaining head pointer so we</span></span><br><span class="line"><span class="comment">     *               can free list later */</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (ifa = ifaddr; ifa != <span class="literal">NULL</span>; ifa = ifa-&gt;ifa_next) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ifa-&gt;ifa_addr == <span class="literal">NULL</span>)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line"> </span><br><span class="line">        family = ifa-&gt;ifa_addr-&gt;sa_family;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* Display interface name and family (including symbolic</span></span><br><span class="line"><span class="comment">         *                   form of the latter for the common families) */</span></span><br><span class="line"> </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s  address family: %d%s\n"</span>,</span><br><span class="line">                ifa-&gt;ifa_name, family,</span><br><span class="line">                (family == AF_PACKET) ? <span class="string">" (AF_PACKET)"</span> :</span><br><span class="line">                (family == AF_INET) ?   <span class="string">" (AF_INET)"</span> :</span><br><span class="line">                (family == AF_INET6) ?  <span class="string">" (AF_INET6)"</span> : <span class="string">""</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* For an AF_INET* interface address, display the address */</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span> (family == AF_INET || family == AF_INET6) &#123;</span><br><span class="line">            s = getnameinfo(ifa-&gt;ifa_addr,</span><br><span class="line">                    (family == AF_INET) ? <span class="keyword">sizeof</span>(struct sockaddr_in) :</span><br><span class="line">                    <span class="keyword">sizeof</span>(struct sockaddr_in6),</span><br><span class="line">                    host, NI_MAXHOST, <span class="literal">NULL</span>, <span class="number">0</span>, NI_NUMERICHOST);</span><br><span class="line">            <span class="keyword">if</span> (s != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"getnameinfo() failed: %s\n"</span>, gai_strerror(s));</span><br><span class="line">                <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\taddress: &lt;%s&gt;\n"</span>, host);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    freeifaddrs(ifaddr);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>必须要注意的是<code>getifaddrs</code>的调用必须与<code>freeifaddrs</code>成对出现，如果不进行内存释放，会造成内存泄漏</strong></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><em>Linxu的struct ifaddrs与getifaddrs()函数：<a href="https://blog.csdn.net/g457499940/article/details/13630549" target="_blank" rel="external">https://blog.csdn.net/g457499940/article/details/13630549</a></em><br><em>怎么得到带有getifaddrs的mac地址？：<a href="https://cloud.tencent.com/developer/ask/148099" target="_blank" rel="external">https://cloud.tencent.com/developer/ask/148099</a></em><br><em>Linux下的ioctl()函数详解：<a href="https://www.cnblogs.com/tdyizhen1314/p/4896689.html" target="_blank" rel="external">https://www.cnblogs.com/tdyizhen1314/p/4896689.html</a></em></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><em>Linxu的struct ifaddrs与getifaddrs()函数：<a href="https://blog.csdn.net/g457499940/article/details/13630549" target="_blank" rel="noopener">https://blog.csdn.net/g457499940/article/details/13630549</a></em><br><em>怎么得到带有getifaddrs的mac地址？：<a href="https://cloud.tencent.com/developer/ask/148099" target="_blank" rel="noopener">https://cloud.tencent.com/developer/ask/148099</a></em><br><em>Linux下的ioctl()函数详解：<a href="https://www.cnblogs.com/tdyizhen1314/p/4896689.html" target="_blank" rel="noopener">https://www.cnblogs.com/tdyizhen1314/p/4896689.html</a></em></p>
 
     </article>
-    <!-- 前后页  -->
-    <ul class="post-pager">
-        
-            <li class="next">
-                <a href= "/2018/11/15/Gradle使用/" title= Hello World, Gradle >
-                    <span>Next Post</span>
-                    <span>Hello World, Gradle</span>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/11/15/Gradle使用/" title= "Hello World, Gradle">
+                    <div class="nextTitle">Hello World, Gradle</div>
                 </a>
-            </li>
-        
-        
-            <li class="previous">
-                <a href= "/2018/09/30/内存泄露检测/" title= 内存泄露检测--mtrace的使用 >
-                    <span>Previous Post</span>
-                    <span>内存泄露检测--mtrace的使用</span>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/09/30/内存泄露检测/" title= "内存泄露检测--mtrace的使用">
+                    <div class="prevTitle">内存泄露检测--mtrace的使用</div>
                 </a>
-            </li>
-        
+            
+        </li>
     </ul>
     <!-- 评论插件 -->
     <!-- 来必力City版安装代码 -->
@@ -242,12 +471,18 @@
 <!-- City版安装代码已完成 -->
     
     
-    <!--PC版-->
+    <!-- gitalk评论 -->
 
+    <!-- utteranc评论 -->
+
+    <!-- partial('_partial/comment/changyan') -->
     <!--PC版-->
 
 
     
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -266,20 +501,46 @@
     
         
             
-                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title="github"></a>
+                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title=github></a>
             
         
     
         
-            
-                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
-            
+    
         
     
         
             
-                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title=weibo></a>
             
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
         
     
 
@@ -287,31 +548,48 @@
     
     <!-- powered by Hexo  -->
     <div class="copyright">
-        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
     </div>
     <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
     
 </footer>
     </div>
     <!-- toc -->
     
-    <div class="toc-wrapper">
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux平台获取IP地址"><span class="toc-number">1.</span> <span class="toc-text">Linux平台获取IP地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux获得mac地址"><span class="toc-number">2.</span> <span class="toc-text">Linux获得mac地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QNX平台获取mac的方法"><span class="toc-number">3.</span> <span class="toc-text">QNX平台获取mac的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
     </div>
     
-    <div class="back-top">&#xe639;</div>
-    <div class="sidebar">
-    <div class="sidebar-header sidebar-header-show-archive">
-        <div class="sidebar-category">
-            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
-            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
-        </div>
-    </div>
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
     <div class="sidebar-content sidebar-content-show-archive">
-          <div class="sidebar-archive">
+          <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
     
     
@@ -447,12 +725,53 @@
     
     
     
-    <div class="total-archive"> Total : 14 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 15
+        </div>
+        <!-- search  -->
+        
+    </div>
     
     <div class="post-archive">
     
     
     
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/10</span><a class="archive-post-title" href= "/2020/05/10/合肥觅食/" >合肥觅食</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
@@ -538,45 +857,52 @@
     
     </div>
   </div>
-        <div class="sidebar-tags">
+        <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">toy</a></span>
+        <span class="sidebar-tag-name" data-tags="toy"><span class="iconfont-archer">&#xe606;</span>toy</span>
     
-        <span class="sidebar-tag-name"><a href= "#">Linux</a></span>
+        <span class="sidebar-tag-name" data-tags="C++"><span class="iconfont-archer">&#xe606;</span>C++</span>
     
-        <span class="sidebar-tag-name"><a href= "#">C++</a></span>
+        <span class="sidebar-tag-name" data-tags="多态"><span class="iconfont-archer">&#xe606;</span>多态</span>
     
-        <span class="sidebar-tag-name"><a href= "#">想法</a></span>
+        <span class="sidebar-tag-name" data-tags="GDB"><span class="iconfont-archer">&#xe606;</span>GDB</span>
     
-        <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
-        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+        <span class="sidebar-tag-name" data-tags="QNX"><span class="iconfont-archer">&#xe606;</span>QNX</span>
     
-        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+        <span class="sidebar-tag-name" data-tags="网络"><span class="iconfont-archer">&#xe606;</span>网络</span>
     
-        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
+        <span class="sidebar-tag-name" data-tags="Android"><span class="iconfont-archer">&#xe606;</span>Android</span>
     
-        <span class="sidebar-tag-name"><a href= "#">GDB</a></span>
+        <span class="sidebar-tag-name" data-tags="构建"><span class="iconfont-archer">&#xe606;</span>构建</span>
     
-        <span class="sidebar-tag-name"><a href= "#">Android</a></span>
+        <span class="sidebar-tag-name" data-tags="想法"><span class="iconfont-archer">&#xe606;</span>想法</span>
     
-        <span class="sidebar-tag-name"><a href= "#">构建</a></span>
+        <span class="sidebar-tag-name" data-tags="Makefile"><span class="iconfont-archer">&#xe606;</span>Makefile</span>
     
-        <span class="sidebar-tag-name"><a href= "#">QNX</a></span>
+        <span class="sidebar-tag-name" data-tags="编译"><span class="iconfont-archer">&#xe606;</span>编译</span>
     
-        <span class="sidebar-tag-name"><a href= "#">网络</a></span>
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
-        <span class="sidebar-tag-name"><a href= "#">内存泄露</a></span>
+        <span class="sidebar-tag-name" data-tags="生活"><span class="iconfont-archer">&#xe606;</span>生活</span>
+    
+        <span class="sidebar-tag-name" data-tags="美食"><span class="iconfont-archer">&#xe606;</span>美食</span>
+    
+        <span class="sidebar-tag-name" data-tags="编辑器"><span class="iconfont-archer">&#xe606;</span>编辑器</span>
+    
+        <span class="sidebar-tag-name" data-tags="运维"><span class="iconfont-archer">&#xe606;</span>运维</span>
     
     </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
     缺失模块。<br/>
     1、请确保node版本大于6.2<br/>
     2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
     <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
     3、在根目录_config.yml里添加配置：
-    <pre style="color: #888; font-size: 0.6rem;">
+    <pre style="color: #787878; font-size: 0.6rem;">
 jsonContent:
   meta: false
   pages: false
@@ -593,23 +919,63 @@ jsonContent:
     link: false
     permalink: false
     excerpt: false
-    categories: false
+    categories: true
     tags: true</pre>
     </div> 
-    <div class="sidebar-tag-list"></div>
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="VPS"><span class="iconfont-archer">&#xe60a;</span>VPS</span>
+    
+        <span class="sidebar-category-name" data-categories="记录"><span class="iconfont-archer">&#xe60a;</span>记录</span>
+    
+        <span class="sidebar-category-name" data-categories="笔记"><span class="iconfont-archer">&#xe60a;</span>笔记</span>
+    
+        <span class="sidebar-category-name" data-categories="闲聊"><span class="iconfont-archer">&#xe60a;</span>闲聊</span>
+    
+        <span class="sidebar-category-name" data-categories="教程"><span class="iconfont-archer">&#xe60a;</span>教程</span>
+    
+        <span class="sidebar-category-name" data-categories="知识"><span class="iconfont-archer">&#xe60a;</span>知识</span>
+    
+        <span class="sidebar-category-name" data-categories="杂谈"><span class="iconfont-archer">&#xe60a;</span>杂谈</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
 </div>
     </div>
 </div> 
     <script>
-    var jsInfo = {
-        root: '/'
+    var siteMeta = {
+        root: "/",
+        author: "Vic Liu"
     }
 </script>
-    <!-- 不蒜子  -->
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
     
-    <!-- CNZZ统计  -->
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
     
     </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
     </body>
 </html>
 

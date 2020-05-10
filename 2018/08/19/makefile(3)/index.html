@@ -1,37 +1,85 @@
 <!DOCTYPE html>
-<html>
-    <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>
-        
-        Makefile学习（三） · ZyLiu&#39;s Blog
-        
-    </title>
-    <link rel="icon" href= /favicon.ico>
-    <!-- TODO: 在font-face加载完毕后改变字体  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
-    <!-- 提前加载place holder  -->
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Vic Liu">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Vic Liu">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta name="description" content="8 make的运行一般来说，最简单的就是直接在命令行下输入make命令，make命令会找当前目录的makefile来执行，一切都是自动的。但也有时你也许只想让make重编译某些文件，而不是整个工程，而又有的时候你有几套编译规则，你想在不同的时候使用不同的编译规则，等等。本章节就是讲述如何使用make命令的。 8.1 make的退出码make命令执行后有三个退出码：  0 —— 表示成功执行。 1">
+<meta name="keywords" content="Makefile,编译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Makefile学习（三）">
+<meta property="og:url" content="http://yoursite.com/2018/08/19/makefile(3)/index.html">
+<meta property="og:site_name" content="What happened">
+<meta property="og:description" content="8 make的运行一般来说，最简单的就是直接在命令行下输入make命令，make命令会找当前目录的makefile来执行，一切都是自动的。但也有时你也许只想让make重编译某些文件，而不是整个工程，而又有的时候你有几套编译规则，你想在不同的时候使用不同的编译规则，等等。本章节就是讲述如何使用make命令的。 8.1 make的退出码make命令执行后有三个退出码：  0 —— 表示成功执行。 1">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-10T07:07:30.915Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Makefile学习（三）">
+<meta name="twitter:description" content="8 make的运行一般来说，最简单的就是直接在命令行下输入make命令，make命令会找当前目录的makefile来执行，一切都是自动的。但也有时你也许只想让make重编译某些文件，而不是整个工程，而又有的时候你有几套编译规则，你想在不同的时候使用不同的编译规则，等等。本章节就是讲述如何使用make命令的。 8.1 make的退出码make命令执行后有三个退出码：  0 —— 表示成功执行。 1">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <link rel="alternate" href="/atom.xml" title="ZyLiu&#39;s Blog" type="application/atom+xml">
+    
+    <title>Makefile学习（三） · ZyLiu&#39;s Blog</title>
     <style type="text/css">
-        @font-face {
-            font-family: 'Oswald-Regular';
-            src: url('/font/Oswald-Regular.ttf');
-        }
-    </style>
-    <style type="text/css">
-        .site-intro-placeholder {
-            position: absolute;
-            z-index: -2;
-            top: 0;
-            left: 0px;
-            width: calc(100% + 300px);
-            height: 100%;
-            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
-            background-position: center center;
-            transform: translate3d(-226px, 0, 0);
-            animation: gradient-move 2.5s ease-out 0s 1;
-        }
-        @keyframes gradient-move {
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
         0% {
             transform: translate3d(-226px, 0, 0);
         }
@@ -39,32 +87,143 @@
             transform: translate3d(0, 0, 0);
         }
     }
+
 </style>
-    <link rel="stylesheet" href = /css/style.css?v=20171020 />
-    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
     
-    <script src="/scripts/main.js" defer></script>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
     <!-- 百度统计  -->
-    
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-        var hm = document.createElement("script");
-        hm.src = "7c848dd260175b67ee7a402af3c08312";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
     
     <!-- 谷歌统计  -->
     
 </head>
+
     
         <body class="post-body">
     
     
 <header class="header">
 
+    <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
     
@@ -80,15 +239,24 @@
     <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
     <div class="wrapper">
-        <div class="site-intro">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
     
     <!-- 主页  -->
     
     
     <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/intro/death-note-l4.jpg)"></div>
     <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
@@ -108,86 +276,145 @@
         </p>
         <!-- 文章页meta -->
         
-            <!-- 文章页标签  -->
-            
-                <div class= post-intro-tags >
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = 编译>编译</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Makefile">Makefile</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-href = Makefile>Makefile</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "编译">编译</a>
     
 </div>
-            
-            <div class="post-intro-meta">
-                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/08/19</span>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">9.5k</span>阅读时长: <span class="post-count reading-time">35 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/08/19</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
             </div>
         
     </div>
 </div>
-        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <script>
-            var browser = {
-                    versions: function () {
-                        var u = window.navigator.userAgent;
-                        return {
-                            userAgent: u,
-                            trident: u.indexOf('Trident') > -1, //IE内核
-                            presto: u.indexOf('Presto') > -1, //opera内核
-                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
-                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
-                            iPad: u.indexOf('iPad') > -1, //是否为iPad
-                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
-                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
-                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
-                        };
-                    }()
-                }
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
 
-            function fontLoaded(){
-                console.log('font loaded');
-                if (document.getElementsByClassName('site-intro-meta')) {
-                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
-                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
-                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
-                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
-                        if (postIntroTags) {
-                            postIntroTags.classList.add('post-fade-in');
-                        }
-                        if (postIntroMeat) {
-                            postIntroMeat.classList.add('post-fade-in');
-                        }
-                    }
-                }
-                
-            console.log("userAgent:" + browser.versions.userAgent);
-            // UC不支持跨域，所以直接显示
-            if (browser.versions.uc) {
-                console.log("UCBrowser");
-                fontLoaded();
-            } else {
-                WebFont.load({
-                    custom: {
-                        families: ['Oswald-Regular']
-                    },
-                    loading: function () {  //所有字体开始加载
-                        // console.log('loading');
-                    },
-                    active: function () {  //所有字体已渲染
-                        fontLoaded();
-                    },
-                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
-                        console.log('inactive: timeout');
-                        fontLoaded();
-                    },
-                    timeout: 7000 // Set the timeout to two seconds
-                });
-            }
-        </script>
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
@@ -199,11 +426,11 @@
 <li>2 —— 如果你使用了make的“-q”选项，并且make使得一些目标不需要更新，那么返回2。</li>
 </ul>
 <h3 id="8-2-指定Makefile"><a href="#8-2-指定Makefile" class="headerlink" title="8.2 指定Makefile"></a>8.2 指定Makefile</h3><p>GNU make找寻默认的Makefile的规则是在当前目录下依次找三个文件——“GNUmakefile”、“makefile”和“Makefile”。其按顺序找这三个文件，一旦找到，就开始读取这个文件并执行。</p>
-<p>我们也可以给make命令指定一个特殊名字的Makefile。要达到这个功能，我们要使用make的<code>-f</code>或是<code>--file</code>参数（<code>--makefile</code>参数也行）。例如，我们有个makefile的名字是<code>hchen.mk</code>，那么，我们可以这样来让make来执行这个文件：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make –f hchen.mk</div></pre></td></tr></table></figure></p>
+<p>我们也可以给make命令指定一个特殊名字的Makefile。要达到这个功能，我们要使用make的<code>-f</code>或是<code>--file</code>参数（<code>--makefile</code>参数也行）。例如，我们有个makefile的名字是<code>hchen.mk</code>，那么，我们可以这样来让make来执行这个文件：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make –f hchen.mk</span><br></pre></td></tr></table></figure></p>
 <p>如果在make的命令行，不只一次地使用了“-f”参数，那么，所有指定的makefile将会被连在一起传递给make执行。</p>
 <h3 id="8-3-指定目标"><a href="#8-3-指定目标" class="headerlink" title="8.3 指定目标"></a>8.3 指定目标</h3><p>只需增加目标名字即可将这个目标指定为终极目标。什么也不加的话make会将第一个目标作为终极目标。</p>
 <p>任何在makefile中的目标都可以被指定成终极目标，但是除了以“-”打头，或是包含了“=”的目标，因为有这些字符的目标，会被解析成命令行参数或是变量。甚至没有被我们明确写出来的目标也可以成为make的终极目标，也就是说，只要make可以找到其隐含规则推导规则，那么这个隐含目标同样可以被指定成终极目标。</p>
-<p>有一个make的环境变量叫<code>MAKECMDGOALS</code>，这个变量中会存放你所指定的终极目标的列表，如果在命令行上，你没有指定目标，那么，这个变量是空值。这个变量可以让你使用在一些比较特殊的情形下。比如下面的例子：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sources = foo.c bar.c</div><div class="line"><span class="keyword">ifneq</span> ( <span class="variable">$(MAKECMDGOALS)</span>,clean)</div><div class="line"><span class="keyword">include</span> $(sources:.c=.d)</div><div class="line"><span class="keyword">endif</span></div></pre></td></tr></table></figure></p>
+<p>有一个make的环境变量叫<code>MAKECMDGOALS</code>，这个变量中会存放你所指定的终极目标的列表，如果在命令行上，你没有指定目标，那么，这个变量是空值。这个变量可以让你使用在一些比较特殊的情形下。比如下面的例子：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sources = foo.c bar.c</span><br><span class="line"><span class="keyword">ifneq</span> ( <span class="variable">$(MAKECMDGOALS)</span>,clean)</span><br><span class="line"><span class="keyword">include</span> $(sources:.c=.d)</span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure></p>
 <p>基于上面的这个例子，只要我们输入的命令不是<code>make clean</code>，那么makefile会自动包含<code>foo.d</code>和<code>bar.d</code>这两个makefile。</p>
 <p>即然make可以指定所有makefile中的目标，那么也包括“伪目标”，于是我们可以根据这种性质来让我们的makefile根据指定的不同的目标来完成不同的事。在Unix世界中，软件发布时，特别是GNU这种开源软件的发布时，其makefile都包含了编译、安装、打包等功能。我们可以参照这种规则来书写我们的makefile中的目标。</p>
 <ul>
@@ -288,8 +515,8 @@
 <p>“隐含规则”会使用一些我们系统变量，我们可以改变这些系统变量的值来定制隐含规则的运行时的参数。如系统变量“CFLAGS”可以控制编译时的编译器参数。</p>
 <p>我们还可以通过“模式规则”的方式写下自己的隐含规则。用“后缀规则”来定义隐含规则会有许多的限制。使用“模式规则”会更回得智能和清楚，但“后缀规则”可以用来保证我们Makefile的兼容性。<br>我们了解了“隐含规则”，可以让其为我们更好的服务，也会让我们知道一些“约定俗成”了的东西，而不至于使得我们在运行Makefile时出现一些我们觉得莫名其妙的东西。当然，任何事物都是矛盾的，水能载舟，亦可覆舟，所以，有时候“隐含规则”也会给我们造成不小的麻烦。只有了解了它，我们才能更好地使用它。</p>
 <h3 id="9-1-使用隐含规则"><a href="#9-1-使用隐含规则" class="headerlink" title="9.1 使用隐含规则"></a>9.1 使用隐含规则</h3><p>如果要使用隐含规则生成你需要的目标，你所需要做的就是不要写出这个目标的规则，而是让make自动推到生成这个目标的规则。<br>如果make可以自动推导生成这个目标的规则和命令，那么这个行为就是隐含规则的自动推导。</p>
-<p>例如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">foo : foo.o bar.o</div><div class="line">    cc –o foo foo.o bar.o <span class="variable">$(CFLAGS)</span> <span class="variable">$(LDFLAGS)</span></div></pre></td></tr></table></figure></p>
-<p>一个makefile中只包含以上内容，并没有指出<code>foo.o</code>与<code>bar.o</code>是怎么生成的。make的“隐含规则”功能会自动为我们自动去推导这两个目标的依赖目标和生成命令。<br>make会在自己的“隐含规则”库中寻找可以用的规则，如果找到，那么就会使用。如果找不到，那么就会报错。在上面的例子中，make调用的隐含规则是：把[.o]的目标的依赖文件置成[.c]，并使用C的编译命令<code>cc –c $(CFLAGS) [.c]</code>来生成[.o]的目标。也就是说，我们完全没有必要写下下面的两条规则：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">foo.o : foo.c</div><div class="line">    cc –c foo.c <span class="variable">$(CFLAGS)</span></div><div class="line">bar.o : bar.c</div><div class="line">    cc –c bar.c <span class="variable">$(CFLAGS)</span></div></pre></td></tr></table></figure></p>
+<p>例如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foo : foo.o bar.o</span><br><span class="line">    cc –o foo foo.o bar.o <span class="variable">$(CFLAGS)</span> <span class="variable">$(LDFLAGS)</span></span><br></pre></td></tr></table></figure></p>
+<p>一个makefile中只包含以上内容，并没有指出<code>foo.o</code>与<code>bar.o</code>是怎么生成的。make的“隐含规则”功能会自动为我们自动去推导这两个目标的依赖目标和生成命令。<br>make会在自己的“隐含规则”库中寻找可以用的规则，如果找到，那么就会使用。如果找不到，那么就会报错。在上面的例子中，make调用的隐含规则是：把[.o]的目标的依赖文件置成[.c]，并使用C的编译命令<code>cc –c $(CFLAGS) [.c]</code>来生成[.o]的目标。也就是说，我们完全没有必要写下下面的两条规则：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">foo.o : foo.c</span><br><span class="line">    cc –c foo.c <span class="variable">$(CFLAGS)</span></span><br><span class="line">bar.o : bar.c</span><br><span class="line">    cc –c bar.c <span class="variable">$(CFLAGS)</span></span><br></pre></td></tr></table></figure></p>
 <p>当然，如果我们为[.o]文件书写了自己的规则，那么make就不会自动推导并调用隐含规则，它会按照我们写好的规则忠实地执行。</p>
 <p>在make的“隐含规则库”中，每一条隐含规则都在库中有其顺序，越靠前的则是越被经常使用的，所以，这会导致我们有些时候即使我们显示地指定了目标依赖，make也不会管。如下面这条规则（没有命令）：</p>
 <pre><code>foo.o : foo.p
@@ -311,7 +538,7 @@
 <li><p>汇编和汇编预处理的隐含规则。<br><code>&lt;n&gt;.o</code>的目标的依赖目标会自动推导为<code>&lt;n&gt;.s</code>，默认使用编译品<code>as</code>，并且其生成命令是：<code>$(AS) $(ASFLAGS)</code>。<code>&lt;n&gt;.s</code> 的目标的依赖目标会自动推导为<code>&lt;n&gt;.S</code>，默认使用C预编译器<code>cpp</code>，并且其生成命令是：<code>$(AS) $(ASFLAGS)</code>。</p>
 </li>
 <li><p>链接Object文件的隐含规则。<br><code>&lt;n&gt;</code>目标依赖于<code>&lt;n&gt;.o</code>，通过运行C的编译器来运行链接程序生成（一般是<code>ld</code>），其生成命令是：<code>$(CC) $(LDFLAGS) &lt;n&gt;.o $(LOADLIBES) $(LDLIBS)</code>。这个规则对于只有一个源文件的工程有效，同时也对多个Object文件（由不同的源文件生成）的也有效。例如如下规则：<code>x : y.o z.o</code>。<br>并且<code>x.c</code>、<code>y.c</code>和<code>z.c</code>都存在时，隐含规则将执行如下命令：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cc -c x.c -o x.o</div><div class="line">cc -c y.c -o y.o</div><div class="line">cc -c z.c -o z.o</div><div class="line">cc x.o y.o z.o -o x</div><div class="line">rm -f x.o</div><div class="line">rm -f y.o</div><div class="line">rm -f z.o</div></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cc -c x.c -o x.o</span><br><span class="line">cc -c y.c -o y.o</span><br><span class="line">cc -c z.c -o z.o</span><br><span class="line">cc x.o y.o z.o -o x</span><br><span class="line">rm -f x.o</span><br><span class="line">rm -f y.o</span><br><span class="line">rm -f z.o</span><br></pre></td></tr></table></figure>
 <p>如果没有一个源文件（如上例中的x.c）和你的目标名字（如上例中的x）相关联，那么，你最好写出自己的生成规则，不然，隐含规则会报错的。</p>
 </li>
 <li><p>Yacc C程序时的隐含规则。<br><code>&lt;n&gt;.c</code>的依赖文件被自动推导为<code>n.y</code>（Yacc生成的文件），其生成命令是：<code>$(YACC) $(YFALGS)</code>。（<code>Yacc</code>是一个语法分析器，关于其细节请查看相关资料）</p>
@@ -404,12 +631,12 @@
 <h3 id="9-5-定义模式规则"><a href="#9-5-定义模式规则" class="headerlink" title="9.5 定义模式规则"></a>9.5 定义模式规则</h3><p>你可以使用模式规则来定义一个隐含规则。一个模式规则就好像一个一般的规则，只是在规则中，目标的定义需要有<code>%</code>字符。<code>%</code>的意思是表示一个或多个任意字符。在依赖目标中同样可以使用<code>%</code>，只是依赖目标中的<code>%</code>的取值，取决于其目标。</p>
 <p>有一点需要注意的是，<code>%</code>的展开发生在变量和函数的展开之后，变量和函数的展开发生在make载入Makefile时，而模式规则中的<code>%</code>则发生在运行时。</p>
 <h4 id="模式规则介绍"><a href="#模式规则介绍" class="headerlink" title="模式规则介绍"></a>模式规则介绍</h4><p>模式规则中，至少在规则的<strong>目标定义</strong>中要包含<code>%</code>，否则，就是一般的规则。<br>目标中的<code>%</code>定义表示对文件名的匹配，<code>%</code>表示长度任意的非空字符串。例如：<code>%.c</code>表示以<code>.c</code>结尾的文件名（文件名的长度至少为3），而<code>s.%.c</code>则表示以<code>s.</code>开头，<code>.c</code>结尾的文件名（文件名的长度至少为5）。</p>
-<p>如果”%”定义在目标中，那么，<strong>目标中的”%”的值决定了依赖目标中的”%”的值</strong>，也就是说，目标中的模式的”%”决定了依赖目标中”%”的样子。例如有一个模式规则如下：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.o : %.c  </div><div class="line">    &lt;command ......&gt;</div></pre></td></tr></table></figure></p>
+<p>如果”%”定义在目标中，那么，<strong>目标中的”%”的值决定了依赖目标中的”%”的值</strong>，也就是说，目标中的模式的”%”决定了依赖目标中”%”的样子。例如有一个模式规则如下：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.o : %.c  </span><br><span class="line">    &lt;command ......&gt;</span><br></pre></td></tr></table></figure></p>
 <p>其含义是，指出了怎么从所有的[.c]文件生成相应的[.o]文件的规则。如果要生成的目标是<code>a.o b.o</code>，那么<code>%.c</code>就是<code>a.c b.c</code>。</p>
 <p>一旦依赖目标中的”%”模式被确定，那么，make会被要求去匹配当前目录下所有的文件名，一旦找到，make就会规则下的命令，所以，在模式规则中，目标可能会是多个的，如果有模式匹配出多个目标，make就会产生所有的模式目标，此时，make关心的是依赖的文件名和生成目标的命令这两件事。</p>
-<h4 id="模式规则示例"><a href="#模式规则示例" class="headerlink" title="模式规则示例"></a>模式规则示例</h4><p>下面这个例子表示,把所有的[.c]文件都编译成[.o]文件：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.o : %.c</div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></div></pre></td></tr></table></figure></p>
+<h4 id="模式规则示例"><a href="#模式规则示例" class="headerlink" title="模式规则示例"></a>模式规则示例</h4><p>下面这个例子表示,把所有的[.c]文件都编译成[.o]文件：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.o : %.c</span><br><span class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure></p>
 <p>其中，<code>$@</code>表示所有的目标的挨个值，<code>$&lt;</code>表示了所有依赖目标的挨个值。</p>
-<p>下面的这个例子中有两个目标是模式的：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.tab.c %.tab.h: %.y</div><div class="line">     bison -d <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
+<p>下面的这个例子中有两个目标是模式的：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.tab.c %.tab.h: %.y</span><br><span class="line">     bison -d <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure></p>
 <p>这条规则告诉make把所有的[.y]文件都以<code>bison -d &lt;n&gt;.y</code>执行，然后生成<code>&lt;n&gt;.tab.c</code>和<code>&lt;n&gt;.tab.h</code>文件。（其中，<code>&lt;n&gt;</code>表示一个任意字符串）。如果我们的执行程序<code>foo</code>依赖于文件<code>parse.tab.o</code>和<code>scan.o</code>，并且文件<code>scan.o</code>依赖于文件<code>parse.tab.h</code>，如果<code>parse.y</code>文件被更新了，那么根据上述的规则，<code>bison -d parse.y</code>就会被执行一次，于是，<code>parse.tab.o</code>和<code>scan.o</code>的依赖文件就齐了。</p>
 <h4 id="自动化变量"><a href="#自动化变量" class="headerlink" title="自动化变量"></a>自动化变量</h4><p>在上述的模式规则中，目标和依赖文件都是一系例的文件，那么如何书写一个命令来完成从不同的依赖文件生成相应的目标？因为在每一次的对模式规则的解析时，都会是不同的目标和依赖文件。<br>自动化变量就是完成这个功能的。所谓自动化变量，就是会把模式中所定义的一系列的文件自动地挨个取出，直至所有的符合模式的文件都取完了。这种自动化变量只应出现在规则的命令中。</p>
 <p>下面是所有的自动化变量及其说明：</p>
@@ -429,22 +656,22 @@
 <li><p><code>$*</code><br>  这个变量表示目标模式中<code>%</code>及其之前的部分。如果目标是<code>dir/a.foo.b</code>，并且目标的模式是<code>a.%.b</code>，那么，<code>$*</code>的值就是<code>dir/a.foo</code>。这个变量对于构造有关联的文件名是比较有用。<br>  如果目标中没有模式的定义，那么<code>$*</code>也就不能被推导出，但是，如果目标文件的后缀是make所识别的，那么<code>$*</code>就是除了后缀的那一部分。例如：如果目标是<code>foo.c</code>，因为<code>.c</code>是make所能识别的后缀名，所以，<code>$*</code>的值就是<code>foo</code>。这个特性是GNU make的，很有可能不兼容于其它版本的make。</p>
 </li>
 </ul>
-<p>当你希望只对更新过的依赖文件进行操作时，”$?”在显式规则中很有用，例如，假设有一个函数库文件叫”lib”，其由其它几个object文件更新。那么把object文件打包的比较有效率的Makefile规则是：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lib : foo.o bar.o lose.o win.o</div><div class="line">    ar r lib <span class="variable">$?</span></div></pre></td></tr></table></figure></p>
+<p>当你希望只对更新过的依赖文件进行操作时，”$?”在显式规则中很有用，例如，假设有一个函数库文件叫”lib”，其由其它几个object文件更新。那么把object文件打包的比较有效率的Makefile规则是：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lib : foo.o bar.o lose.o win.o</span><br><span class="line">    ar r lib <span class="variable">$?</span></span><br></pre></td></tr></table></figure></p>
 <p>在上述所列出来的自动量变量中。四个变量（<code>$@</code>、<code>$&lt;</code>、<code>$%</code>、<code>$*</code>）在扩展时只会有一个文件，而另三个的值是一个文件列表。</p>
 <p>这七个自动化变量还可以取得文件的目录名或是在当前目录下的符合模式的文件名，只需要搭配上”D”或”F”字样。<br>例如，<code>$(@D)</code>表示<code>$@</code>的目录部分（不以斜杠作为结尾），如果<code>$@</code>值是<code>dir/foo.o</code>，那么<code>$(@D)</code>就是<code>dir</code>，而如果”$@”中没有包含斜杠的话，其值就是”.”（当前目录）。<br><code>$(@F)</code>表示”$@”的文件部分，如果<code>$@</code>值是<code>dir/foo.o</code>，那么<code>$(@F)</code>就是<code>foo.o</code>，<code>$(@F)</code>相当于函数<code>$(notdir $@)</code>。</p>
 <h4 id="模式的匹配"><a href="#模式的匹配" class="headerlink" title="模式的匹配"></a>模式的匹配</h4><p>一般来说，一个目标的模式有一个有前缀或是后缀的<code>%</code>，或是没有前后缀，直接就是一个<code>%</code>。因为<code>%</code>代表一个或多个字符，所以在定义好了的模式中，我们把<code>%</code>所匹配的内容叫做“茎”，例如<code>%.c</code>所匹配的文件<code>test.c</code>中<code>test</code>就是“茎”。因为在目标和依赖目标中同时有<code>%</code>时，依赖目标的“茎”会传给目标，当做目标中的“茎”。</p>
 <p>当一个模式匹配包含有斜杠（实际也不经常包含）的文件时，那么在进行模式匹配时，目录部分会首先被移开，然后进行匹配，成功后，再把目录加回去。在进行“茎”的传递时，我们需要知道这个步骤。例如有一个模式<code>e%t</code>，文件<code>src/eat</code>匹配于该模式，于是<code>src/a</code>就是其“茎”，如果这个模式定义在依赖目标中，而被依赖于这个模式的目标中又有个模式<code>c%r</code>，那么，目标就是<code>src/car</code>。（”茎”被传递）</p>
-<h4 id="重载内建隐含规则"><a href="#重载内建隐含规则" class="headerlink" title="重载内建隐含规则"></a>重载内建隐含规则</h4><p>可以重载内建的隐含规则（或是定义一个全新的），例如你可以重新构造和内建隐含规则不同的命令，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%.o : %.c</div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(CFLAGS)</span> -D<span class="variable">$(date)</span></div></pre></td></tr></table></figure></p>
-<p>你可以取消内建的隐含规则，只要不在后面写命令就行。如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">%.o : %.s</div></pre></td></tr></table></figure></p>
+<h4 id="重载内建隐含规则"><a href="#重载内建隐含规则" class="headerlink" title="重载内建隐含规则"></a>重载内建隐含规则</h4><p>可以重载内建的隐含规则（或是定义一个全新的），例如你可以重新构造和内建隐含规则不同的命令，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.o : %.c</span><br><span class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(CFLAGS)</span> -D<span class="variable">$(date)</span></span><br></pre></td></tr></table></figure></p>
+<p>你可以取消内建的隐含规则，只要不在后面写命令就行。如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%.o : %.s</span><br></pre></td></tr></table></figure></p>
 <p>同样，你也可以重新定义一个全新的隐含规则，其在隐含规则中的位置取决于你在哪里写下这个规则。朝前的位置就靠前。</p>
 <h3 id="9-6-老式风格的”后缀规则”"><a href="#9-6-老式风格的”后缀规则”" class="headerlink" title="9.6 老式风格的”后缀规则”"></a>9.6 老式风格的”后缀规则”</h3><p>前面所说的<code>%.c:%.o</code>为模式规则，还有一种较老的方式<code>.c.o</code>为后缀规则。后缀规则有两种方式：”双后缀”和”单后缀”。</p>
 <p>双后缀规则定义了一对后缀：目标文件的后缀和依赖目标（源文件）的后缀。如<code>.c.o</code>相当于<code>%o : %c</code>。<br>单后缀规则只定义一个后缀，也就是源文件的后缀。如<code>.c</code>相当于<code>% : %.c</code>。</p>
-<p>后缀规则中所定义的后缀应该是make所认识的，如果一个后缀是make所认识的，那么这个规则就是单后缀规则，而如果两个连在一起的后缀都被make所认识，那就是双后缀规则。<br>例如：<code>.c</code>和<code>.o</code>都是make所知道。因而，如果你定义了一个规则是<code>.c.o</code>那么其就是双后缀规则，意义就是<code>.c</code>是源文件的后缀，<code>.o</code>是目标文件的后缀。如下示例：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">.c.o:</span></div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
-<p>后缀规则不允许任何的依赖文件，如果有依赖文件的话，那就不是后缀规则，那些后缀统统被认为是文件名，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">.c.o: foo.h</span></div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
-<p>这个例子的意思为文件<code>.c.o</code>依赖于文件<code>foo.h</code>，而不是我们想要的这样：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">%.o: %.c foo.h</span></div><div class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></div></pre></td></tr></table></figure></p>
+<p>后缀规则中所定义的后缀应该是make所认识的，如果一个后缀是make所认识的，那么这个规则就是单后缀规则，而如果两个连在一起的后缀都被make所认识，那就是双后缀规则。<br>例如：<code>.c</code>和<code>.o</code>都是make所知道。因而，如果你定义了一个规则是<code>.c.o</code>那么其就是双后缀规则，意义就是<code>.c</code>是源文件的后缀，<code>.o</code>是目标文件的后缀。如下示例：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.c.o:</span></span><br><span class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure></p>
+<p>后缀规则不允许任何的依赖文件，如果有依赖文件的话，那就不是后缀规则，那些后缀统统被认为是文件名，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.c.o: foo.h</span></span><br><span class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这个例子的意思为文件<code>.c.o</code>依赖于文件<code>foo.h</code>，而不是我们想要的这样：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">%.o: %.c foo.h</span></span><br><span class="line">    <span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure></p>
 <p>后缀规则中，如果没有命令，那是毫无意义的。因为他也不会移去内建的隐含规则。</p>
-<p>而要让make知道一些特定的后缀，我们可以使用伪目标<code>.SUFFIXES</code>来定义或是删除，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="section">.SUFFIXES: .hack .win</span></div></pre></td></tr></table></figure></p>
-<p>把后缀.hack和.win加入后缀列表中的末尾。<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="section">.SUFFIXES:              # 删除默认的后缀</span></div><div class="line"><span class="section">.SUFFIXES: .c .o .h   # 定义自己的后缀</span></div></pre></td></tr></table></figure></p>
+<p>而要让make知道一些特定的后缀，我们可以使用伪目标<code>.SUFFIXES</code>来定义或是删除，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.SUFFIXES: .hack .win</span></span><br></pre></td></tr></table></figure></p>
+<p>把后缀.hack和.win加入后缀列表中的末尾。<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.SUFFIXES:              # 删除默认的后缀</span></span><br><span class="line"><span class="section">.SUFFIXES: .c .o .h   # 定义自己的后缀</span></span><br></pre></td></tr></table></figure></p>
 <p>先清除默认后缀，后定义自己的后缀列表。</p>
 <p>make的参数<code>-r</code>或<code>-no-builtin-rules</code>也会使用得默认的后缀列表为空。而变量<code>SUFFIXE</code>被用来定义默认的后缀列表，你可以用<code>.SUFFIXES</code>来改变后缀列表，但请不要改变变量<code>SUFFIXE</code>的值。</p>
 <h3 id="9-7-隐含规则搜索算法"><a href="#9-7-隐含规则搜索算法" class="headerlink" title="9.7 隐含规则搜索算法"></a>9.7 隐含规则搜索算法</h3><p>比如我们有一个目标叫 <code>T</code>，下面是搜索目标<code>T</code>的规则的算法。<br>如果目标是<code>archive(member)&quot;</code>的函数库文件模式，那么这个算法会被运行两次，第一次是找目标<code>T</code>，如果没有找到的话，那么进入第二次，第二次会把<code>member</code>当作<code>T</code>来搜索。</p>
@@ -467,34 +694,36 @@
 <p>一旦规则被找到，就会执行其相当的命令，而此时，我们的自动化变量的值才会生成。</p>
 <hr>
 <h2 id="10-使用make更新函数库文件"><a href="#10-使用make更新函数库文件" class="headerlink" title="10 使用make更新函数库文件"></a>10 使用make更新函数库文件</h2><p>函数库文件也就是对Object文件（程序编译的中间文件）的打包文件。在Unix下，一般是由命令”ar”来完成打包工作。</p>
-<h3 id="10-1-函数库文件的成员"><a href="#10-1-函数库文件的成员" class="headerlink" title="10.1 函数库文件的成员"></a>10.1 函数库文件的成员</h3><p>一个函数库文件由多个文件组成。你可以以如下格式指定函数库文件及其组成：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">archive(member)</div></pre></td></tr></table></figure></p>
-<p>这个不是一个命令，而一个目标和依赖的定义。一般来说，这种用法基本上就是为了<code>ar</code>命令来服务的。如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">foolib(hack.o) : hack.o</div><div class="line">    ar cr foolib hack.o</div></pre></td></tr></table></figure></p>
-<p>如果要指定多个member，那就以空格分开，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">foolib(hack.o kludge.o)</div><div class="line"><span class="comment">#等价于：</span></div><div class="line">foolib(hack.o) foolib(kludge.o)</div></pre></td></tr></table></figure></p>
+<h3 id="10-1-函数库文件的成员"><a href="#10-1-函数库文件的成员" class="headerlink" title="10.1 函数库文件的成员"></a>10.1 函数库文件的成员</h3><p>一个函数库文件由多个文件组成。你可以以如下格式指定函数库文件及其组成：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">archive(member)</span><br></pre></td></tr></table></figure></p>
+<p>这个不是一个命令，而一个目标和依赖的定义。一般来说，这种用法基本上就是为了<code>ar</code>命令来服务的。如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foolib(hack.o) : hack.o</span><br><span class="line">    ar cr foolib hack.o</span><br></pre></td></tr></table></figure></p>
+<p>如果要指定多个member，那就以空格分开，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foolib(hack.o kludge.o)</span><br><span class="line"><span class="comment">#等价于：</span></span><br><span class="line">foolib(hack.o) foolib(kludge.o)</span><br></pre></td></tr></table></figure></p>
 <p>还可以使用Shell的文件通配符来定义：<code>foolib(*.o)</code></p>
-<h3 id="10-2-函数库成员的隐含规则"><a href="#10-2-函数库成员的隐含规则" class="headerlink" title="10.2 函数库成员的隐含规则"></a>10.2 函数库成员的隐含规则</h3><p>当make搜索一个目标的隐含规则时，一个特殊的特性是，如果这个目标是<code>a(m)</code>形式的，其会把目标变成<code>(m)</code>。于是，如果我们的成员是<code>%.o</code>的模式定义，并且如果我们使用<code>make foo.a(bar.o)</code>的形式调用Makefile时，隐含规则会去找<code>bar.o</code>的规则，如果没有定义<code>bar.o</code>的规则，那么内建隐含规则生效，make会去找<code>bar.c</code>文件来生成<code>bar.o</code>，如果找得到的话，make执行的命令大致如下：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cc -c bar.c -o bar.o</div><div class="line">ar r foo.a bar.o</div><div class="line">rm -f bar.o</div></pre></td></tr></table></figure></p>
-<h3 id="10-3-函数库文件的后缀规则"><a href="#10-3-函数库文件的后缀规则" class="headerlink" title="10.3 函数库文件的后缀规则"></a>10.3 函数库文件的后缀规则</h3><p>可以使用”后缀规则”和”隐含规则”来生成函数库打包文件，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="section">.c.a:</span></div><div class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(AR)</span> r <span class="variable">$@</span> <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(RM)</span> <span class="variable">$*</span>.o</div><div class="line"></div><div class="line"><span class="comment"># 其等效于：</span></div><div class="line">(%.o) : %.c</div><div class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(AR)</span> r <span class="variable">$@</span> <span class="variable">$*</span>.o</div><div class="line">    <span class="variable">$(RM)</span> <span class="variable">$*</span>.o</div></pre></td></tr></table></figure></p>
+<h3 id="10-2-函数库成员的隐含规则"><a href="#10-2-函数库成员的隐含规则" class="headerlink" title="10.2 函数库成员的隐含规则"></a>10.2 函数库成员的隐含规则</h3><p>当make搜索一个目标的隐含规则时，一个特殊的特性是，如果这个目标是<code>a(m)</code>形式的，其会把目标变成<code>(m)</code>。于是，如果我们的成员是<code>%.o</code>的模式定义，并且如果我们使用<code>make foo.a(bar.o)</code>的形式调用Makefile时，隐含规则会去找<code>bar.o</code>的规则，如果没有定义<code>bar.o</code>的规则，那么内建隐含规则生效，make会去找<code>bar.c</code>文件来生成<code>bar.o</code>，如果找得到的话，make执行的命令大致如下：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cc -c bar.c -o bar.o</span><br><span class="line">ar r foo.a bar.o</span><br><span class="line">rm -f bar.o</span><br></pre></td></tr></table></figure></p>
+<h3 id="10-3-函数库文件的后缀规则"><a href="#10-3-函数库文件的后缀规则" class="headerlink" title="10.3 函数库文件的后缀规则"></a>10.3 函数库文件的后缀规则</h3><p>可以使用”后缀规则”和”隐含规则”来生成函数库打包文件，如：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.c.a:</span></span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$*</span>.o</span><br><span class="line">    <span class="variable">$(AR)</span> r <span class="variable">$@</span> <span class="variable">$*</span>.o</span><br><span class="line">    <span class="variable">$(RM)</span> <span class="variable">$*</span>.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其等效于：</span></span><br><span class="line">(%.o) : %.c</span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$*</span>.o</span><br><span class="line">    <span class="variable">$(AR)</span> r <span class="variable">$@</span> <span class="variable">$*</span>.o</span><br><span class="line">    <span class="variable">$(RM)</span> <span class="variable">$*</span>.o</span><br></pre></td></tr></table></figure></p>
 <h3 id="10-4-注意事项"><a href="#10-4-注意事项" class="headerlink" title="10.4 注意事项"></a>10.4 注意事项</h3><p>在进行函数库打包文件生成时，请小心使用make的并行机制（<code>-j</code>参数）。如果多个ar命令在同一时间运行在同一个函数库打包文件上，就很有可以损坏这个函数库文件。所以，在make未来的版本中，应该提供一种机制来避免并行操作发生在函数打包文件上。</p>
 <p>但就目前而言，你还是应该不要尽量不要使用<code>-j</code>参数。</p>
 
     </article>
-    <!-- 前后页  -->
-    <ul class="post-pager">
-        
-            <li class="next">
-                <a href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" title= 从VS转移到VScode（由未找到预定义引出的问题） >
-                    <span>Next Post</span>
-                    <span>从VS转移到VScode（由未找到预定义引出的问题）</span>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" title= "从VS转移到VScode（由未找到预定义引出的问题）">
+                    <div class="nextTitle">从VS转移到VScode（由未找到预定义引出的问题）</div>
                 </a>
-            </li>
-        
-        
-            <li class="previous">
-                <a href= "/2018/08/18/makefile(2)/" title= Makefile学习（二） >
-                    <span>Previous Post</span>
-                    <span>Makefile学习（二）</span>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/08/18/makefile(2)/" title= "Makefile学习（二）">
+                    <div class="prevTitle">Makefile学习（二）</div>
                 </a>
-            </li>
-        
+            
+        </li>
     </ul>
     <!-- 评论插件 -->
     <!-- 来必力City版安装代码 -->
@@ -502,12 +731,18 @@
 <!-- City版安装代码已完成 -->
     
     
-    <!--PC版-->
+    <!-- gitalk评论 -->
 
+    <!-- utteranc评论 -->
+
+    <!-- partial('_partial/comment/changyan') -->
     <!--PC版-->
 
 
     
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -526,20 +761,46 @@
     
         
             
-                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title="github"></a>
+                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title=github></a>
             
         
     
         
-            
-                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
-            
+    
         
     
         
             
-                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title=weibo></a>
             
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
         
     
 
@@ -547,31 +808,48 @@
     
     <!-- powered by Hexo  -->
     <div class="copyright">
-        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">Theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">archer</a></span>
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
     </div>
     <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
     
 </footer>
     </div>
     <!-- toc -->
     
-    <div class="toc-wrapper">
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-make的运行"><span class="toc-number">1.</span> <span class="toc-text">8 make的运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-make的退出码"><span class="toc-number">1.1.</span> <span class="toc-text">8.1 make的退出码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-指定Makefile"><span class="toc-number">1.2.</span> <span class="toc-text">8.2 指定Makefile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-指定目标"><span class="toc-number">1.3.</span> <span class="toc-text">8.3 指定目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-make的参数"><span class="toc-number">1.4.</span> <span class="toc-text">8.4 make的参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-隐含规则"><span class="toc-number">2.</span> <span class="toc-text">9 隐含规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-使用隐含规则"><span class="toc-number">2.1.</span> <span class="toc-text">9.1 使用隐含规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-隐含规则一览"><span class="toc-number">2.2.</span> <span class="toc-text">9.2 隐含规则一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-隐含规则使用的变量"><span class="toc-number">2.3.</span> <span class="toc-text">9.3 隐含规则使用的变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关于命令的变量"><span class="toc-number">2.3.1.</span> <span class="toc-text">关于命令的变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关于参数的变量"><span class="toc-number">2.3.2.</span> <span class="toc-text">关于参数的变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4-隐含规则链"><span class="toc-number">2.4.</span> <span class="toc-text">9.4 隐含规则链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-5-定义模式规则"><span class="toc-number">2.5.</span> <span class="toc-text">9.5 定义模式规则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#模式规则介绍"><span class="toc-number">2.5.1.</span> <span class="toc-text">模式规则介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模式规则示例"><span class="toc-number">2.5.2.</span> <span class="toc-text">模式规则示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自动化变量"><span class="toc-number">2.5.3.</span> <span class="toc-text">自动化变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模式的匹配"><span class="toc-number">2.5.4.</span> <span class="toc-text">模式的匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重载内建隐含规则"><span class="toc-number">2.5.5.</span> <span class="toc-text">重载内建隐含规则</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-6-老式风格的”后缀规则”"><span class="toc-number">2.6.</span> <span class="toc-text">9.6 老式风格的”后缀规则”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-7-隐含规则搜索算法"><span class="toc-number">2.7.</span> <span class="toc-text">9.7 隐含规则搜索算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-使用make更新函数库文件"><span class="toc-number">3.</span> <span class="toc-text">10 使用make更新函数库文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-1-函数库文件的成员"><span class="toc-number">3.1.</span> <span class="toc-text">10.1 函数库文件的成员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-2-函数库成员的隐含规则"><span class="toc-number">3.2.</span> <span class="toc-text">10.2 函数库成员的隐含规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-3-函数库文件的后缀规则"><span class="toc-number">3.3.</span> <span class="toc-text">10.3 函数库文件的后缀规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-4-注意事项"><span class="toc-number">3.4.</span> <span class="toc-text">10.4 注意事项</span></a></li></ol></li></ol>
     </div>
     
-    <div class="back-top">&#xe639;</div>
-    <div class="sidebar">
-    <div class="sidebar-header sidebar-header-show-archive">
-        <div class="sidebar-category">
-            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
-            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
-        </div>
-    </div>
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
     <div class="sidebar-content sidebar-content-show-archive">
-          <div class="sidebar-archive">
+          <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
     
     
@@ -707,12 +985,53 @@
     
     
     
-    <div class="total-archive"> Total : 14 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 15
+        </div>
+        <!-- search  -->
+        
+    </div>
     
     <div class="post-archive">
     
     
     
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/10</span><a class="archive-post-title" href= "/2020/05/10/合肥觅食/" >合肥觅食</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
@@ -798,45 +1117,52 @@
     
     </div>
   </div>
-        <div class="sidebar-tags">
+        <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">toy</a></span>
+        <span class="sidebar-tag-name" data-tags="toy"><span class="iconfont-archer">&#xe606;</span>toy</span>
     
-        <span class="sidebar-tag-name"><a href= "#">Linux</a></span>
+        <span class="sidebar-tag-name" data-tags="C++"><span class="iconfont-archer">&#xe606;</span>C++</span>
     
-        <span class="sidebar-tag-name"><a href= "#">C++</a></span>
+        <span class="sidebar-tag-name" data-tags="多态"><span class="iconfont-archer">&#xe606;</span>多态</span>
     
-        <span class="sidebar-tag-name"><a href= "#">想法</a></span>
+        <span class="sidebar-tag-name" data-tags="GDB"><span class="iconfont-archer">&#xe606;</span>GDB</span>
     
-        <span class="sidebar-tag-name"><a href= "#">多态</a></span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
-        <span class="sidebar-tag-name"><a href= "#">编辑器</a></span>
+        <span class="sidebar-tag-name" data-tags="QNX"><span class="iconfont-archer">&#xe606;</span>QNX</span>
     
-        <span class="sidebar-tag-name"><a href= "#">编译</a></span>
+        <span class="sidebar-tag-name" data-tags="网络"><span class="iconfont-archer">&#xe606;</span>网络</span>
     
-        <span class="sidebar-tag-name"><a href= "#">Makefile</a></span>
+        <span class="sidebar-tag-name" data-tags="Android"><span class="iconfont-archer">&#xe606;</span>Android</span>
     
-        <span class="sidebar-tag-name"><a href= "#">GDB</a></span>
+        <span class="sidebar-tag-name" data-tags="构建"><span class="iconfont-archer">&#xe606;</span>构建</span>
     
-        <span class="sidebar-tag-name"><a href= "#">Android</a></span>
+        <span class="sidebar-tag-name" data-tags="想法"><span class="iconfont-archer">&#xe606;</span>想法</span>
     
-        <span class="sidebar-tag-name"><a href= "#">构建</a></span>
+        <span class="sidebar-tag-name" data-tags="Makefile"><span class="iconfont-archer">&#xe606;</span>Makefile</span>
     
-        <span class="sidebar-tag-name"><a href= "#">QNX</a></span>
+        <span class="sidebar-tag-name" data-tags="编译"><span class="iconfont-archer">&#xe606;</span>编译</span>
     
-        <span class="sidebar-tag-name"><a href= "#">网络</a></span>
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
-        <span class="sidebar-tag-name"><a href= "#">内存泄露</a></span>
+        <span class="sidebar-tag-name" data-tags="生活"><span class="iconfont-archer">&#xe606;</span>生活</span>
+    
+        <span class="sidebar-tag-name" data-tags="美食"><span class="iconfont-archer">&#xe606;</span>美食</span>
+    
+        <span class="sidebar-tag-name" data-tags="编辑器"><span class="iconfont-archer">&#xe606;</span>编辑器</span>
+    
+        <span class="sidebar-tag-name" data-tags="运维"><span class="iconfont-archer">&#xe606;</span>运维</span>
     
     </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
     缺失模块。<br/>
     1、请确保node版本大于6.2<br/>
     2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
     <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
     3、在根目录_config.yml里添加配置：
-    <pre style="color: #888; font-size: 0.6rem;">
+    <pre style="color: #787878; font-size: 0.6rem;">
 jsonContent:
   meta: false
   pages: false
@@ -853,23 +1179,63 @@ jsonContent:
     link: false
     permalink: false
     excerpt: false
-    categories: false
+    categories: true
     tags: true</pre>
     </div> 
-    <div class="sidebar-tag-list"></div>
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="VPS"><span class="iconfont-archer">&#xe60a;</span>VPS</span>
+    
+        <span class="sidebar-category-name" data-categories="记录"><span class="iconfont-archer">&#xe60a;</span>记录</span>
+    
+        <span class="sidebar-category-name" data-categories="笔记"><span class="iconfont-archer">&#xe60a;</span>笔记</span>
+    
+        <span class="sidebar-category-name" data-categories="闲聊"><span class="iconfont-archer">&#xe60a;</span>闲聊</span>
+    
+        <span class="sidebar-category-name" data-categories="教程"><span class="iconfont-archer">&#xe60a;</span>教程</span>
+    
+        <span class="sidebar-category-name" data-categories="知识"><span class="iconfont-archer">&#xe60a;</span>知识</span>
+    
+        <span class="sidebar-category-name" data-categories="杂谈"><span class="iconfont-archer">&#xe60a;</span>杂谈</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
 </div>
     </div>
 </div> 
     <script>
-    var jsInfo = {
-        root: '/'
+    var siteMeta = {
+        root: "/",
+        author: "Vic Liu"
     }
 </script>
-    <!-- 不蒜子  -->
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
     
-    <!-- CNZZ统计  -->
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
     
     </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
     </body>
 </html>
 
