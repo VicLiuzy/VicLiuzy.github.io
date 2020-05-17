@@ -20,24 +20,19 @@
     <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content>
-    <meta name="description" content="防止重复包含头文件在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用#pragma once的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。以某个头文件&amp;quot;header.h&amp;quot;为例：123456789# ifndef __HEADER_">
-<meta name="keywords" content="C++">
-<meta property="og:type" content="article">
-<meta property="og:title" content="头文件包含以及库文件包含">
-<meta property="og:url" content="http://yoursite.com/2018/08/31/头文件包含以及库文件包含/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="What happened">
+<meta property="og:url" content="http://yoursite.com/tags/操作系统/index.html">
 <meta property="og:site_name" content="What happened">
-<meta property="og:description" content="防止重复包含头文件在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用#pragma once的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。以某个头文件&amp;quot;header.h&amp;quot;为例：123456789# ifndef __HEADER_">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-10T07:13:25.810Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="头文件包含以及库文件包含">
-<meta name="twitter:description" content="防止重复包含头文件在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用#pragma once的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。以某个头文件&amp;quot;header.h&amp;quot;为例：123456789# ifndef __HEADER_">
+<meta name="twitter:title" content="What happened">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
     <link rel="alternate" href="/atom.xml" title="ZyLiu&#39;s Blog" type="application/atom+xml">
     
-    <title>头文件包含以及库文件包含 · ZyLiu&#39;s Blog</title>
+    <title>ZyLiu&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -218,23 +213,12 @@
 </head>
 
     
-        <body class="post-body">
-    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >ZyLiu&#39;s Blog</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">头文件包含以及库文件包含</a>
-            </div>
-    </div>
     
     <a class="home-link" href=/>ZyLiu's Blog</a>
 </header>
@@ -246,74 +230,24 @@
 
 
 
-
-height:50vh;
 ">
     
     <!-- 主页  -->
-    
-    
-    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
-            
-            头文件包含以及库文件包含
-            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
-            
-            <!-- 404 -->
-            
         </p>
         <!-- 文章页meta -->
-        
-            <div class="post-intros">
-                <!-- 文章页标签  -->
-                
-                    <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "C++">C++</a>
-    
-</div>
-                
-                
-                    <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">321</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
-                    </div>
-                
-                <div class="post-intro-meta">
-                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/08/31</span>
-                    
-                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
-                        <span class="iconfont-archer">&#xe602;</span>
-                        <span id="busuanzi_value_page_pv"></span>
-                    </span>
-                    
-                    <span class="shareWrapper">
-                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
-                        <span class="shareText">Share</span>
-                        <ul class="shareList">
-                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
-                                <div class="share-qrcode"></div>
-                            </li>
-                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
-                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
-                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
-                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
-                        </ul>
-                    </span>
-                </div>
-            </div>
         
     </div>
 </div>
@@ -414,57 +348,43 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main post-page">
-    <article class="article-entry">
-        <h2 id="防止重复包含头文件"><a href="#防止重复包含头文件" class="headerlink" title="防止重复包含头文件"></a>防止重复包含头文件</h2><p>在头文件中包含头文件常导致重复定义的问题。Windows平台上常常使用<code>#pragma once</code>的方式来防止重复定义，但在跨平台项目上这么做就不太适用了。<br>因此我们常常使用预定义的方式来防止重复定义的问题。之前我只是知道有这么回事，但并不知道是如何实现的，下面对其进行总结。<br>以某个头文件<code>&quot;header.h&quot;</code>为例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">ifndef</span> __HEADER_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __HEADER_H__</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *header.h  body</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure></p>
-<p>如果该头文件已被包含，那么头文件中的定义不会被重复定义。</p>
-<h2 id="库文件的包含"><a href="#库文件的包含" class="headerlink" title="库文件的包含"></a>库文件的包含</h2><p>在Windows中，有两种方式可以包含库文件。</p>
-<p>一种是在代码中添加：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib, <span class="meta-string">"libname.lib"</span>)</span></span><br></pre></td></tr></table></figure></p>
-<p>另一种是在<code>项目 - 属性 - 配置属性 - 链接器 - 输入 - 附加依赖项</code>中添加库文件。</p>
-<p>如果上述两种方式只添加了文件名而没有路径，则需要在<code>项目 - 属性 - 配置属性 - 链接器 - 常规 - 附加库目录</code>中添加库文件的路径。</p>
-<p>在Linux操作系统中，使用makefile指定包含的库文件。</p>
-<p>比如需要包含GNUC库文件<code>librt.so</code>，在make时指定<code>-lrt</code>即可。</p>
-
+            <main class="main index-page">
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/05/10/记Android源码下载与编译/" >
+            
+                <span>开启Hikey 970开发板USB AUDIO功能</span>
+        </a>
+        <div class="abstract-content">
+            记一次时长一周的Android源码下载与编译的摸索过程
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/10</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Android">Android</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "构建">构建</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "操作系统">操作系统</a>
+    
+</div>
+            
+        </div>
     </article>
-    <!-- license  -->
     
     <!-- paginator  -->
-    <ul class="post-paginator">
-        <li class="next">
-            
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/09/25/Core File的生成与查看/" title= "Core File的生成和查看">
-                    <div class="nextTitle">Core File的生成和查看</div>
-                </a>
-            
-        </li>
-        <li class="previous">
-            
-                <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" title= "从VS转移到VScode（由未找到预定义引出的问题）">
-                    <div class="prevTitle">从VS转移到VScode（由未找到预定义引出的问题）</div>
-                </a>
-            
-        </li>
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
-
-<!-- City版安装代码已完成 -->
     
-    
-    <!-- gitalk评论 -->
-
-    <!-- utteranc评论 -->
-
-    <!-- partial('_partial/comment/changyan') -->
-    <!--PC版-->
-
-
-    
-    
-
-    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -544,24 +464,6 @@ height:50vh;
 </footer>
     </div>
     <!-- toc -->
-    
-    <div class="toc-wrapper" style=
-    
-
-
-
-
-
-
-
-top:50vh;
-
-    >
-        <div class="toc-catalog">
-            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
-        </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#防止重复包含头文件"><span class="toc-number">1.</span> <span class="toc-text">防止重复包含头文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#库文件的包含"><span class="toc-number">2.</span> <span class="toc-text">库文件的包含</span></a></li></ol>
-    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -975,8 +877,6 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
-    
-        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

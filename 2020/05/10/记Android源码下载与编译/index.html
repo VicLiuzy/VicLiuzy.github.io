@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Vic Liu">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Vic Liu">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta name="description" content="4月30日，领导突然交给我一个任务，在Hikey970开发板上搭建录音环境。我只想说另请高明吧。我实在……我也不是谦虚，我一个上层应用开发怎么突然做起嵌入式来了呢？但是，领导讲“已经研究决定了”，后来我就念了两首诗，叫“苟利国家生死以，岂因祸福避趋之”。   准备领导还在跟我讨论买什么样的麦克风的时候，我突然在论坛中看到，Hikey970开发板默认不支持USB AUDIO，需要修改内核配置开启。好">
+<meta name="keywords" content="Android,构建,操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开启Hikey 970开发板USB AUDIO功能">
+<meta property="og:url" content="http://yoursite.com/2020/05/10/记Android源码下载与编译/index.html">
+<meta property="og:site_name" content="What happened">
+<meta property="og:description" content="4月30日，领导突然交给我一个任务，在Hikey970开发板上搭建录音环境。我只想说另请高明吧。我实在……我也不是谦虚，我一个上层应用开发怎么突然做起嵌入式来了呢？但是，领导讲“已经研究决定了”，后来我就念了两首诗，叫“苟利国家生死以，岂因祸福避趋之”。   准备领导还在跟我讨论买什么样的麦克风的时候，我突然在论坛中看到，Hikey970开发板默认不支持USB AUDIO，需要修改内核配置开启。好">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-17T09:10:04.361Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开启Hikey 970开发板USB AUDIO功能">
+<meta name="twitter:description" content="4月30日，领导突然交给我一个任务，在Hikey970开发板上搭建录音环境。我只想说另请高明吧。我实在……我也不是谦虚，我一个上层应用开发怎么突然做起嵌入式来了呢？但是，领导讲“已经研究决定了”，后来我就念了两首诗，叫“苟利国家生死以，岂因祸福避趋之”。   准备领导还在跟我讨论买什么样的麦克风的时候，我突然在论坛中看到，Hikey970开发板默认不支持USB AUDIO，需要修改内核配置开启。好">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <link rel="alternate" href="/atom.xml" title="ZyLiu&#39;s Blog" type="application/atom+xml">
+    
+    <title>开启Hikey 970开发板USB AUDIO功能 · ZyLiu&#39;s Blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >ZyLiu&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">开启Hikey 970开发板USB AUDIO功能</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>ZyLiu's Blog</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            开启Hikey 970开发板USB AUDIO功能
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Android">Android</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "构建">构建</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "操作系统">操作系统</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.9k</span>阅读时长: <span class="post-count reading-time">7 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/05/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>4月30日，领导突然交给我一个任务，在Hikey970开发板上搭建录音环境。我只想说另请高明吧。我实在……我也不是谦虚，我一个上层应用开发怎么突然做起嵌入式来了呢？但是，领导讲“已经研究决定了”，后来我就念了两首诗，叫“苟利国家生死以，岂因祸福避趋之”。  </p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>领导还在跟我讨论买什么样的麦克风的时候，我突然在论坛中看到，<a href="http://smartfire.cn/thread-1177-1-2.html" target="_blank" rel="noopener">Hikey970开发板默认不支持<code>USB AUDIO</code></a>，需要修改内核配置开启。好嘛，还买个啥麦克风，先把音频输入调通再说吧。  </p>
+<p>根据<a href="https://blog.csdn.net/u010164190/article/details/90699235?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=USB%20AUDIO&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduweb~default-8-90699235" target="_blank" rel="noopener">Android usb audio录音</a>这篇博文的介绍，打开<code>USB AUDIO</code>配置还是比较容易的，只需要修改<code>/kernel-4.9/sound/usb/Kconfig</code>文件中的<code>SND_USB_AUDIO</code>块即可。  </p>
+<h2 id="下载AOSP源码"><a href="#下载AOSP源码" class="headerlink" title="下载AOSP源码"></a>下载AOSP源码</h2><p>还好我不是从零开始，前人已经总结了<a href="http://smartfire.cn/thread-1208-1-1.html" target="_blank" rel="noopener">源码编译AOSP详细步骤</a>。  </p>
+<h3 id="用repo下载AOSP源码"><a href="#用repo下载AOSP源码" class="headerlink" title="用repo下载AOSP源码"></a>用repo下载AOSP源码</h3><h4 id="首先需要安装repo"><a href="#首先需要安装repo" class="headerlink" title="首先需要安装repo"></a>首先需要安装repo</h4><p>我使用WSL用<code>apt</code>命令安装，报错。<br>最后使用博客<a href="https://segmentfault.com/a/1190000015279330" target="_blank" rel="noopener">windows环境下repo下载Android源代码</a>中推荐的人修改好的repo客户端，<a href="https://codeload.github.com/esrlabs/git-repo/zip/stable" target="_blank" rel="noopener">点此下载</a>。  </p>
+<h4 id="初始化repo仓库"><a href="#初始化repo仓库" class="headerlink" title="初始化repo仓库"></a>初始化repo仓库</h4><p>使用如下命令，以清华大学AOSP镜像仓库初始化repo：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-9.0.0_r8 --no-repo-verify --repo-branch=stable</span><br></pre></td></tr></table></figure>
+<h4 id="开始下载源码"><a href="#开始下载源码" class="headerlink" title="开始下载源码"></a>开始下载源码</h4><p>论坛中使用如下命令进行repo仓库同步：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo sync -j4</span><br></pre></td></tr></table></figure>
+<p><code>-j4</code>的含义为使用四线程进行仓库同步。<br>但由于AOSP源码过多，常常由于网络原因导致同步中断，报如下错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: error: Exited sync due to fetch errors</span><br></pre></td></tr></table></figure>
+<p>因此需要加上强制同步的选项：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo sync -j4 -f --force-sync</span><br></pre></td></tr></table></figure>
+<h3 id="下载过程中遇到的坑"><a href="#下载过程中遇到的坑" class="headerlink" title="下载过程中遇到的坑"></a>下载过程中遇到的坑</h3><h4 id="aux-h文件无法创建"><a href="#aux-h文件无法创建" class="headerlink" title="aux.h文件无法创建"></a><code>aux.h</code>文件无法创建</h4><p>开始我是在PowerShell环境进行的源码下载，但每当下载到<code>aux.h</code>文件时，就会报错文件无法被创建。经查资料，发现<code>aux</code>是Windows平台的保留文件名，无法被用户使用。不信你可以创建一个<code>aux.txt</code>试试。  </p>
+<p>其实除aux之外，Windows还有许多预留文件名不能用，<a href="https://www.howtogeek.com/fyi/windows-10-still-wont-let-you-use-these-file-names-reserved-in-1974/" target="_blank" rel="noopener">这篇文章</a>做了很好的总结。</p>
+<p>具体如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, and LPT9</span><br></pre></td></tr></table></figure>
+<p>在WSL环境进行<code>repo sync</code>，可以解决这个问题。  </p>
+<h4 id="大小写不敏感导致的文件丢失"><a href="#大小写不敏感导致的文件丢失" class="headerlink" title="大小写不敏感导致的文件丢失"></a>大小写不敏感导致的文件丢失</h4><p>AOSP源码中，有许多源文件是除大小写外相同的，这样在Windows系统clone仓库时可能导致其中一个文件被当作重名文件丢失，或者在编译时会导致错误包含头文件 <em>（坑爹的Windows）</em>。</p>
+<p>可通过如下python脚本批量设置目录下所有文件夹的文件大小写敏感：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">path = <span class="string">r'F:\\git_repo\\repo-tsinghua-linux\\tools'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> folderName, subfolders, fileNames <span class="keyword">in</span> os.walk(path):</span><br><span class="line">    os.system(<span class="string">'fsutil.exe file SetCaseSensitiveInfo '</span> + folderName + <span class="string">' enable'</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Success!"</span>)</span><br></pre></td></tr></table></figure>
+<p>也可在WSL下使用如下命令设置或获取目录是否大小写敏感（需要<code>apt install attr</code>）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 设置</span><br><span class="line">setfattr -n system.wsl_case_sensitive -v 1 "/mnt/f/git_repo/repo-tsinghua-linux/kernel/linux/net/netfilter"</span><br><span class="line"><span class="meta">#</span> 获取</span><br><span class="line">getfattr -n system.wsl_case_sensitive "/mnt/f/git_repo/repo-tsinghua-linux/kernel/linux/net/netfilter"</span><br></pre></td></tr></table></figure>
+<p>可以通过上述方式先创建一个大小写敏感的目录，然后将代码仓库解压到该目录下，则新生成的目录都是大小写敏感的了。  </p>
+<h2 id="下载并编译Hikey-970内核源码"><a href="#下载并编译Hikey-970内核源码" class="headerlink" title="下载并编译Hikey 970内核源码"></a>下载并编译Hikey 970内核源码</h2><h3 id="本地clone"><a href="#本地clone" class="headerlink" title="本地clone"></a>本地clone</h3><p>根据论坛的建议，原生的kernel不能boot这个版本的AOSP，会导致各种问题，需要重新clone linaro官方针对hikey970的kernel源码。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/96boards-hikey/linux.git -b hikey970-v4.9 linux</span><br></pre></td></tr></table></figure>
+<p>但国内的网络环境，clone github仓库只有20KBps的速度，下载这三四个GB的仓库要到猴年马月。</p>
+<p>于是首先尝试挂代理，我的计算机上部署有V2ray的socks5代理，代理端口号为10808，于是使用如下命令进行git全局代理设置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 开启全局代理</span><br><span class="line">git config --global http.proxy 'socks5://127.0.0.1:10808'</span><br><span class="line">git config --global https.proxy 'socks5://127.0.0.1:10808'</span><br><span class="line"><span class="meta">#</span> 关闭全局代理</span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
+<p>但设置代理后，像内核源码这么大的仓库，还是会失败。  </p>
+<h3 id="VPS-clone"><a href="#VPS-clone" class="headerlink" title="VPS clone"></a>VPS clone</h3><p>在经历无数次的失败后，我直接使用VPS clone源码，然后用FTP协议将仓库打包传送到了本地。</p>
+<h3 id="修改USB-AUDIO配置"><a href="#修改USB-AUDIO配置" class="headerlink" title="修改USB AUDIO配置"></a>修改USB AUDIO配置</h3><p>整个任务就是围绕这一步进行的，前文说过，打开USB AUDIO配置的方法为，只需要修改<code>/kernel-4.9/sound/usb/Kconfig</code>文件中的<code>SND_USB_AUDIO</code>块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">config SND_USB_AUDIO</span><br><span class="line">	tristate &quot;USB Audio/MIDI driver&quot;</span><br><span class="line">	select SND_HWDEP</span><br><span class="line">	select SND_RAWMIDI</span><br><span class="line">	select SND_PCM</span><br><span class="line">	select BITREVERSE</span><br><span class="line">	# 新增下面这行</span><br><span class="line">	default y</span><br><span class="line">	# 新增上面这行</span><br><span class="line">	help</span><br><span class="line">	  Say Y here to include support for USB audio and USB MIDI</span><br><span class="line">	  devices.</span><br><span class="line"></span><br><span class="line">	  To compile this driver as a module, choose M here: the module</span><br><span class="line">	  will be called snd-usb-audio.</span><br></pre></td></tr></table></figure>
+<h3 id="内核编译"><a href="#内核编译" class="headerlink" title="内核编译"></a>内核编译</h3><p>使用如下命令进行编译，注意需要目录大小写敏感。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd $AOSP_ROOT/kernel/linux</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 环境变量</span><br><span class="line">export ARCH=arm64</span><br><span class="line">export CROSS_COMPILE=$AOSP_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 编译Image</span><br><span class="line">make hikey970_defconfig &amp;&amp; make -j4 Image.gz modules</span><br><span class="line"><span class="meta">#</span> 生成kirin970-hikey970.dtb</span><br><span class="line">make hisilicon/kirin970-hikey970.dtb</span><br></pre></td></tr></table></figure>
+<p>生成的目标为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>AOSP_ROOT/kernel/linux/arch/arm64/boot/dts/hisilicon/kirin970-hikey970.dts</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/kernel/linux/arch/arm64/boot/Image</span><br></pre></td></tr></table></figure>
+<h2 id="生成系统镜像"><a href="#生成系统镜像" class="headerlink" title="生成系统镜像"></a>生成系统镜像</h2><p>其实，本次任务并不需要完整的编译整个AOSP，我们可以使用<a href="http://hihope.org/hihope/downLoadCenter/testDownFile?filename=20190403/hikey970_android_8_images.rar" target="_blank" rel="noopener">96boards官方提供的AOSP系统镜像</a>，只是替换其中的内核即可。</p>
+<h3 id="AOSP-bootloader编译"><a href="#AOSP-bootloader编译" class="headerlink" title="AOSP/bootloader编译"></a>AOSP/bootloader编译</h3><p>我们跳过了AOSP编译这一步，实属无奈，120GB的硬盘都沾满了，实在放不下那么多目标文件。</p>
+<p>同样，<code>bootloader</code>获取也跳过，直接用官方镜像。</p>
+<p>AOSP编译生成的目标文件为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 即使是编译生成的boot.img，也需要手动替换其内核</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/out/target/product/hikey970/boot.img </span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/out/target/product/hikey970/system.img</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/out/target/product/hikey970/cache.img</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/out/target/product/hikey970/userdata.img</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/out/target/product/hikey970/dt.img</span><br></pre></td></tr></table></figure>
+<p>bootloader编译的产物为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>AOSP_ROOT/bootloader/l-loader/ptable-aosp-64g.img</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/bootloader/tools-images-hikey970/sec_xloader.img</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/bootloader/l-loader/l-loader.bin</span><br><span class="line"><span class="meta">$</span>AOSP_ROOT/bootloader/l-loader/fip.bin</span><br></pre></td></tr></table></figure>
+<p>而我们下载的官方镜像目录下的文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">hikey970</span><br><span class="line">    ├── buildinfo.txt</span><br><span class="line">    ├── image</span><br><span class="line">    │   ├── Hikey970_download_images.xml</span><br><span class="line">    │   ├── boot.img</span><br><span class="line">    │   ├── boot_ramdisk.img</span><br><span class="line">    │   ├── cache.img</span><br><span class="line">    │   ├── dt.img</span><br><span class="line">    │   ├── fip.bin</span><br><span class="line">    │   ├── installed-files.txt</span><br><span class="line">    │   ├── kernel.img</span><br><span class="line">    │   ├── l-loader.bin</span><br><span class="line">    │   ├── lpm3.img</span><br><span class="line">    │   ├── prm_ptable.img</span><br><span class="line">    │   ├── ptable_for_fastboot.img</span><br><span class="line">    │   ├── ramdisk.img</span><br><span class="line">    │   ├── sec_usb_xloader.img</span><br><span class="line">    │   ├── sec_usb_xloader2.img</span><br><span class="line">    │   ├── sec_xloader.img</span><br><span class="line">    │   ├── system.img</span><br><span class="line">    │   ├── update_Hikey970.bat</span><br><span class="line">    │   ├── userdata.img</span><br><span class="line">    │   ├── uefi</span><br><span class="line">    │   │   ├── fip.bin</span><br><span class="line">    │   │   ├── l-loader.bin</span><br><span class="line">    │   │   ├── lpm3.img</span><br><span class="line">    │   │   ├── prm_ptable.img</span><br><span class="line">    │   │   ├── ptable_for_fastboot.img</span><br><span class="line">    │   │   ├── sec_usb_xloader.img</span><br><span class="line">    │   │   ├── sec_usb_xloader2.img</span><br><span class="line">    │   │   ├── sec_xloader.img</span><br><span class="line">    │   │   └── update_Hikey970.bat</span><br></pre></td></tr></table></figure>
+<p>可以看到，所有目标文件都是存在的。</p>
+<h3 id="重新打包boot-img"><a href="#重新打包boot-img" class="headerlink" title="重新打包boot.img"></a>重新打包<code>boot.img</code></h3><h4 id="解包boot-img"><a href="#解包boot-img" class="headerlink" title="解包boot.img"></a>解包<code>boot.img</code></h4><p>在<code>$AOSP_ROOT/system/core/mkbootimg</code>目录下，有着<code>unpack_bootimg</code>可执行程序，可以在WSL中运行，它可以将<code>boot.img</code>解包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unpackbootimg  -i  ./boot.img  -o ./output</span><br></pre></td></tr></table></figure>
+<p>则会生成output目录，目录下有<code>boot</code>、<code>ramdisk</code>、<code>second</code>三个文件。其中，<code>boot</code>就是我们要替换的内核，而<code>ramdisk</code>包含了Andoroid系统的文件系统信息，这里不展开了。</p>
+<h4 id="生成新boot"><a href="#生成新boot" class="headerlink" title="生成新boot"></a>生成新boot</h4><p>其实就是将内核编译的两个产物合并为一个：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat $AOSP_ROOT/kernel/linux/arch/arm64/boot/Image $AOSP_ROOT/kernel/linux/arch/arm64/boot/dts/hisilicon/kirin970-hikey970.dtb &gt; $AOSP_ROOT/Image-dtb</span><br></pre></td></tr></table></figure>
+<h4 id="打包boot-img"><a href="#打包boot-img" class="headerlink" title="打包boot.img"></a>打包<code>boot.img</code></h4><p>将刚刚生成的<code>Image-dtb</code>也拷贝到<code>output</code>目录下，然后执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkbootimg --kernel ./output/Image-dtb --ramdisk ./output/ramdisk --cmdline "androidboot.hardware=hikey970 firmware_class.path=/system/etc/firmware loglevel=15 buildvariant=userdebug androidboot.selinux=permissive clk_ignore_unused=true initrd=0xBE19D000,0x16677F earlycon=pl011,0xfff32000,115200 console=ttyAMA6 androidboot.serialno=54DA9CD5022525E4 clk_ignore_unused=true" -o boot.img</span><br></pre></td></tr></table></figure>
+<p>则生成了全新的<code>boot.img</code>。</p>
+<h2 id="烧写"><a href="#烧写" class="headerlink" title="烧写"></a>烧写</h2><p>Windows环境下，执行<code>update_Hikey970.bat</code>即可。</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>以<code>cat /proc/asound/cards</code>命令查看设备，果然有了USB AUDIO设备，成功~</p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/05/10/合肥觅食/" title= "合肥觅食">
+                    <div class="prevTitle">合肥觅食</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- gitalk评论 -->
+
+    <!-- utteranc评论 -->
+
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:liuzongyanvic@foxmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/VicLiuzy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="http://weibo.com/u/2673021483" class="iconfont-archer weibo" target="_blank" title=weibo></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下载AOSP源码"><span class="toc-number">2.</span> <span class="toc-text">下载AOSP源码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用repo下载AOSP源码"><span class="toc-number">2.1.</span> <span class="toc-text">用repo下载AOSP源码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#首先需要安装repo"><span class="toc-number">2.1.1.</span> <span class="toc-text">首先需要安装repo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#初始化repo仓库"><span class="toc-number">2.1.2.</span> <span class="toc-text">初始化repo仓库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开始下载源码"><span class="toc-number">2.1.3.</span> <span class="toc-text">开始下载源码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载过程中遇到的坑"><span class="toc-number">2.2.</span> <span class="toc-text">下载过程中遇到的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#aux-h文件无法创建"><span class="toc-number">2.2.1.</span> <span class="toc-text">aux.h文件无法创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#大小写不敏感导致的文件丢失"><span class="toc-number">2.2.2.</span> <span class="toc-text">大小写不敏感导致的文件丢失</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下载并编译Hikey-970内核源码"><span class="toc-number">3.</span> <span class="toc-text">下载并编译Hikey 970内核源码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#本地clone"><span class="toc-number">3.1.</span> <span class="toc-text">本地clone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VPS-clone"><span class="toc-number">3.2.</span> <span class="toc-text">VPS clone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改USB-AUDIO配置"><span class="toc-number">3.3.</span> <span class="toc-text">修改USB AUDIO配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内核编译"><span class="toc-number">3.4.</span> <span class="toc-text">内核编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成系统镜像"><span class="toc-number">4.</span> <span class="toc-text">生成系统镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AOSP-bootloader编译"><span class="toc-number">4.1.</span> <span class="toc-text">AOSP/bootloader编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重新打包boot-img"><span class="toc-number">4.2.</span> <span class="toc-text">重新打包boot.img</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解包boot-img"><span class="toc-number">4.2.1.</span> <span class="toc-text">解包boot.img</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成新boot"><span class="toc-number">4.2.2.</span> <span class="toc-text">生成新boot</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#打包boot-img"><span class="toc-number">4.2.3.</span> <span class="toc-text">打包boot.img</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#烧写"><span class="toc-number">5.</span> <span class="toc-text">烧写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证"><span class="toc-number">6.</span> <span class="toc-text">验证</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 16
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/10</span><a class="archive-post-title" href= "/2020/05/10/记Android源码下载与编译/" >开启Hikey 970开发板USB AUDIO功能</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/10</span><a class="archive-post-title" href= "/2020/05/10/合肥觅食/" >合肥觅食</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/14</span><a class="archive-post-title" href= "/2018/11/15/Gradle使用/" >Hello World, Gradle</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2018/11/11/QNX平台获取ip与mac/" >IP地址与mac地址获取小结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/30</span><a class="archive-post-title" href= "/2018/09/30/内存泄露检测/" >内存泄露检测--mtrace的使用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/2018/09/25/Core File的生成与查看/" >Core File的生成和查看</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2018/08/31/头文件包含以及库文件包含/" >头文件包含以及库文件包含</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2018/08/24/从VS转移到VScode（由未找到预定义引出的问题）/" >从VS转移到VScode（由未找到预定义引出的问题）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2018/08/19/makefile(3)/" >Makefile学习（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2018/08/18/makefile(2)/" >Makefile学习（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2018/08/17/makefile(1)/" >Makefile学习（一）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/28</span><a class="archive-post-title" href= "/2018/07/29/C++类零碎/" >C++类零碎</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href= "/2018/07/26/typedef函数指针/" >typedef与函数指针</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span><a class="archive-post-title" href= "/2017/11/06/ubuntu安装后要做的一些事/" >Ubuntu安装后要做的一些事</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/04/2017-11-03-seafile/" >seafile部署记录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2017/11/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="toy"><span class="iconfont-archer">&#xe606;</span>toy</span>
+    
+        <span class="sidebar-tag-name" data-tags="C++"><span class="iconfont-archer">&#xe606;</span>C++</span>
+    
+        <span class="sidebar-tag-name" data-tags="多态"><span class="iconfont-archer">&#xe606;</span>多态</span>
+    
+        <span class="sidebar-tag-name" data-tags="GDB"><span class="iconfont-archer">&#xe606;</span>GDB</span>
+    
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
+    
+        <span class="sidebar-tag-name" data-tags="QNX"><span class="iconfont-archer">&#xe606;</span>QNX</span>
+    
+        <span class="sidebar-tag-name" data-tags="网络"><span class="iconfont-archer">&#xe606;</span>网络</span>
+    
+        <span class="sidebar-tag-name" data-tags="Android"><span class="iconfont-archer">&#xe606;</span>Android</span>
+    
+        <span class="sidebar-tag-name" data-tags="构建"><span class="iconfont-archer">&#xe606;</span>构建</span>
+    
+        <span class="sidebar-tag-name" data-tags="想法"><span class="iconfont-archer">&#xe606;</span>想法</span>
+    
+        <span class="sidebar-tag-name" data-tags="Makefile"><span class="iconfont-archer">&#xe606;</span>Makefile</span>
+    
+        <span class="sidebar-tag-name" data-tags="编译"><span class="iconfont-archer">&#xe606;</span>编译</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+    
+        <span class="sidebar-tag-name" data-tags="生活"><span class="iconfont-archer">&#xe606;</span>生活</span>
+    
+        <span class="sidebar-tag-name" data-tags="美食"><span class="iconfont-archer">&#xe606;</span>美食</span>
+    
+        <span class="sidebar-tag-name" data-tags="编辑器"><span class="iconfont-archer">&#xe606;</span>编辑器</span>
+    
+        <span class="sidebar-tag-name" data-tags="运维"><span class="iconfont-archer">&#xe606;</span>运维</span>
+    
+        <span class="sidebar-tag-name" data-tags="操作系统"><span class="iconfont-archer">&#xe606;</span>操作系统</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="VPS"><span class="iconfont-archer">&#xe60a;</span>VPS</span>
+    
+        <span class="sidebar-category-name" data-categories="记录"><span class="iconfont-archer">&#xe60a;</span>记录</span>
+    
+        <span class="sidebar-category-name" data-categories="笔记"><span class="iconfont-archer">&#xe60a;</span>笔记</span>
+    
+        <span class="sidebar-category-name" data-categories="闲聊"><span class="iconfont-archer">&#xe60a;</span>闲聊</span>
+    
+        <span class="sidebar-category-name" data-categories="教程"><span class="iconfont-archer">&#xe60a;</span>教程</span>
+    
+        <span class="sidebar-category-name" data-categories="知识"><span class="iconfont-archer">&#xe60a;</span>知识</span>
+    
+        <span class="sidebar-category-name" data-categories="杂谈"><span class="iconfont-archer">&#xe60a;</span>杂谈</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Vic Liu"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
